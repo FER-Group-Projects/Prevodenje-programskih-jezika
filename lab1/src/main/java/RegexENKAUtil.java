@@ -1,7 +1,7 @@
 
 public class RegexENKAUtil {
 	
-	public static ENKA regexToENKA(String regex) {
+	public static ENKA regexToENKA(String regexName, String regexDefinition) {
 		return null;
 	}
 
