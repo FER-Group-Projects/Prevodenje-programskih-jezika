@@ -27,7 +27,7 @@ public class ENKA {
 
 		}
 
-		public State(String name, Map<String, Set<State>> transitions, Set<State> epsilonTransitions) {
+		public State(String name, boolean isAcceptable, Map<String, Set<State>> transitions, Set<State> epsilonTransitions) {
 
 		}
 
