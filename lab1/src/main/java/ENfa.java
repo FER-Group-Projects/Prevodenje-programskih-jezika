@@ -1,6 +1,8 @@
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,6 +18,8 @@ import java.util.Set;
  */
 public class ENfa {
 	
+	private String name;
+	
 	private String startingState;
 	
 	private Set<String> allStates;
@@ -26,17 +30,23 @@ public class ENfa {
 	// Mapping : stateFrom -> (character -> nextStates)
 	private Map<String, Map<Character, Set<String>>> transitions;
 	
-	public ENfa() {
+	public ENfa(String name) {
+		this.name = Objects.requireNonNull(name);
+		
 		allStates = new HashSet<>();
 		acceptableStates = new HashSet<>();
 		currentActiveStates = new HashSet<>();
 		transitions = new HashMap<>();
 	}
 	
-	public ENfa(String startingState, boolean startingStateAcceptance) {
-		this();
-		addState(startingState, startingStateAcceptance);
+	public ENfa(String name, String startingState, boolean startingStateAcceptability) {
+		this(name);
+		addState(startingState, startingStateAcceptability);
 		setStartingState(startingState);
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public void setStartingState(String name) {
@@ -70,6 +80,16 @@ public class ENfa {
 		if(startingState.equals(name)) startingState = null;
 	}
 	
+	public void setStateAcceptability(String stateName, boolean acceptable) {
+		if(allStates.contains(stateName)) {
+			if(acceptable) acceptableStates.add(stateName);
+			else acceptableStates.remove(stateName);
+			return;
+		} 
+
+		addState(stateName, acceptable);
+	}
+	
 	public void addTransition(String stateFrom, char trigger, String stateTo) {
 		if(!allStates.contains(Objects.requireNonNull(stateFrom)) || !allStates.contains(Objects.requireNonNull(stateTo)))
 			throw new IllegalArgumentException("state1 or state2 not in enfa");
@@ -99,7 +119,54 @@ public class ENfa {
 		
 		nextStates.remove(stateTo);
 	}
-
+	
+	public Set<String> getAllStates() {
+		return Collections.unmodifiableSet(allStates);
+	}
+	
+	public Set<String> getAcceptableStates() {
+		return Collections.unmodifiableSet(acceptableStates);
+	}
+	
+	public String getStartingState() {
+		return startingState;
+	}
+	
+	public Set<String> getCurrentActiveStates() {
+		return Collections.unmodifiableSet(currentActiveStates);
+	}
+	
+	public Set<String> getTransition(String stateFrom, char trigger) {
+		Map<Character, Set<String>> transitionMapping = transitions.get(stateFrom);
+		if(transitionMapping==null) return Collections.emptySet();
+		
+		Set<String> nextStates = transitionMapping.get(trigger);
+		if(nextStates==null) return Collections.emptySet();
+		
+		return Collections.unmodifiableSet(nextStates);
+	}
+	
+	public boolean transitionExists(String stateFrom, char trigger) {
+		return getTransition(stateFrom, trigger).size()!=0;
+	}
+	
+	public void copyFrom(ENfa other) {
+		for(String otherState : other.allStates) {
+			if(this.allStates.contains(otherState))
+				throw new IllegalArgumentException("State " + otherState + " is already in enfa! No changes have been made");
+		}
+		
+		allStates.addAll(other.allStates);
+		acceptableStates.addAll(other.acceptableStates);
+		for(Entry<String, Map<Character, Set<String>>> transitionMapValue : other.transitions.entrySet()) {
+			transitions.put(transitionMapValue.getKey(), transitionMapValue.getValue());
+		}
+	}
+	
+	public void step(char trigger) {
+		
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(acceptableStates, allStates, currentActiveStates, startingState, transitions);
@@ -118,12 +185,5 @@ public class ENfa {
 				&& Objects.equals(currentActiveStates, other.currentActiveStates)
 				&& Objects.equals(startingState, other.startingState) && Objects.equals(transitions, other.transitions);
 	}
-	
-	//TODO
-	//mijenjanje prihvatljivosti stanja
-	//copy from
-	//step
-	//gettere za sve (ali immutable)
-	//postoji li prijelaz
 
 }
