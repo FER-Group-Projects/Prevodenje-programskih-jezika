@@ -1,14 +1,14 @@
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
 
 public class ENfaTest {
 	
 	static ENfa e;
 	
-	@BeforeEach
-	void BeforeEachTest() {
+	@Before
+	public void BeforeEachTest() {
 		e = new ENfa("e", "S1", true);
 		e.addState("S2", true);
 		e.addState("S3", false);
@@ -38,7 +38,7 @@ public class ENfaTest {
 	}
 	
 	@Test
-	void test1() {
+	public void test1() {
 		assertEquals("e", e.getName());
 		assertEquals("S1", e.getStartingState());
 		assertTrue(e.getAcceptableStates().size()==4);
@@ -46,13 +46,13 @@ public class ENfaTest {
 	}
 	
 	@Test
-	void test2() {	
+	public void test2() {
 		assertTrue(e.isInAcceptableState());
 		assertEquals(4, e.getCurrentActiveStates().size());
 	}
 	
 	@Test
-	void test3() {
+	public void test3() {
 		e.step('a');
 		assertTrue(e.isInAcceptableState());
 		assertEquals(2, e.getCurrentActiveStates().size());
@@ -61,7 +61,7 @@ public class ENfaTest {
 	}
 	
 	@Test
-	void test4() {
+	public void test4() {
 		e.step('a');
 		e.step('a');
 		assertFalse(e.isInAcceptableState());
