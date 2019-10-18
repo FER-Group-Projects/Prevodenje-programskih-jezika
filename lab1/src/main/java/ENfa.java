@@ -1,9 +1,11 @@
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -11,7 +13,10 @@ import java.util.Set;
  * This class models an epsilon non-deterministic final automata. <br>
  * <strong> State </strong> of the automata is an acronym for java.lang.String. <br>
  * <strong> Trigger </strong> of the automata is a character which triggers the automata to enter a new state. <br>
- * <strong> Epsilon trigger </strong> of the automata is represented by '$' sign. <br>
+ * <strong> Epsilon trigger </strong> of the automata is represented by '$' character. <br>
+ * <strong> ENfa is stuck </strong> if ENfa is not in any state. ENfa gets stuck if it gets triggered by a 
+ * character for which there are no known transitions from current state of ENfa. When ENfa gets stuck, it
+ * needs to be reset.
  * 
  * @author Matija
  *
@@ -90,6 +95,7 @@ public class ENfa {
 		
 		currentActiveStates.clear();
 		currentActiveStates.add(startingState);
+		calculateEpsilonTransitions();
 	}
 	
 	/**
@@ -124,8 +130,12 @@ public class ENfa {
 			}
 		}
 		
-		if(startingState.equals(name)) startingState = null;
-		else currentActiveStates.add(startingState);
+		if(startingState.equals(name)) {
+			startingState = null;
+		} else {
+			currentActiveStates.add(startingState);
+			calculateEpsilonTransitions();
+		}
 	}
 	
 	/**
@@ -170,6 +180,8 @@ public class ENfa {
 			transitionMapping.put(trigger, nextStates);
 		}
 		nextStates.add(stateTo);
+		
+		calculateEpsilonTransitions();
 	}
 	
 	/**
@@ -191,6 +203,8 @@ public class ENfa {
 		if(nextStates==null) return;
 		
 		nextStates.remove(stateTo);
+		
+		calculateEpsilonTransitions();
 	}
 	
 	/**
@@ -269,14 +283,73 @@ public class ENfa {
 		for(Entry<String, Map<Character, Set<String>>> transitionMapValue : other.transitions.entrySet()) {
 			transitions.put(transitionMapValue.getKey(), transitionMapValue.getValue());
 		}
+		
+		if(startingState!=null) reset();
 	}
 	
 	/**
 	 * Triggers ENfa with the given trigger
 	 * @param trigger trigger with which to trigger ENfa
+	 * @throws IllegalStateException if ENfa is stuck
 	 */
 	public void step(char trigger) {
 		
+		if(trigger == '$')
+			throw new IllegalArgumentException("ENfa cannot be triggered using $. $ is used as epsilon trigger.");
+		if(currentActiveStates.isEmpty())
+			throw new IllegalStateException("ENfa is stuck. Check ENfa class javadoc for details.");
+		
+		//triggered transitions
+		Set<String> nextStatesTriggered = new HashSet<>();
+		for(String state : currentActiveStates) {
+			if(transitions.get(state)==null || transitions.get(state).get(trigger)==null) continue;
+			nextStatesTriggered.addAll(transitions.get(state).get(trigger));
+		}
+		currentActiveStates = nextStatesTriggered;
+		
+		//calculating epsilon closure for every current state
+		calculateEpsilonTransitions();
+	}
+	
+	private void calculateEpsilonTransitions() {
+		Set<String> nextStatesEpsilon = new HashSet<>();
+		for(String state : currentActiveStates) {
+			nextStatesEpsilon.addAll(epsilonClosure(state));
+		}
+		currentActiveStates.addAll(nextStatesEpsilon);
+	}
+	
+	/**
+	 * Returns the epsilon closure of a given state.
+	 * @param state state for which to calculate epsilon closure
+	 * @return epsilon closure of given state
+	 * @throws NullPointerException if given state is null
+	 * @throws IllegalArgumentException if this ENfa does not contain given state
+	 */
+	public Set<String> epsilonClosure(String state) {
+		Objects.requireNonNull(state);
+		if(!allStates.contains(state))
+			throw new IllegalArgumentException("Given state " + state + " is not a member of ENfa " + name);
+		
+		Set<String> epsilonClosure = new HashSet<>();
+		Queue<String> next = new LinkedList<>();
+		epsilonClosure.add(state);
+		next.add(state);
+		
+		// BFS (Breadth first search)
+		while(!next.isEmpty()) {
+			String nextState = next.poll();
+			if(transitions.get(nextState)==null || 
+					transitions.get(nextState).get('$')==null) 
+				continue;
+			for(String s : transitions.get(nextState).get('$')) {
+				if(epsilonClosure.contains(s)) continue;
+				epsilonClosure.add(s);
+				next.add(s);
+			}
+		}
+		
+		return epsilonClosure;
 	}
 	
 	/**
@@ -288,6 +361,14 @@ public class ENfa {
 			if(acceptableStates.contains(state)) return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns true if ENfa is stuck. See class javadoc for details.
+	 * @return true if ENfa is stuck, false otherwise.
+	 */
+	public boolean isStuck() {
+		return currentActiveStates.isEmpty();
 	}
 
 	@Override
