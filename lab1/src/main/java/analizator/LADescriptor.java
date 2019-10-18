@@ -1,3 +1,5 @@
+package analizator;
+
 import java.util.Map;
 
 /**

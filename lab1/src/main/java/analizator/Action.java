@@ -1,3 +1,5 @@
+package analizator;
+
 /**
  * 
  * @author Matija

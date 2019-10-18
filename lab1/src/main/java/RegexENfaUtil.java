@@ -1,3 +1,4 @@
+import analizator.ENfa;
 
 public class RegexENfaUtil {
 	
