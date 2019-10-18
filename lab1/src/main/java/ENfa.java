@@ -299,8 +299,8 @@ public class ENfa {
 	 */
 	public void step(char trigger) {
 		
-		if(trigger == '$')
-			throw new IllegalArgumentException("ENfa cannot be triggered using $. $ is used as epsilon trigger.");
+		if(trigger == EPSILON)
+			throw new IllegalArgumentException("ENfa cannot be triggered using " + EPSILON + ". That character is used as epsilon trigger.");
 		if(currentActiveStates.isEmpty())
 			throw new IllegalStateException("ENfa is stuck. Check ENfa class javadoc for details.");
 		
@@ -345,9 +345,9 @@ public class ENfa {
 		while(!next.isEmpty()) {
 			String nextState = next.poll();
 			if(transitions.get(nextState)==null || 
-					transitions.get(nextState).get('$')==null) 
+					transitions.get(nextState).get(EPSILON)==null) 
 				continue;
-			for(String s : transitions.get(nextState).get('$')) {
+			for(String s : transitions.get(nextState).get(EPSILON)) {
 				if(epsilonClosure.contains(s)) continue;
 				epsilonClosure.add(s);
 				next.add(s);
