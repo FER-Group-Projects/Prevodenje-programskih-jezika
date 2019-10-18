@@ -23,6 +23,11 @@ import java.util.Set;
  */
 public class ENfa {
 	
+	/**
+	 * Character used for epsilon transitions.
+	 */
+	public static final char EPSILON = '$';
+	
 	private String name;
 	
 	private String startingState;
@@ -95,7 +100,7 @@ public class ENfa {
 		
 		currentActiveStates.clear();
 		currentActiveStates.add(startingState);
-		calculateEpsilonTransitions();
+		performEpsilonTransitions();
 	}
 	
 	/**
@@ -134,7 +139,7 @@ public class ENfa {
 			startingState = null;
 		} else {
 			currentActiveStates.add(startingState);
-			calculateEpsilonTransitions();
+			performEpsilonTransitions();
 		}
 	}
 	
@@ -181,7 +186,7 @@ public class ENfa {
 		}
 		nextStates.add(stateTo);
 		
-		calculateEpsilonTransitions();
+		performEpsilonTransitions();
 	}
 	
 	/**
@@ -204,7 +209,7 @@ public class ENfa {
 		
 		nextStates.remove(stateTo);
 		
-		calculateEpsilonTransitions();
+		performEpsilonTransitions();
 	}
 	
 	/**
@@ -308,10 +313,10 @@ public class ENfa {
 		currentActiveStates = nextStatesTriggered;
 		
 		//calculating epsilon closure for every current state
-		calculateEpsilonTransitions();
+		performEpsilonTransitions();
 	}
 	
-	private void calculateEpsilonTransitions() {
+	private void performEpsilonTransitions() {
 		Set<String> nextStatesEpsilon = new HashSet<>();
 		for(String state : currentActiveStates) {
 			nextStatesEpsilon.addAll(epsilonClosure(state));
