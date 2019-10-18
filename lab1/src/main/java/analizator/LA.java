@@ -37,6 +37,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
         resetAllENfas(enfas);
 
         ENfa lastSatisfiedEnfa = null;
+        int lastSatisfiedIndex = startIndex;
 
         while (true) {
             if (endIndex == inputProgram.length) {
@@ -44,6 +45,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
             }
 
             if (areAllENfasStuck(enfas)) {
+                endIndex = lastSatisfiedIndex;
                 break;
             }
 
@@ -51,10 +53,13 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
 
             if (satisfiedEnfa != null) {
                 lastSatisfiedEnfa = satisfiedEnfa;
+                lastSatisfiedIndex = endIndex;
             }
 
             // Send next character to all ENfas
             for (ENfa enfa : enfas) {
+                if (enfa.isStuck()) continue;
+
                 enfa.step(inputProgram[endIndex]);
             }
 
@@ -84,8 +89,8 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
         }
 
         if (action.tokenType != null) {
-            startIndex = endIndex;
             lexem = new Lexem(action.tokenType, lineNumber, new String(inputProgram, startIndex, endIndex - startIndex));
+            startIndex = endIndex;
         }
 
         if (action.enterState != null) {
@@ -95,6 +100,8 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
         if (action.newLine) {
             ++lineNumber;
         }
+
+        startIndex = endIndex;
 
         return lexem;
     }
