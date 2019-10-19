@@ -26,7 +26,7 @@ public class ENfa {
     /**
      * Character used for epsilon transitions.
      */
-    public static final char EPSILON = '$';
+    public static final char EPSILON = 'ɛ';
 
     private String name;
 
@@ -396,25 +396,6 @@ public class ENfa {
      */
     public boolean isStuck() {
         return currentActiveStates.isEmpty();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(acceptableStates, allStates, currentActiveStates, name, startingState, transitions);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof ENfa))
-            return false;
-        ENfa other = (ENfa) obj;
-        return Objects.equals(acceptableStates, other.acceptableStates) && Objects.equals(allStates, other.allStates)
-                && Objects.equals(currentActiveStates, other.currentActiveStates) && Objects.equals(name, other.name)
-                && Objects.equals(startingState, other.startingState) && Objects.equals(transitions, other.transitions);
     }
 
     /**
