@@ -13,7 +13,7 @@ import java.util.Set;
 
 /**
  * This class models an epsilon non-deterministic finite automata. <br>
- * <strong> State </strong> of the automata is type of java.lang.String. <br>
+ * <strong> State </strong> of the automata is a java.lang.String alias. <br>
  * <strong> Trigger </strong> of the automata is a character which triggers the transition to the next state. <br>
  * <strong> Epsilon trigger </strong> of the automata is represented by the '$' character. <br>
  * <strong> ENfa is stuck </strong> if ENfa is not in any state. ENfa gets stuck if it gets triggered by a
@@ -417,20 +417,24 @@ public class ENfa implements Serializable {
     }
 
     /**
-     * Returns all transitions for a single state
-     *
-     * @param state
-     * @return All transitions from state
-     */
+	 * Returns a {@link Map} view of the transitions contained in this ENfa. 
+	 * The map is backed by the ENfa, so changes to the ENfa are reflected in the map, and vice-versa. 
+	 * If the ENfa is modified while an iteration over the map is in progress (except through the iterator's 
+	 * own remove operation), the results of the iteration are undefined. The map supports element removal, 
+	 * which removes the corresponding transition from the ENfa.
+	 *
+	 * @param state state for which the transition map is returned
+	 * @return all transitions from state
+	 */
     public Map<Character, Set<String>> getTransitionsForState(String state) {
         return transitions.get(state);
     }
 
     /**
-     * Returns the string representation of all states and transitions, respectively
+     * Returns the string representation of all states and transitions, respectively.
      * One state or transition per line
      *
-     * @return String representing all states and transitions of the automata
+     * @return {@link String} representing all states and transitions of the automata
      */
     public String architectureToString() {
         StringBuilder sb = new StringBuilder();
@@ -447,12 +451,12 @@ public class ENfa implements Serializable {
         sb.append("Starting:\n" + startingState + "\n");
 
         sb.append("Transitions:\n");
-        for (String stateKey : transitions.keySet()) {
-            Map<Character, Set<String>> stateTransitions = transitions.get(stateKey);
-            for (Character triggerKey : stateTransitions.keySet()) {
-                Set<String> nextStates = stateTransitions.get(triggerKey);
+        for (String stateFrom : transitions.keySet()) {
+            Map<Character, Set<String>> stateTransitions = transitions.get(stateFrom);
+            for (Character trigger : stateTransitions.keySet()) {
+                Set<String> nextStates = stateTransitions.get(trigger);
                 for (String next : nextStates) {
-                    sb.append(stateKey + " " + triggerKey + " " + next + "\n");
+                    sb.append(stateFrom + " " + trigger + " " + next + "\n");
                 }
             }
         }
@@ -460,8 +464,8 @@ public class ENfa implements Serializable {
     }
 
     /**
-     * Returns the string representation of the automata: all states, all transitions and current states, respectively
-     * One state or transition per line
+     * Returns the string representation of the automata: all states, all transitions 
+     * and current states, respectively. One state or transition per line
      *
      * @return String representing the automata along with its current states
      */
