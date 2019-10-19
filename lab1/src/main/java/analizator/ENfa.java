@@ -13,7 +13,7 @@ import java.util.Set;
 
 /**
  * This class models an epsilon non-deterministic finite automata. <br>
- * <strong> State </strong> of the automata is an java.lang.String. <br>
+ * <strong> State </strong> of the automata is type of java.lang.String. <br>
  * <strong> Trigger </strong> of the automata is a character which triggers the transition to the next state. <br>
  * <strong> Epsilon trigger </strong> of the automata is represented by the '$' character. <br>
  * <strong> ENfa is stuck </strong> if ENfa is not in any state. ENfa gets stuck if it gets triggered by a
@@ -130,6 +130,10 @@ public class ENfa implements Serializable {
         if (acceptable) acceptableStates.add(name);
     }
 
+    public void addState(String name) {
+        this.addState(name, false);
+    }
+
     /**
      * Removes state with the given name if it exists and resets the ENfa. Does nothing otherwise.
      *
@@ -203,6 +207,14 @@ public class ENfa implements Serializable {
         nextStates.add(stateTo);
 
         performEpsilonTransitions();
+    }
+
+    public void addEpsilonTransition(String stateFrom, String stateTo) {
+        addTransition(stateFrom, EPSILON, stateTo);
+    }
+
+    public Map<String, Map<Character, Set<String>>> getAllTransitions() {
+        return transitions;
     }
 
     /**
@@ -421,22 +433,30 @@ public class ENfa implements Serializable {
      * @return String representing all states and transitions of the automata
      */
     public String architectureToString() {
-        String s = "";
-        s += "States:\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append("States:\n");
         for (String state : allStates) {
-            s += state + " " + acceptableStates.contains(state) + "\n";
+            sb.append(state + "\n");
         }
-        s += "Transitions:\n";
+
+        sb.append("Acceptable:\n");
+        for (String state : acceptableStates) {
+            sb.append(state + "\n");
+        }
+
+        sb.append("Starting:\n" + startingState + "\n");
+
+        sb.append("Transitions:\n");
         for (String stateKey : transitions.keySet()) {
             Map<Character, Set<String>> stateTransitions = transitions.get(stateKey);
             for (Character triggerKey : stateTransitions.keySet()) {
                 Set<String> nextStates = stateTransitions.get(triggerKey);
                 for (String next : nextStates) {
-                    s += stateKey + " " + triggerKey + " " + next + "\n";
+                    sb.append(stateKey + " " + triggerKey + " " + next + "\n");
                 }
             }
         }
-        return s;
+        return sb.toString();
     }
 
     /**
@@ -447,12 +467,14 @@ public class ENfa implements Serializable {
      */
     @Override
     public String toString() {
-        String s = architectureToString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(name + "\n");
+        sb.append(architectureToString());
         Set<String> activeStates = getCurrentActiveStates();
-        s += "Active:\n";
+        sb.append("Active:\n");
         for (String state : activeStates) {
-            s += state + "\n";
+            sb.append(state + "\n");
         }
-        return s;
+        return sb.toString();
     }
 }
