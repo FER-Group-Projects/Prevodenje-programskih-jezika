@@ -207,6 +207,10 @@ public class ENfa {
         addTransition(stateFrom, EPSILON, stateTo);
     }
 
+    public Map<String, Map<Character, Set<String>>> getAllTransitions() {
+        return transitions;
+    }
+
     /**
      * Removes a transition from 'stateFrom' to 'stateTo' by 'trigger'
      *
