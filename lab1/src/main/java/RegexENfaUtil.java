@@ -34,11 +34,11 @@ public class RegexENfaUtil {
      * Split the expression into subexpression with respect to the choice/union operator
      * But those with depth 1(skip those inside parenthesis)
      *
-     * @param expression
-     * @param automata
-     * @return
+     * @param expression expression to be split
+     * @return List of all choices that form the original expression as an union of subexpression,
+     * empty if there is no choice/union operator
      */
-    private static List<String> findSubExpressions(String expression, ENfa automata) {
+    public static List<String> findSubExpressions(String expression) {
         List<String> choices = new ArrayList<>();
         int numParenthesis = 0;
         int lastIndex = 0;
@@ -53,7 +53,7 @@ public class RegexENfaUtil {
                 lastIndex = i + 1;//skip the choice/union operator
             }
         }
-        if (choices.size() > 1) {
+        if (choices.size() > 0) {
             choices.add(expression.substring(lastIndex));
         }
         return choices;
@@ -67,11 +67,11 @@ public class RegexENfaUtil {
      * @return StatePair which contains start and acceptable state of the final automata
      */
     private static StatePair translate(String expression, ENfa automata) {
-        List<String> choices = findSubExpressions(expression, automata);
+        List<String> choices = findSubExpressions(expression);
 
         String leftState = newState(automata);
         String rightState = newState(automata);
-        if (choices.size() > 1) { //there was at least one choice/union operator
+        if (choices.size() > 0) { //there was at least one choice/union operator
             for (int i = 0; i < choices.size(); i++) { //create union of all choices using epsilon transitions
                 StatePair temp = translate(choices.get(i), automata);
                 automata.addEpsilonTransition(leftState, temp.leftState);
