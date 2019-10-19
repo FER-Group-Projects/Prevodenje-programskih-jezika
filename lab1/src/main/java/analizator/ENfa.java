@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * This class models an epsilon non-deterministic finite automata. <br>
- * <strong> State </strong> of the automata is an java.lang.String. <br>
+ * <strong> State </strong> of the automata is type of java.lang.String. <br>
  * <strong> Trigger </strong> of the automata is a character which triggers the transition to the next state. <br>
  * <strong> Epsilon trigger </strong> of the automata is represented by the '$' character. <br>
  * <strong> ENfa is stuck </strong> if ENfa is not in any state. ENfa gets stuck if it gets triggered by a
@@ -434,22 +434,22 @@ public class ENfa {
      * @return String representing all states and transitions of the automata
      */
     public String architectureToString() {
-        String s = "";
-        s += "States:\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append("States:\n");
         for (String state : allStates) {
-            s += state + " " + acceptableStates.contains(state) + "\n";
+            sb.append(state + " " + acceptableStates.contains(state) + "\n");
         }
-        s += "Transitions:\n";
+        sb.append("Transitions:\n");
         for (String stateKey : transitions.keySet()) {
             Map<Character, Set<String>> stateTransitions = transitions.get(stateKey);
             for (Character triggerKey : stateTransitions.keySet()) {
                 Set<String> nextStates = stateTransitions.get(triggerKey);
                 for (String next : nextStates) {
-                    s += stateKey + " " + triggerKey + " " + next + "\n";
+                    sb.append(stateKey + " " + triggerKey + " " + next + "\n");
                 }
             }
         }
-        return s;
+        return sb.toString();
     }
 
     /**
@@ -460,12 +460,13 @@ public class ENfa {
      */
     @Override
     public String toString() {
-        String s = architectureToString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(architectureToString());
         Set<String> activeStates = getCurrentActiveStates();
-        s += "Active:\n";
+        sb.append("Active:\n");
         for (String state : activeStates) {
-            s += state + "\n";
+            sb.append(state + "\n");
         }
-        return s;
+        return sb.toString();
     }
 }
