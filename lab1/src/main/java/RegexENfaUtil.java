@@ -107,7 +107,7 @@ public class RegexENfaUtil {
                         //case 2a
                         a = newState(automata);
                         b = newState(automata);
-                        if (expression.charAt(i) == ENfa.EPSILON) {
+                        if (expression.charAt(i) == '$') {
                             automata.addEpsilonTransition(a, b);
                         } else {
                             automata.addTransition(a, expression.charAt(i), b);
