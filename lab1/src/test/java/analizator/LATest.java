@@ -135,7 +135,7 @@ public class LATest {
 	}
 
 	private ENfa matchSingleCharacter(char... charactersToMatch) {
-		ENfa enfa = new ENfa(charactersToMatch.toString(), "q0", false);
+		ENfa enfa = new ENfa(new String(charactersToMatch), "q0", false);
 
 		enfa.addState("q1", true);
 

@@ -26,7 +26,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
         this.inputProgram = Objects.requireNonNull(inputProgram, "Input program cannot be null.").toCharArray();
 
         this.startIndex = 0;
-        this.startIndex = 0;
+        this.endIndex = 0;
         this.lineNumber = 1;
     }
 
@@ -90,7 +90,6 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
 
         if (action.tokenType != null) {
             lexem = new Lexem(action.tokenType, lineNumber, new String(inputProgram, startIndex, endIndex - startIndex));
-            startIndex = endIndex;
         }
 
         if (action.enterState != null) {
