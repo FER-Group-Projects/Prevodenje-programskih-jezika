@@ -1,5 +1,6 @@
 package analizator;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,9 +22,14 @@ import java.util.Set;
  *
  * @author Matija
  */
-public class ENfa {
+public class ENfa implements Serializable {
 
-    /**
+	/**
+	 * Serial version for compatibility check between sender and receiver 
+	 */
+	private static final long serialVersionUID = 2869074298502776886L;
+
+	/**
      * Character used for epsilon transitions.
      */
     public static final char EPSILON = 'ɛ';
