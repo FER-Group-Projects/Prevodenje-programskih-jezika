@@ -190,7 +190,8 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
 
     // https://stackoverflow.com/a/5445161
     private static String readInputStreamIntoString(InputStream inputStream) {
-        try (Scanner scanner = new Scanner(inputStream).useDelimiter("\\A")) {
+        try (Scanner scanner = new Scanner(inputStream)) {
+        	scanner.useDelimiter("\\A");
             return scanner.hasNext() ? scanner.next() : "";
         }
     }

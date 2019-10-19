@@ -1,7 +1,6 @@
 import analizator.ENfa;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -66,14 +65,14 @@ public class RegexENfaUtilTest {
         assertEquals(testStartingState, startingState);
     }
 
-    private static Set toSet(String... strings) {
-        Set set = new HashSet();
+    private static Set<String> toSet(String... strings) {
+        Set<String> set = new HashSet<>();
         Collections.addAll(set, strings);
         return set;
     }
 
-    private static Map toMap(Character trigger, String... strings) {
-        Map map = new HashMap();
+    private static Map<Character, Set<String>> toMap(Character trigger, String... strings) {
+        Map<Character, Set<String>> map = new HashMap<>();
         map.put(trigger, toSet(strings));
         return map;
     }
