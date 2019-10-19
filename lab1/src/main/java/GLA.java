@@ -61,6 +61,58 @@ public class GLA {
         }
 
 
+        List<RegexDefName> regexDefNameList = new ArrayList<>();
+        for (String regex : regexes) {
+            int endOfRegDef = regex.indexOf("}");
+            regexDefNameList.add(new RegexDefName(regex.substring(0, endOfRegDef+1), regex.substring(endOfRegDef+2)));
+        }
+
+        //List<RegexDefName> regexListCopy = new ArrayList<>();
+        //regexListCopy.addAll(regexDefNameList);
+
+        int regListLen = regexDefNameList.size();
+        for (int i = 0; i < regListLen; i++) {
+            RegexDefName reg = regexDefNameList.get(i);
+            String regName = reg.getRegName();
+            String regDef = reg.getRegDef();
+
+            for (int j = i+1; j < regListLen; j++) {
+                RegexDefName regCmp = regexDefNameList.get(j);
+                String regCmpDef = regCmp.getRegDef();
+
+                if (regCmpDef.contains(regName)) {
+                    regCmpDef = regCmpDef.replace(regName, "(" + regDef + ")");
+                    regCmp.setRegDef(regCmpDef);
+                }
+            }
+        }
+
+        System.out.println("-----------------------------------------");
+        for (RegexDefName regexDefName : regexDefNameList) {
+            System.out.println(regexDefName);
+        }
+
+
+        System.out.println("-----------------------------------------");
+        for (LexRule lexRule : lexRules) {
+            String regTrans = lexRule.getRegexTransition();
+
+            for (RegexDefName regexDefName : regexDefNameList) {
+                String regNameToFind = regexDefName.getRegName();
+
+                if (regTrans.contains(regNameToFind)) {
+                    String regDefToReplaceWith = regexDefName.getRegDef();
+                    regTrans = regTrans.replace(regNameToFind, "(" + regDefToReplaceWith + ")");
+                }
+            }
+
+            lexRule.setRegexTransition(regTrans);
+            System.out.println(lexRule);
+        }
+
+
+
+
 
     }
 
@@ -76,6 +128,30 @@ public class GLA {
             this.actions = actions;
         }
 
+        public String getBeginState() {
+            return beginState;
+        }
+
+        public void setBeginState(String beginState) {
+            this.beginState = beginState;
+        }
+
+        public String getRegexTransition() {
+            return regexTransition;
+        }
+
+        public void setRegexTransition(String regexTransition) {
+            this.regexTransition = regexTransition;
+        }
+
+        public List<String> getActions() {
+            return actions;
+        }
+
+        public void setActions(List<String> actions) {
+            this.actions = actions;
+        }
+
         @Override
         public String toString() {
             return "LexRule{" +
@@ -86,5 +162,38 @@ public class GLA {
         }
     }
 
+    private static class RegexDefName {
+        private String regDef;
+        private String regName;
+
+        RegexDefName(String regName, String regDef) {
+            this.regName = regName;
+            this.regDef = regDef;
+        }
+
+        public String getRegDef() {
+            return regDef;
+        }
+
+        public void setRegDef(String regDef) {
+            this.regDef = regDef;
+        }
+
+        public String getRegName() {
+            return regName;
+        }
+
+        public void setRegName(String regName) {
+            this.regName = regName;
+        }
+
+        @Override
+        public String toString() {
+            return "RegexDefName{" +
+                    "regDef='" + regDef + '\'' +
+                    ", regName='" + regName + '\'' +
+                    '}';
+        }
+    }
 
 }
