@@ -1,5 +1,6 @@
 package analizator;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Map;
  * @author Matija
  *
  */
-public class LADescriptor {
+public class LADescriptor  {
 	
 	/**
 	 * Starting state of the LA

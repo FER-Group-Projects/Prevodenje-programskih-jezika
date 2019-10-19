@@ -3,9 +3,7 @@ import analizator.ENfa;
 import analizator.LADescriptor;
 import org.w3c.dom.stylesheets.LinkStyle;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,6 +127,15 @@ public class GLA {
         laDescriptor.enfaActionMap = new HashMap<>();
         fillUpLADescriptor(lexRules);
 
+        serializeObjectToFile();
+    }
+
+    private static void serializeObjectToFile() throws IOException{
+        FileOutputStream fileOutputStream = new FileOutputStream(".txt");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(laDescriptor);
+        objectOutputStream.flush();
+        objectOutputStream.close();
     }
 
     private static void fillUpLADescriptor(List<LexRule> lexRules) {
