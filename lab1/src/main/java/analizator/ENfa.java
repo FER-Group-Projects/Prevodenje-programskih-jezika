@@ -445,10 +445,16 @@ public class ENfa {
         StringBuilder sb = new StringBuilder();
         sb.append("States:\n");
         for (String state : allStates) {
-            sb.append(state + " " + acceptableStates.contains(state) + "\n");
+            sb.append(state + "\n");
+        }
+
+        sb.append("Acceptable:\n");
+        for (String state : acceptableStates) {
+            sb.append(state + "\n");
         }
 
         sb.append("Starting:\n" + startingState + "\n");
+
         sb.append("Transitions:\n");
         for (String stateKey : transitions.keySet()) {
             Map<Character, Set<String>> stateTransitions = transitions.get(stateKey);
