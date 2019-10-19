@@ -3,9 +3,6 @@ import analizator.ENfa;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author tblazevic
- */
 public class RegexENfaUtil {
 
     //enumerate each state with a unique id during the construction process
