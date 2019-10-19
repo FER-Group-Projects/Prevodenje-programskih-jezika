@@ -54,13 +54,13 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "5\n" +
+                "1 " + ENfa.EPSILON + " 5\n" +
                 "3 x 4\n" +
-                "4" + ENfa.EPSILON + "3\n" +
-                "4" + ENfa.EPSILON + "6\n" +
-                "5" + ENfa.EPSILON + "3\n" +
-                "5" + ENfa.EPSILON + "6\n" +
-                "6" + ENfa.EPSILON + "2\n" +
+                "4 " + ENfa.EPSILON + " 3\n" +
+                "4 " + ENfa.EPSILON + " 6\n" +
+                "5 " + ENfa.EPSILON + " 3\n" +
+                "5 " + ENfa.EPSILON + " 6\n" +
+                "6 " + ENfa.EPSILON + " 2\n" +
                 "Active:\n" +
                 "1\n" +
                 "2\n" +
@@ -81,9 +81,9 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "3\n" +
+                "1 " + ENfa.EPSILON + " 3\n" +
                 "3 a 4\n" +
-                "4" + ENfa.EPSILON + "2\n" +
+                "4 " + ENfa.EPSILON + " 2\n" +
                 "Active:\n" +
                 "1\n" +
                 "3\n");
@@ -103,11 +103,11 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "3\n" +
+                "1 " + ENfa.EPSILON + " 3\n" +
                 "3 a 4\n" +
-                "4" + ENfa.EPSILON + "5\n" +
+                "4 " + ENfa.EPSILON + " 5\n" +
                 "5 b 6\n" +
-                "6" + ENfa.EPSILON + "n2\n" +
+                "6 " + ENfa.EPSILON + " 2\n" +
                 "Active:\n" +
                 "1\n" +
                 "3\n");
@@ -131,16 +131,16 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "3\n" +
-                "1" + ENfa.EPSILON + "7\n" +
-                "3" + ENfa.EPSILON + "5\n" +
-                "4" + ENfa.EPSILON + "2\n" +
+                "1 " + ENfa.EPSILON + " 3\n" +
+                "1 " + ENfa.EPSILON + " 7\n" +
+                "3 " + ENfa.EPSILON + " 5\n" +
+                "4 " + ENfa.EPSILON + " 2\n" +
                 "5 a 6\n" +
-                "6" + ENfa.EPSILON + "4\n" +
-                "7" + ENfa.EPSILON + "9\n" +
-                "8" + ENfa.EPSILON + "2\n" +
+                "6 " + ENfa.EPSILON + " 4\n" +
+                "7 " + ENfa.EPSILON + " 9\n" +
+                "8 " + ENfa.EPSILON + " 2\n" +
                 "9 b 10\n" +
-                "10" + ENfa.EPSILON + "8\n" +
+                "10 " + ENfa.EPSILON + " 8\n" +
                 "Active:\n" +
                 "1\n" +
                 "3\n" +
@@ -170,17 +170,17 @@ public class RegexENfaUtilTest {
                 "1\n" +
                 "Transitions:\n" +
                 "11 b 12\n" +
-                "12" + ENfa.EPSILON + "10\n" +
-                "1" + ENfa.EPSILON + "3\n" +
-                "3" + ENfa.EPSILON + "5\n" +
-                "3" + ENfa.EPSILON + "9\n" +
-                "4" + ENfa.EPSILON + "2\n" +
-                "5" + ENfa.EPSILON + "7\n" +
-                "6" + ENfa.EPSILON + "4\n" +
+                "12 " + ENfa.EPSILON + " 10\n" +
+                "1 " + ENfa.EPSILON + " 3\n" +
+                "3 " + ENfa.EPSILON + " 5\n" +
+                "3 " + ENfa.EPSILON + " 9\n" +
+                "4 " + ENfa.EPSILON + " 2\n" +
+                "5 " + ENfa.EPSILON + " 7\n" +
+                "6 " + ENfa.EPSILON + " 4\n" +
                 "7 a 8\n" +
-                "8" + ENfa.EPSILON + "6\n" +
-                "9" + ENfa.EPSILON + "11\n" +
-                "10" + ENfa.EPSILON + "4\n" +
+                "8 " + ENfa.EPSILON + " 6\n" +
+                "9 " + ENfa.EPSILON + " 11\n" +
+                "10 " + ENfa.EPSILON + " 4\n" +
                 "Active:\n" +
                 "11\n" +
                 "1\n" +
@@ -206,15 +206,15 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "5\n" +
+                "1 " + ENfa.EPSILON + " 5\n" +
                 "3 a 4\n" +
-                "4" + ENfa.EPSILON + "3\n" +
-                "4" + ENfa.EPSILON + "6\n" +
-                "5" + ENfa.EPSILON + "3\n" +
-                "5" + ENfa.EPSILON + "6\n" +
-                "6" + ENfa.EPSILON + "7\n" +
+                "4 " + ENfa.EPSILON + " 3\n" +
+                "4 " + ENfa.EPSILON + " 6\n" +
+                "5 " + ENfa.EPSILON + " 3\n" +
+                "5 " + ENfa.EPSILON + " 6\n" +
+                "6 " + ENfa.EPSILON + " 7\n" +
                 "7 b 8\n" +
-                "8" + ENfa.EPSILON + "2\n" +
+                "8 " + ENfa.EPSILON + " 2\n" +
                 "Active:\n" +
                 "1\n" +
                 "3\n" +
@@ -241,19 +241,19 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "5\n" +
+                "1 " + ENfa.EPSILON + " 5\n" +
                 "3 a 4\n" +
-                "4" + ENfa.EPSILON + "3\n" +
-                "4" + ENfa.EPSILON + "6\n" +
-                "5" + ENfa.EPSILON + "3\n" +
-                "5" + ENfa.EPSILON + "6\n" +
-                "6" + ENfa.EPSILON + "9\n" +
+                "4 " + ENfa.EPSILON + " 3\n" +
+                "4 " + ENfa.EPSILON + " 6\n" +
+                "5 " + ENfa.EPSILON + " 3\n" +
+                "5 " + ENfa.EPSILON + " 6\n" +
+                "6 " + ENfa.EPSILON + " 9\n" +
                 "7 b 8\n" +
-                "8" + ENfa.EPSILON + "7\n" +
-                "8" + ENfa.EPSILON + "10\n" +
-                "9" + ENfa.EPSILON + "7\n" +
-                "9" + ENfa.EPSILON + "10\n" +
-                "10" + ENfa.EPSILON + "2\n" +
+                "8 " + ENfa.EPSILON + " 7\n" +
+                "8 " + ENfa.EPSILON + " 10\n" +
+                "9 " + ENfa.EPSILON + " 7\n" +
+                "9 " + ENfa.EPSILON + " 10\n" +
+                "10 " + ENfa.EPSILON + " 2\n" +
                 "Active:\n" +
                 "1\n" +
                 "2\n" +
@@ -288,23 +288,23 @@ public class RegexENfaUtilTest {
                 "1\n" +
                 "Transitions:\n" +
                 "11 b 12\n" +
-                "12" + ENfa.EPSILON + "11\n" +
-                "12" + ENfa.EPSILON + "14\n" +
-                "13" + ENfa.EPSILON + "11\n" +
-                "13" + ENfa.EPSILON + "14\n" +
-                "14" + ENfa.EPSILON + "10\n" +
-                "1" + ENfa.EPSILON + "3\n" +
-                "1" + ENfa.EPSILON + "9\n" +
-                "3" + ENfa.EPSILON + "7\n" +
-                "4" + ENfa.EPSILON + "2\n" +
+                "12 " + ENfa.EPSILON + " 11\n" +
+                "12 " + ENfa.EPSILON + " 14\n" +
+                "13 " + ENfa.EPSILON + " 11\n" +
+                "13 " + ENfa.EPSILON + " 14\n" +
+                "14 " + ENfa.EPSILON + " 10\n" +
+                "1 " + ENfa.EPSILON + " 3\n" +
+                "1 " + ENfa.EPSILON + " 9\n" +
+                "3 " + ENfa.EPSILON + " 7\n" +
+                "4 " + ENfa.EPSILON + " 2\n" +
                 "5 a 6\n" +
-                "6" + ENfa.EPSILON + "5\n" +
-                "6" + ENfa.EPSILON + "8\n" +
-                "7" + ENfa.EPSILON + "5\n" +
-                "7" + ENfa.EPSILON + "8\n" +
-                "8" + ENfa.EPSILON + "4\n" +
-                "9" + ENfa.EPSILON + "13\n" +
-                "10" + ENfa.EPSILON + "2\n" +
+                "6 " + ENfa.EPSILON + " 5\n" +
+                "6 " + ENfa.EPSILON + " 8\n" +
+                "7 " + ENfa.EPSILON + " 5\n" +
+                "7 " + ENfa.EPSILON + " 8\n" +
+                "8 " + ENfa.EPSILON + " 4\n" +
+                "9 " + ENfa.EPSILON + " 13\n" +
+                "10 " + ENfa.EPSILON + " 2\n" +
                 "Active:\n" +
                 "11\n" +
                 "1\n" +
@@ -346,25 +346,25 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "11" + ENfa.EPSILON + "13\n" +
-                "12" + ENfa.EPSILON + "6\n" +
+                "11 " + ENfa.EPSILON + " 13\n" +
+                "12 " + ENfa.EPSILON + " 6\n" +
                 "13 b 14\n" +
-                "14" + ENfa.EPSILON + "12\n" +
-                "15" + ENfa.EPSILON + "17\n" +
-                "16" + ENfa.EPSILON + "2\n" +
+                "14 " + ENfa.EPSILON + " 12\n" +
+                "15 " + ENfa.EPSILON + " 17\n" +
+                "16 " + ENfa.EPSILON + " 2\n" +
                 "17 c 18\n" +
-                "18" + ENfa.EPSILON + "16\n" +
-                "1" + ENfa.EPSILON + "3\n" +
-                "1" + ENfa.EPSILON + "15\n" +
-                "3" + ENfa.EPSILON + "5\n" +
-                "4" + ENfa.EPSILON + "2\n" +
-                "5" + ENfa.EPSILON + "11\n" +
-                "5" + ENfa.EPSILON + "7\n" +
-                "6" + ENfa.EPSILON + "4\n" +
-                "7" + ENfa.EPSILON + "9\n" +
-                "8" + ENfa.EPSILON + "6\n" +
+                "18 " + ENfa.EPSILON + " 16\n" +
+                "1 " + ENfa.EPSILON + " 3\n" +
+                "1 " + ENfa.EPSILON + " 15\n" +
+                "3 " + ENfa.EPSILON + " 5\n" +
+                "4 " + ENfa.EPSILON + " 2\n" +
+                "5 " + ENfa.EPSILON + " 11\n" +
+                "5 " + ENfa.EPSILON + " 7\n" +
+                "6 " + ENfa.EPSILON + " 4\n" +
+                "7 " + ENfa.EPSILON + " 9\n" +
+                "8 " + ENfa.EPSILON + " 6\n" +
                 "9 a 10\n" +
-                "10" + ENfa.EPSILON + "8\n" +
+                "10 " + ENfa.EPSILON + " 8\n" +
                 "Active:\n" +
                 "11\n" +
                 "1\n" +
@@ -387,7 +387,7 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "2\n" +
+                "1 " + ENfa.EPSILON + " 2\n" +
                 "Active:\n" +
                 "1\n" +
                 "2\n");
@@ -411,16 +411,16 @@ public class RegexENfaUtilTest {
                 "Starting:\n" +
                 "1\n" +
                 "Transitions:\n" +
-                "1" + ENfa.EPSILON + "3\n" +
-                "1" + ENfa.EPSILON + "7\n" +
-                "3" + ENfa.EPSILON + "5\n" +
-                "4" + ENfa.EPSILON + "2\n" +
+                "1 " + ENfa.EPSILON + " 3\n" +
+                "1 " + ENfa.EPSILON + " 7\n" +
+                "3 " + ENfa.EPSILON + " 5\n" +
+                "4 " + ENfa.EPSILON + " 2\n" +
                 "5 a 6\n" +
-                "6" + ENfa.EPSILON + "4\n" +
-                "7" + ENfa.EPSILON + "9\n" +
-                "8" + ENfa.EPSILON + "2\n" +
-                "9" + ENfa.EPSILON + "10\n" +
-                "10" + ENfa.EPSILON + "8\n" +
+                "6 " + ENfa.EPSILON + " 4\n" +
+                "7 " + ENfa.EPSILON + " 9\n" +
+                "8 " + ENfa.EPSILON + " 2\n" +
+                "9 " + ENfa.EPSILON + " 10\n" +
+                "10 " + ENfa.EPSILON + " 8\n" +
                 "Active:\n" +
                 "1\n" +
                 "2\n" +
