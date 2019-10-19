@@ -447,6 +447,8 @@ public class ENfa {
         for (String state : allStates) {
             sb.append(state + " " + acceptableStates.contains(state) + "\n");
         }
+
+        sb.append("Starting:\n" + startingState + "\n");
         sb.append("Transitions:\n");
         for (String stateKey : transitions.keySet()) {
             Map<Character, Set<String>> stateTransitions = transitions.get(stateKey);
@@ -469,6 +471,7 @@ public class ENfa {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append(name + "\n");
         sb.append(architectureToString());
         Set<String> activeStates = getCurrentActiveStates();
         sb.append("Active:\n");
