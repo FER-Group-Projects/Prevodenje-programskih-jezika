@@ -124,6 +124,10 @@ public class ENfa {
         if (acceptable) acceptableStates.add(name);
     }
 
+    public void addState(String name) {
+        this.addState(name, false);
+    }
+
     /**
      * Removes state with the given name if it exists and resets the ENfa. Does nothing otherwise.
      *
@@ -197,6 +201,10 @@ public class ENfa {
         nextStates.add(stateTo);
 
         performEpsilonTransitions();
+    }
+
+    public void addEpsilonTransition(String stateFrom, String stateTo) {
+        addTransition(stateFrom, EPSILON, stateTo);
     }
 
     /**
