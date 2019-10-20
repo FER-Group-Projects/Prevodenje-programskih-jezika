@@ -1,6 +1,7 @@
 import analizator.ENfa;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -368,5 +369,29 @@ public class RegexENfaUtilTest {
         getAutomataArchitecture();
 
         checkAutomata();
+    }
+
+    @Test
+    @Ignore
+    public void testConstructBug1() {
+        automata = RegexENfaUtil.regexToENKA("brojka", "(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*|0x((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)*");
+
+        String validNumber = "0x12";
+
+        for (char character : validNumber.toCharArray()) automata.step(character);
+
+        assertTrue(automata.isInAcceptableState());
+    }
+
+    @Test
+    @Ignore
+    public void testConstructBug2() {
+        automata = RegexENfaUtil.regexToENKA("brojka", "(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*|0x((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)*");
+
+        String validNumber = "076";
+
+        for (char character : validNumber.toCharArray()) automata.step(character);
+
+        assertTrue(automata.isInAcceptableState());
     }
 }

@@ -115,15 +115,18 @@ public class RegexENfaUtil {
                     } else {
                         //case 2b
                         int j = i + 1; //index of the respective ')'
-                        while (expression.charAt(j) != ')') {
-                            j++;
-
-                            if (j == expression.length()) { //reached end of expression and no matching ')' was found
-                                j--;                        //assume there is an implicit ')' at the end
-                                break;
+                        int numberOfParenthesis = 1;
+                        while (numberOfParenthesis != 0) {
+                            if (expression.charAt(j) == ')' && isOperator(expression, j)) {
+                                --numberOfParenthesis;
                             }
+                            else if (expression.charAt(j) == '(' && isOperator(expression, j)) {
+                                ++numberOfParenthesis;
+                            }
+
+                            j++;
                         }
-                        StatePair temp = translate(expression.substring(i + 1, j), automata);
+                        StatePair temp = translate(expression.substring(i + 1, j - 1), automata);
                         a = temp.leftState;
                         b = temp.rightState;
                         i = j;
