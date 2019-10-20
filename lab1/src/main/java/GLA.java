@@ -2,7 +2,6 @@ import analizator.Action;
 import analizator.ENfa;
 import analizator.LA;
 import analizator.LADescriptor;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.io.*;
 import java.util.ArrayList;
