@@ -81,6 +81,7 @@ public class RegexENfaUtil {
                 String a = "", b = "";
                 if (isPrefixed) {
                     //case 1
+                    //current character is prefixed/escaped and is not an operator
                     isPrefixed = false;
                     char trigger;
                     if (expression.charAt(i) == 't') {
@@ -98,12 +99,13 @@ public class RegexENfaUtil {
                     automata.addTransition(a, trigger, b);
                 } else {
                     //case 2
+                    //next character will be prefixed/escaped
                     if (expression.charAt(i) == '\\') {
                         isPrefixed = true;
                         continue;
                     }
 
-                    if (expression.charAt(i) != '(') {
+                    if (expression.charAt(i) != '(' && expression.charAt(i) != '|') {
                         //case 2a
                         a = newState(automata);
                         b = newState(automata);
@@ -114,22 +116,22 @@ public class RegexENfaUtil {
                         }
                     } else {
                         //case 2b
-                        int j = i + 1; //index of the respective ')'
+                        int j = i + 1; //find the index of the respective ')'
                         int numberOfParenthesis = 1;
                         while (numberOfParenthesis != 0) {
                             if (expression.charAt(j) == ')' && isOperator(expression, j)) {
                                 --numberOfParenthesis;
-                            }
-                            else if (expression.charAt(j) == '(' && isOperator(expression, j)) {
+                            } else if (expression.charAt(j) == '(' && isOperator(expression, j)) {
                                 ++numberOfParenthesis;
                             }
 
                             j++;
                         }
+                        //index of '(' found
                         StatePair temp = translate(expression.substring(i + 1, j - 1), automata);
                         a = temp.leftState;
                         b = temp.rightState;
-                        i = j;
+                        i = j - 1;
                     }
                 }
 

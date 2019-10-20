@@ -59,10 +59,10 @@ public class RegexENfaUtilTest {
     }
 
     private void checkAutomata() {
-        assertEquals(states, testStates);
-        assertEquals(acceptableStates, testAcceptableStates);
-        assertEquals(activeStates, testActiveStates);
-        assertEquals(transitions, testTransitions);
+        assertEquals(testStates, states);
+        assertEquals(testAcceptableStates, acceptableStates);
+        assertEquals(testActiveStates, activeStates);
+        assertEquals(testTransitions, transitions);
         assertEquals(testStartingState, startingState);
     }
 
@@ -372,7 +372,6 @@ public class RegexENfaUtilTest {
     }
 
     @Test
-    @Ignore
     public void testConstructBug1() {
         automata = RegexENfaUtil.regexToENKA("brojka", "(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*|0x((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)*");
 
@@ -384,7 +383,6 @@ public class RegexENfaUtilTest {
     }
 
     @Test
-    @Ignore
     public void testConstructBug2() {
         automata = RegexENfaUtil.regexToENKA("brojka", "(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)*|0x((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)((0|1|2|3|4|5|6|7|8|9)|a|b|c|d|e|f|A|B|C|D|E|F)*");
 
