@@ -119,7 +119,7 @@ public class RegexENfaUtil {
                             j++;
 
                             if (j == expression.length()) { //reached end of expression and no matching ')' was found
-                                j--;                        //assume there is an implicit ')' at the end 
+                                j--;                        //assume there is an implicit ')' at the end
                                 break;
                             }
                         }
