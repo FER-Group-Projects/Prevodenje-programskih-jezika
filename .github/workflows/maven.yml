@@ -16,3 +16,6 @@ jobs:
     - name: Build with Maven
       run: mvn package --file pom.xml
       working-directory: ./lab1
+    - name: Run test examples
+      run: cd lab1 && bash evaluate.sh
+      shell: bash
