@@ -19,6 +19,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
     // End index is exclusive.
     private int endIndex;
     private int lineNumber;
+    private int indexInCurrentLine;
 
     public LA(String startingState, Map<String, Map<ENfa, Action>> enfaActionMap, String inputProgram) {
         this.currentState = Objects.requireNonNull(startingState, "Starting state cannot be null.");
@@ -28,6 +29,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
         this.startIndex = 0;
         this.endIndex = 0;
         this.lineNumber = 1;
+        this.indexInCurrentLine = 0;
     }
 
     private Lexem extractLexem() {
@@ -64,17 +66,17 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
             }
 
             ++endIndex;
+            indexInCurrentLine++;
         }
 
         if (lastSatisfiedEnfa == null) {
-            System.err.println("Could not analyze inputProgram[" + startIndex + "] = '" + inputProgram[startIndex] + "'. Dropping it.");
+            System.err.println("Could not analyze inputProgram[char: " + indexInCurrentLine + ", in line:" + lineNumber + "] = '" + inputProgram[startIndex] + "'. Dropping it.");
             ++startIndex;
 
             endIndex = startIndex;
 
             return null;
-        }
-        else {
+        } else {
             return performAction(transitions.get(lastSatisfiedEnfa));
         }
     }
@@ -98,6 +100,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
 
         if (action.newLine) {
             ++lineNumber;
+            indexInCurrentLine = 0;
         }
 
         startIndex = endIndex;
@@ -191,7 +194,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
     // https://stackoverflow.com/a/5445161
     private static String readInputStreamIntoString(InputStream inputStream) {
         try (Scanner scanner = new Scanner(inputStream)) {
-        	scanner.useDelimiter("\\A");
+            scanner.useDelimiter("\\A");
             return scanner.hasNext() ? scanner.next() : "";
         }
     }
