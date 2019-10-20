@@ -8,6 +8,7 @@ import java.util.Map;
  * @author Matija
  *
  */
+
 public class LADescriptor implements Serializable {
 	
 	/**
