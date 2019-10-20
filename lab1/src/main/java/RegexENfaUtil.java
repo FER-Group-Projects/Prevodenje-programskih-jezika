@@ -105,7 +105,7 @@ public class RegexENfaUtil {
                         continue;
                     }
 
-                    if (expression.charAt(i) != '(' && expression.charAt(i) != '|') {
+                    if (expression.charAt(i) != '(') {
                         //case 2a
                         a = newState(automata);
                         b = newState(automata);
