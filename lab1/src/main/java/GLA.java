@@ -57,7 +57,10 @@ public class GLA {
 
             lexRules.add(new LexRule(beginState, regexTransition, actions, ordNum));
             ordNum++;
+
             input = reader.readLine();
+
+            if (input == null) break;
         }
 
         reader.close();
