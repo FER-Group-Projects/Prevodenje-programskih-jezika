@@ -74,6 +74,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
             ++startIndex;
 
             endIndex = startIndex;
+            indexInCurrentLine = startIndex;
 
             return null;
         } else {
