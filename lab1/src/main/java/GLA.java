@@ -1,5 +1,6 @@
 import analizator.Action;
 import analizator.ENfa;
+import analizator.LA;
 import analizator.LADescriptor;
 import org.w3c.dom.stylesheets.LinkStyle;
 
@@ -63,7 +64,7 @@ public class GLA {
         reader.close();
 
 
-
+        /*
         for (String regex : regexes) {
             System.out.println(regex);
         }
@@ -71,6 +72,7 @@ public class GLA {
         for (LexRule lexRule : lexRules) {
             System.out.println(lexRule);
         }
+        */
 
 
         List<RegexDefName> regexDefNameList = new ArrayList<>();
@@ -95,12 +97,12 @@ public class GLA {
                 }
             }
         }
-
+/*
         System.out.println("----------------------------------------");
         for (RegexDefName regexDefName : regexDefNameList) {
             System.out.println(regexDefName);
         }
-
+*/
 
         System.out.println("-----------------------------------------");
         for (LexRule lexRule : lexRules) {
@@ -116,13 +118,13 @@ public class GLA {
             }
 
             lexRule.setRegexTransition(regTrans);
-            System.out.println(lexRule);
+            //System.out.println(lexRule);
         }
-
+/*
         System.out.println("***********");
         System.out.println("laDescriptor.startingState = <" + laDescriptor.startingState + ">");
         System.out.println("***********");
-
+*/
 
         laDescriptor.enfaActionMap = new HashMap<>();
         fillUpLADescriptor(lexRules);
@@ -131,7 +133,7 @@ public class GLA {
     }
 
     private static void serializeObjectToFile() throws IOException{
-        FileOutputStream fileOutputStream = new FileOutputStream(".txt");
+        FileOutputStream fileOutputStream = new FileOutputStream(LA.PATH_TO_DESCRIPTOR);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(laDescriptor);
         objectOutputStream.flush();
