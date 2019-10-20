@@ -117,6 +117,11 @@ public class RegexENfaUtil {
                         int j = i + 1; //index of the respective ')'
                         while (expression.charAt(j) != ')') {
                             j++;
+
+                            if (j == expression.length()) { //reached end of expression and no matching ')' was found
+                                j--;                        //assume there is an implicit ')' at the end 
+                                break;
+                            }
                         }
                         StatePair temp = translate(expression.substring(i + 1, j), automata);
                         a = temp.leftState;
