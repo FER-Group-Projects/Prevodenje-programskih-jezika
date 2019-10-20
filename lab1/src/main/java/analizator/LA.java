@@ -71,7 +71,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
         }
 
         if (lastSatisfiedEnfa == null) {
-            System.err.println("Could not analyze inputProgram[char " + lastIndexInCurrentLine + " in line:" + lineNumber + "] = '" + inputProgram[startIndex] + "'. Dropping it.");
+            System.err.println("Could not analyze inputProgram[line " + lineNumber + ", character at index " + lastIndexInCurrentLine + "] = '" + inputProgram[startIndex] + "'. Dropping it.");
             ++startIndex;
 
             endIndex = startIndex;
