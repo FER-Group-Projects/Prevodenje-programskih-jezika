@@ -40,6 +40,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
 
         ENfa lastSatisfiedEnfa = null;
         int lastSatisfiedIndex = startIndex;
+        int lastIndexInCurrentLine = indexInCurrentLine;
 
         while (true) {
             if (endIndex == inputProgram.length) {
@@ -69,9 +70,8 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
             indexInCurrentLine++;
         }
 
-        int lastIndexInCurrentLine = indexInCurrentLine;
         if (lastSatisfiedEnfa == null) {
-            System.err.println("Could not analyze inputProgram[char " + indexInCurrentLine + " in line:" + lineNumber + "] = '" + inputProgram[startIndex] + "'. Dropping it.");
+            System.err.println("Could not analyze inputProgram[char " + lastIndexInCurrentLine + " in line:" + lineNumber + "] = '" + inputProgram[startIndex] + "'. Dropping it.");
             ++startIndex;
 
             endIndex = startIndex;
