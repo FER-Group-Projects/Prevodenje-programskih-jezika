@@ -1,5 +1,6 @@
 package analizator;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 /**
  * This class models an epsilon non-deterministic finite automata. <br>
- * <strong> State </strong> of the automata is an java.lang.String. <br>
+ * <strong> State </strong> of the automata is a java.lang.String alias. <br>
  * <strong> Trigger </strong> of the automata is a character which triggers the transition to the next state. <br>
  * <strong> Epsilon trigger </strong> of the automata is represented by the '$' character. <br>
  * <strong> ENfa is stuck </strong> if ENfa is not in any state. ENfa gets stuck if it gets triggered by a
@@ -21,12 +22,17 @@ import java.util.Set;
  *
  * @author Matija
  */
-public class ENfa {
+public class ENfa implements Serializable {
 
-    /**
+	/**
+	 * Serial version for compatibility check between sender and receiver 
+	 */
+	private static final long serialVersionUID = 2869074298502776886L;
+
+	/**
      * Character used for epsilon transitions.
      */
-    public static final char EPSILON = '$';
+    public static final char EPSILON = 'ɛ';
 
     private String name;
 
@@ -124,6 +130,10 @@ public class ENfa {
         if (acceptable) acceptableStates.add(name);
     }
 
+    public void addState(String name) {
+        this.addState(name, false);
+    }
+
     /**
      * Removes state with the given name if it exists and resets the ENfa. Does nothing otherwise.
      *
@@ -197,6 +207,14 @@ public class ENfa {
         nextStates.add(stateTo);
 
         performEpsilonTransitions();
+    }
+
+    public void addEpsilonTransition(String stateFrom, String stateTo) {
+        addTransition(stateFrom, EPSILON, stateTo);
+    }
+
+    public Map<String, Map<Character, Set<String>>> getAllTransitions() {
+        return transitions;
     }
 
     /**
@@ -398,74 +416,69 @@ public class ENfa {
         return currentActiveStates.isEmpty();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(acceptableStates, allStates, currentActiveStates, name, startingState, transitions);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof ENfa))
-            return false;
-        ENfa other = (ENfa) obj;
-        return Objects.equals(acceptableStates, other.acceptableStates) && Objects.equals(allStates, other.allStates)
-                && Objects.equals(currentActiveStates, other.currentActiveStates) && Objects.equals(name, other.name)
-                && Objects.equals(startingState, other.startingState) && Objects.equals(transitions, other.transitions);
-    }
-
     /**
-     * Returns all transitions for a single state
-     *
-     * @param state
-     * @return All transitions from state
-     */
+	 * Returns a {@link Map} view of the transitions contained in this ENfa. 
+	 * The map is backed by the ENfa, so changes to the ENfa are reflected in the map, and vice-versa. 
+	 * If the ENfa is modified while an iteration over the map is in progress (except through the iterator's 
+	 * own remove operation), the results of the iteration are undefined. The map supports element removal, 
+	 * which removes the corresponding transition from the ENfa.
+	 *
+	 * @param state state for which the transition map is returned
+	 * @return all transitions from state
+	 */
     public Map<Character, Set<String>> getTransitionsForState(String state) {
         return transitions.get(state);
     }
 
     /**
-     * Returns the string representation of all states and transitions, respectively
+     * Returns the string representation of all states and transitions, respectively.
      * One state or transition per line
      *
-     * @return String representing all states and transitions of the automata
+     * @return {@link String} representing all states and transitions of the automata
      */
     public String architectureToString() {
-        String s = "";
-        s += "States:\n";
+        StringBuilder sb = new StringBuilder();
+        sb.append("States:\n");
         for (String state : allStates) {
-            s += state + " " + acceptableStates.contains(state) + "\n";
+            sb.append(state + "\n");
         }
-        s += "Transitions:\n";
-        for (String stateKey : transitions.keySet()) {
-            Map<Character, Set<String>> stateTransitions = transitions.get(stateKey);
-            for (Character triggerKey : stateTransitions.keySet()) {
-                Set<String> nextStates = stateTransitions.get(triggerKey);
+
+        sb.append("Acceptable:\n");
+        for (String state : acceptableStates) {
+            sb.append(state + "\n");
+        }
+
+        sb.append("Starting:\n" + startingState + "\n");
+
+        sb.append("Transitions:\n");
+        for (String stateFrom : transitions.keySet()) {
+            Map<Character, Set<String>> stateTransitions = transitions.get(stateFrom);
+            for (Character trigger : stateTransitions.keySet()) {
+                Set<String> nextStates = stateTransitions.get(trigger);
                 for (String next : nextStates) {
-                    s += stateKey + " " + triggerKey + " " + next + "\n";
+                    sb.append(stateFrom + " " + trigger + " " + next + "\n");
                 }
             }
         }
-        return s;
+        return sb.toString();
     }
 
     /**
-     * Returns the string representation of the automata: all states, all transitions and current states, respectively
-     * One state or transition per line
+     * Returns the string representation of the automata: all states, all transitions 
+     * and current states, respectively. One state or transition per line
      *
      * @return String representing the automata along with its current states
      */
     @Override
     public String toString() {
-        String s = architectureToString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(name + "\n");
+        sb.append(architectureToString());
         Set<String> activeStates = getCurrentActiveStates();
-        s += "Active:\n";
+        sb.append("Active:\n");
         for (String state : activeStates) {
-            s += state + "\n";
+            sb.append(state + "\n");
         }
-        return s;
+        return sb.toString();
     }
 }
