@@ -104,9 +104,10 @@ public class GLA {
         for (RegexDefName regexDefName : regexDefNameList) {
             System.out.println(regexDefName);
         }
-*/
+
 
         System.out.println("-----------------------------------------");
+        */
         for (LexRule lexRule : lexRules) {
             String regTrans = lexRule.getRegexTransition();
 
