@@ -1,8 +1,3 @@
-import analizator.Action;
-import analizator.ENfa;
-import analizator.LA;
-import analizator.LADescriptor;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,7 +131,7 @@ public class GLA {
     }
 
     private static void serializeObjectToFile() throws IOException{
-        FileOutputStream fileOutputStream = new FileOutputStream(LA.PATH_TO_DESCRIPTOR);
+        FileOutputStream fileOutputStream = new FileOutputStream("analizator/descriptor");
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(laDescriptor);
         objectOutputStream.flush();

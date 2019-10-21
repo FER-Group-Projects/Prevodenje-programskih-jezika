@@ -1,5 +1,3 @@
-package analizator;
-
 import java.util.Objects;
 
 public class Lexem {

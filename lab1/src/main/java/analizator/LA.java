@@ -1,5 +1,3 @@
-package analizator;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -163,7 +161,7 @@ public class LA implements Iterable<Lexem>, Iterator<Lexem> {
     }
 
     // Static methods
-    public static final String PATH_TO_DESCRIPTOR = "analizator/descriptor";
+    public static final String PATH_TO_DESCRIPTOR = "descriptor";
 
     public static void main(String[] args) {
         String inputProgram = readInputStreamIntoString(System.in);

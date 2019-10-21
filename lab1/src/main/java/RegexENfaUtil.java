@@ -1,5 +1,3 @@
-import analizator.ENfa;
-
 import java.util.ArrayList;
 import java.util.List;
 

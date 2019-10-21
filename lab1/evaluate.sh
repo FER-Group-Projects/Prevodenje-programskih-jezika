@@ -14,7 +14,7 @@ do
 
     echo " - running program through lexical analysis"
 
-    java -classpath $CLASSPATH analizator.LA < $TEST_EXAMPLES/$line/test.in > $TEST_EXAMPLES/$line/actual_output || exit 1
+    java -classpath $CLASSPATH LA < $TEST_EXAMPLES/$line/test.in > $TEST_EXAMPLES/$line/actual_output || exit 1
 
     echo " - comparing results"
 
