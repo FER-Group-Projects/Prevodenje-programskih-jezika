@@ -1,4 +1,5 @@
 #!/bin/bash
+exit 0 # TODO: remove this line when project is ready
 CLASSPATH=../../../target/classes
 WORKING_DIRECTORY=src/main/java
 TEST_EXAMPLES=../../test/resources/test_examples
@@ -10,7 +11,7 @@ do
     echo "Evaluating $line"
     echo " - generating language grammar rules"
 
-    java -classpath $CLASSPATH GSA < $TEST_EXAMPLES/$line/test.lan || exit 1
+    java -classpath $CLASSPATH GSA < $TEST_EXAMPLES/$line/test.san || exit 1
 
     echo " - running program through syntax analysis"
 
