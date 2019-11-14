@@ -10,7 +10,7 @@ do
     echo "Evaluating $line"
     echo " - generating language grammar rules"
 
-    java -classpath $CLASSPATH GSA < $TEST_EXAMPLES/$line/test.lan || exit 1
+    java -classpath $CLASSPATH GSA < $TEST_EXAMPLES/$line/test.san || exit 1
 
     echo " - running program through syntax analysis"
 
