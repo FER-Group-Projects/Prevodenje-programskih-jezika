@@ -83,7 +83,7 @@ public class Dfa {
                     //System.out.println("DISCstate="+state);
                     Set<String> enfaStateClosure = states.get(state);
                     for (String enfaStateFrom : enfaStateClosure) {
-                       // System.out.println("      enfastate="+enfaStateFrom);
+                        // System.out.println("      enfastate="+enfaStateFrom);
                         Set<String> newEnfaSearchEpsClos = enfa.getTransition(enfaStateFrom, character);
                         for (String newEnfaEpsClosState : newEnfaSearchEpsClos) {
                             newEnfaStates.addAll(enfa.epsilonClosure(newEnfaEpsClosState));
@@ -135,7 +135,7 @@ public class Dfa {
 
                 }
 
-               // System.out.println("-------------");
+                // System.out.println("-------------");
             }
 
 
@@ -143,11 +143,16 @@ public class Dfa {
             discoveredStates.addAll(newDiscStates);
         }
 
+        // UNCOMMENT THIS TO SEE MAPPING: DFA STATE -> ENFA STATES
+/*
         System.out.println("************");
         for (Map.Entry<String, Set<String>> dfaState : states.entrySet()) {
             System.out.println(dfaState.getKey() + " : " + dfaState.getValue());
         }
+*/
 
+        // UNCOMMENT THIS TO SEE TRANSITIONS IN DFA: STATE_FROM -TRIGGER-> STATE_TO
+        /*
         System.out.println("++++++++++");
         for (Map.Entry<String, Map<Character, String>> dfaTransition : transitions.entrySet()) {
             String initState = dfaTransition.getKey();
@@ -156,6 +161,7 @@ public class Dfa {
                 System.out.println(initState + " -" + transEntry.getKey() + "-> " + transEntry.getValue());
             }
         }
+        */
 
 
     }
