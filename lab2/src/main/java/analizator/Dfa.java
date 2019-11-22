@@ -160,5 +160,44 @@ public class Dfa {
 
     }
 
+    /**
+     *
+     * @return states of Dfa
+     */
+    public Set<String> getStates() {
+        return states.keySet();
+    }
+
+    /**
+     * Returns all transitions for a state.
+     *
+     * NOTE: returns null if the state does not have any transitions.
+     *
+     * @param stateFrom state whose transitions are to be returned
+     * @return map of all transitions for given state stateFrom (trigger -> state of Dfa)
+     */
+    public Map<Character, String> getTransitionsForState(String stateFrom) {
+        return transitions.get(stateFrom);
+    }
+
+    /**
+     * Returns specific transition for one state-trigger pair.
+     *
+     * NOTE: returns null
+     * - if the state does not have any transitions
+     * - if the state does not have transition for the given trigger
+     *
+     * @param stateFrom state whose specific transition is to be returned
+     * @param trigger transition trigger character
+     * @return state of Dfa after transition
+     */
+    public String getTransitionForStateByTrigger(String stateFrom, Character trigger) {
+        Map<Character,String> allTransitionsFromState = getTransitionsForState(stateFrom);
+        if (allTransitionsFromState == null)
+            return null;
+
+        return allTransitionsFromState.get(trigger);
+    }
+
 
 }
