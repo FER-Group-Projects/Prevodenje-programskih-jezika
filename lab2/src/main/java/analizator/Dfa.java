@@ -1,10 +1,5 @@
 package analizator;
 
-import javafx.scene.effect.SepiaTone;
-
-import javax.swing.plaf.nimbus.State;
-import java.nio.file.FileSystemNotFoundException;
-import java.rmi.activation.ActivationGroup_Stub;
 import java.util.*;
 
 public class Dfa {
