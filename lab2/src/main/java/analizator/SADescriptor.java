@@ -12,7 +12,7 @@ public class SADescriptor implements Serializable {
     /**
      * Sync characters used for error recovery
      */
-    public Set<String> syncCharacterSet;
+    public Set<Symbol> syncSymbolSet;
 
     /**
      * PDAState -> (Symbol -> PDAAction)
