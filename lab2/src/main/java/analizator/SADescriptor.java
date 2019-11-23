@@ -15,16 +15,10 @@ public class SADescriptor implements Serializable {
     public Set<String> syncCharacterSet;
 
     /**
-     * PDAState -> (Character -> PDAAction)
-     * Characters are terminals
-     * Actions are type of SHIFT(int nextState), REDUCE(int nextState), ACCEPT
+     * PDAState -> (Symbol -> PDAAction)
+     * Actions are type of ACCEPT, SHIFT(int nextState), REDUCE(int nextState, GrammarRule reductionRule),
+     * PUT(int nextState), REJECT
      */
-    public Map<Integer, Map<String, PDAAction>> ActionTable;
+    public Map<Integer, Map<Symbol, PDAAction>> actionTable;
 
-    /**
-     * PDAState -> (Character -> NextState)
-     * Characters are non-terminals
-     * Actions in this table are only type of PUT(int nextState)
-     */
-    public Map<Integer, Map<String, Integer>> NextStateTable;
 }

@@ -1,5 +1,6 @@
 import analizator.ENfa;
-import org.junit.jupiter.api.Assertions;
+import analizator.GrammarRule;
+import analizator.Symbol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

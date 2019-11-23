@@ -1,3 +1,6 @@
+import analizator.GrammarRule;
+import analizator.Symbol;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
