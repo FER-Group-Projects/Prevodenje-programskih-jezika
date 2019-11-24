@@ -21,8 +21,8 @@ public class PDAAction {
         if (reductionRule.getFrom().isTerminal() && actionType == ActionType.PUT) {
             throw new IllegalArgumentException("Terminals must not map to PUT actions");
         }
-        if (actionType == ActionType.REDUCE) {
-            Objects.requireNonNull(reductionRule, "REDUCE actions must have a reduction rule");
+        if (actionType == ActionType.REDUCE || actionType == ActionType.ACCEPT) {
+            Objects.requireNonNull(reductionRule, "REDUCE and ACCEPT actions must have a reduction rule");
         }
     }
 
