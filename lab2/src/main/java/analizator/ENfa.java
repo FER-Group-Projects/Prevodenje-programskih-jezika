@@ -32,7 +32,7 @@ public class ENfa implements Serializable {
 	/**
      * Character used for epsilon transitions.
      */
-    public static final char EPSILON = 'ɛ';
+    public static final String EPSILON = "EPSILON";
 
     private String name;
 
@@ -44,7 +44,7 @@ public class ENfa implements Serializable {
     private Set<String> currentActiveStates;
 
     // Mapping : stateFrom -> (character -> nextStates)
-    private Map<String, Map<Character, Set<String>>> transitions;
+    private Map<String, Map<String, Set<String>>> transitions;
 
     /**
      * Creates ENfa with the given name.
@@ -58,7 +58,7 @@ public class ENfa implements Serializable {
         allStates = new HashSet<>();
         acceptableStates = new HashSet<>();
         currentActiveStates = new HashSet<>();
-        transitions = new HashMap<>();
+        transitions = new HashMap<String, Map<String, Set<String>>>();
     }
 
     /**
@@ -134,6 +134,10 @@ public class ENfa implements Serializable {
         this.addState(name, false);
     }
 
+    public boolean containsState(String name) {
+        return allStates.contains(Objects.requireNonNull(name));
+    }
+
     /**
      * Removes state with the given name if it exists and resets the ENfa. Does nothing otherwise.
      *
@@ -147,7 +151,7 @@ public class ENfa implements Serializable {
         currentActiveStates.clear();
         transitions.remove(name);
 
-        for (Map<Character, Set<String>> transitionMapping : transitions.values()) {
+        for (Map<String, Set<String>> transitionMapping : transitions.values()) {
             for (Set<String> nextStates : transitionMapping.values()) {
                 nextStates.remove(name);
             }
@@ -190,11 +194,11 @@ public class ENfa implements Serializable {
      * @throws NullPointerException     if stateFrom or stateTo are <code>null</code>
      * @throws IllegalArgumentException if stateFrom or stateTo are not in ENfa
      */
-    public void addTransition(String stateFrom, char trigger, String stateTo) {
+    public void addTransition(String stateFrom, String trigger, String stateTo) {
         if (!allStates.contains(Objects.requireNonNull(stateFrom)) || !allStates.contains(Objects.requireNonNull(stateTo)))
             throw new IllegalArgumentException("state1 or state2 not in enfa");
 
-        Map<Character, Set<String>> transitionMapping = transitions.get(stateFrom);
+        Map<String, Set<String>> transitionMapping = transitions.get(stateFrom);
         if (transitionMapping == null) {
             transitionMapping = new HashMap<>();
             transitions.put(stateFrom, transitionMapping);
@@ -213,7 +217,7 @@ public class ENfa implements Serializable {
         addTransition(stateFrom, EPSILON, stateTo);
     }
 
-    public Map<String, Map<Character, Set<String>>> getAllTransitions() {
+    public Map<String, Map<String, Set<String>>> getAllTransitions() {
         return transitions;
     }
 
@@ -226,11 +230,11 @@ public class ENfa implements Serializable {
      * @throws NullPointerException     if stateFrom or stateTo are <code>null</code>
      * @throws IllegalArgumentException if stateFrom or stateTo are not in ENfa
      */
-    public void removeTransition(String stateFrom, char trigger, String stateTo) {
+    public void removeTransition(String stateFrom, String trigger, String stateTo) {
         if (!allStates.contains(Objects.requireNonNull(stateFrom)) || !allStates.contains(Objects.requireNonNull(stateTo)))
             throw new IllegalArgumentException("state1 or state2 not in enfa");
 
-        Map<Character, Set<String>> transitionMapping = transitions.get(stateFrom);
+        Map<String, Set<String>> transitionMapping = transitions.get(stateFrom);
         if (transitionMapping == null) return;
 
         Set<String> nextStates = transitionMapping.get(trigger);
@@ -285,8 +289,8 @@ public class ENfa implements Serializable {
      * @param trigger
      * @return an unmodifiable set of destination states
      */
-    public Set<String> getTransition(String stateFrom, char trigger) {
-        Map<Character, Set<String>> transitionMapping = transitions.get(stateFrom);
+    public Set<String> getTransition(String stateFrom, String trigger) {
+        Map<String, Set<String>> transitionMapping = transitions.get(stateFrom);
         if (transitionMapping == null) return Collections.emptySet();
 
         Set<String> nextStates = transitionMapping.get(trigger);
@@ -302,7 +306,7 @@ public class ENfa implements Serializable {
      * @param trigger
      * @return true if transition from 'stateFrom' with given 'trigger' exists, false otherwise
      */
-    public boolean transitionExists(String stateFrom, char trigger) {
+    public boolean transitionExists(String stateFrom, String trigger) {
         return getTransition(stateFrom, trigger).size() != 0;
     }
 
@@ -321,7 +325,7 @@ public class ENfa implements Serializable {
 
         allStates.addAll(other.allStates);
         acceptableStates.addAll(other.acceptableStates);
-        for (Entry<String, Map<Character, Set<String>>> transitionMapValue : other.transitions.entrySet()) {
+        for (Entry<String, Map<String, Set<String>>> transitionMapValue : other.transitions.entrySet()) {
             transitions.put(transitionMapValue.getKey(), transitionMapValue.getValue());
         }
 
@@ -334,9 +338,9 @@ public class ENfa implements Serializable {
      * @param trigger trigger with which to trigger ENfa
      * @throws IllegalStateException if ENfa is stuck
      */
-    public void step(char trigger) {
+    public void step(String trigger) {
 
-        if (trigger == EPSILON)
+        if (trigger.equals(EPSILON))
             throw new IllegalArgumentException("ENfa cannot be triggered using " + EPSILON + ". That character is used as epsilon trigger.");
         if (currentActiveStates.isEmpty())
             throw new IllegalStateException("ENfa is stuck. Check ENfa class javadoc for details.");
@@ -426,7 +430,7 @@ public class ENfa implements Serializable {
 	 * @param state state for which the transition map is returned
 	 * @return all transitions from state
 	 */
-    public Map<Character, Set<String>> getTransitionsForState(String state) {
+    public Map<String, Set<String>> getTransitionsForState(String state) {
         return transitions.get(state);
     }
 
@@ -452,8 +456,8 @@ public class ENfa implements Serializable {
 
         sb.append("Transitions:\n");
         for (String stateFrom : transitions.keySet()) {
-            Map<Character, Set<String>> stateTransitions = transitions.get(stateFrom);
-            for (Character trigger : stateTransitions.keySet()) {
+            Map<String, Set<String>> stateTransitions = transitions.get(stateFrom);
+            for (String trigger : stateTransitions.keySet()) {
                 Set<String> nextStates = stateTransitions.get(trigger);
                 for (String next : nextStates) {
                     sb.append(stateFrom + " " + trigger + " " + next + "\n");
