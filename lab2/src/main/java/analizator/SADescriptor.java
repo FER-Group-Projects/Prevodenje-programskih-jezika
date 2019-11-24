@@ -16,9 +16,9 @@ public class SADescriptor implements Serializable {
 
     /**
      * PDAState -> (Symbol -> PDAAction)
-     * Actions are type of ACCEPT(GrammarRule reductionRule), SHIFT(int nextState), REDUCE(int nextState,
-     * GrammarRule reductionRule), PUT(int nextState), REJECT
+     * Actions are type of ACCEPT(GrammarRule reductionRule), SHIFT(int nextState), REDUCE(GrammarRule reductionRule),
+     * PUT(int nextState), REJECT
      */
-    public Map<Integer, Map<Symbol, PDAAction>> actionTable;
+    public Map<String, Map<Symbol, PDAAction>> actionTable;
 
 }
