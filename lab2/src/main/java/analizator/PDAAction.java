@@ -6,44 +6,38 @@ public class PDAAction {
 
     private ActionType actionType;
 
-    private int nextState;
+    private String nextState;
 
-    private GrammarRule reductionRule;
+    private int reductionRuleIndex;
 
-    public PDAAction(ActionType actionType, int nextState, GrammarRule reductionRule) {
+    public PDAAction(ActionType actionType, String nextState, int reductionRuleIndex) {
         this.actionType = actionType;
         this.nextState = nextState;
-        this.reductionRule = reductionRule;
-
-        if (!reductionRule.getFrom().isTerminal() && !(actionType == ActionType.REJECT || actionType == ActionType.PUT)) {
-            throw new IllegalArgumentException("Non terminals must map to PUT or REJECT actions only");
-        }
-        if (reductionRule.getFrom().isTerminal() && actionType == ActionType.PUT) {
-            throw new IllegalArgumentException("Terminals must not map to PUT actions");
-        }
-        if (actionType == ActionType.REDUCE || actionType == ActionType.ACCEPT) {
-            Objects.requireNonNull(reductionRule, "REDUCE and ACCEPT actions must have a reduction rule");
-        }
+        this.reductionRuleIndex = reductionRuleIndex;
     }
 
-    public PDAAction(ActionType actionType, int nextState) {
-        this(actionType, nextState, null);
+    public PDAAction(ActionType actionType, String nextState) {
+        this(actionType, nextState, -1);
     }
 
     public PDAAction(ActionType actionType) {
-        this(actionType, 0, null);
+        this(actionType, null, -1);
+    }
+
+    public PDAAction(ActionType actionType, int reductionRuleIndex) {
+        this(actionType, null, reductionRuleIndex);
     }
 
     public ActionType getActionType() {
         return actionType;
     }
 
-    public int getNextState() {
+    public String getNextState() {
         return nextState;
     }
 
-    public GrammarRule getReductionRule() {
-        return reductionRule;
+    public int getReductionRuleIndex() {
+        return reductionRuleIndex;
     }
 
 }

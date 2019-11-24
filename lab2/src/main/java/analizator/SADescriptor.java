@@ -1,6 +1,7 @@
 package analizator;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,6 +14,8 @@ public class SADescriptor implements Serializable {
      * Sync characters used for error recovery
      */
     public Set<Symbol> syncSymbolSet;
+
+    public ArrayList<GrammarRule> grammarReductionRules;
 
     /**
      * PDAState -> (Symbol -> PDAAction)
