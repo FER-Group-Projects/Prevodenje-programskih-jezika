@@ -13,7 +13,7 @@ public class Dfa {
     private Map<String, Set<String>> states = new HashMap<>();
     private int stateNumber = 1;
 
-    private Map<String, Map<Character, String>> transitions = new HashMap<>();
+    private Map<String, Map<String, String>> transitions = new HashMap<>();
 
 
     public Dfa(ENfa enfa) {
@@ -35,7 +35,7 @@ public class Dfa {
             // System.out.println("DISCOVERED: "+discoveredStates);
 
 
-            Set<Character> charTriggersForStateSet = new HashSet<>();
+            Set<String> charTriggersForStateSet = new HashSet<>();
 
 
             Set<String> enfaStatesInDfaState = new HashSet<>();
@@ -45,12 +45,12 @@ public class Dfa {
 
             for (String state : enfaStatesInDfaState) {
                 //System.out.println("state "+state);
-                Map<Character, Set<String>> transForState = enfa.getTransitionsForState(state);
+                Map<String, Set<String>> transForState = enfa.getTransitionsForState(state);
                 if (transForState == null) continue;
-                Set<Character> chars = transForState.keySet();
-                Set<Character> charTrans = new HashSet<>();
+                Set<String> chars = transForState.keySet();
+                Set<String> charTrans = new HashSet<>();
 
-                for (Character c : chars) {
+                for (String c : chars) {
                     if (c != ENfa.EPSILON) {
                         charTrans.add(c);
                     }
@@ -64,7 +64,7 @@ public class Dfa {
 
             List<String> newDiscStates = new ArrayList<>();
             //System.out.println();
-            for (Character character : charTriggersForStateSet) {
+            for (String character : charTriggersForStateSet) {
 
                 //System.out.println(character);
 
@@ -92,7 +92,7 @@ public class Dfa {
                             //System.out.println("-"+s);
                         }
 
-                        Map<Character, String> transitionTriggerNewState = transitions.get(state);
+                        Map<String, String> transitionTriggerNewState = transitions.get(state);
                         if (transitionTriggerNewState == null)
                             transitionTriggerNewState = new HashMap<>();
 
@@ -120,7 +120,7 @@ public class Dfa {
 
                     newDiscStates.add(newStateName);
 
-                    Map<Character, String> transitionTriggerNewState = transitions.get(state);
+                    Map<String, String> transitionTriggerNewState = transitions.get(state);
                     if (transitionTriggerNewState == null)
                         transitionTriggerNewState = new HashMap<>();
 
@@ -147,16 +147,16 @@ public class Dfa {
 */
 
         // UNCOMMENT THIS TO SEE TRANSITIONS IN DFA: STATE_FROM -TRIGGER-> STATE_TO
-        /*
+/*
         System.out.println("++++++++++");
-        for (Map.Entry<String, Map<Character, String>> dfaTransition : transitions.entrySet()) {
+        for (Map.Entry<String, Map<String, String>> dfaTransition : transitions.entrySet()) {
             String initState = dfaTransition.getKey();
-            Map<Character,String> transitionValue = dfaTransition.getValue();
-            for (Map.Entry<Character, String> transEntry : transitionValue.entrySet()) {
+            Map<String,String> transitionValue = dfaTransition.getValue();
+            for (Map.Entry<String, String> transEntry : transitionValue.entrySet()) {
                 System.out.println(initState + " -" + transEntry.getKey() + "-> " + transEntry.getValue());
             }
         }
-        */
+*/
 
 
     }
@@ -177,7 +177,7 @@ public class Dfa {
      * @param stateFrom state whose transitions are to be returned
      * @return map of all transitions for given state stateFrom (trigger -> state of Dfa)
      */
-    public Map<Character, String> getTransitionsForState(String stateFrom) {
+    public Map<String, String> getTransitionsForState(String stateFrom) {
         return transitions.get(stateFrom);
     }
 
@@ -192,8 +192,8 @@ public class Dfa {
      * @param trigger transition trigger character
      * @return state of Dfa after transition
      */
-    public String getTransitionForStateByTrigger(String stateFrom, Character trigger) {
-        Map<Character,String> allTransitionsFromState = getTransitionsForState(stateFrom);
+    public String getTransitionForStateByTrigger(String stateFrom, String trigger) {
+        Map<String,String> allTransitionsFromState = getTransitionsForState(stateFrom);
         if (allTransitionsFromState == null)
             return null;
 
