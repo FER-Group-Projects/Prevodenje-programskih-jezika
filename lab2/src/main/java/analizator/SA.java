@@ -54,8 +54,8 @@ public class SA {
                     //push next state along with symbol from left side of reduction rule to stack
                     makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()), action.getNextState());
                     break;
-                case PUT: //special case of REDUCE(?)
-                    //TODO
+                case PUT: //special case of REDUCE
+                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()), action.getNextState());
                     break;
                 case SHIFT:
                     //push current character to stack along with next state
@@ -111,12 +111,18 @@ public class SA {
     }
 
     private static void makeReduction(GrammarRule rule, String nextState) {
-        //build syntax tree here
-        //TODO
+        //TODO: build syntax tree
+        //remove right side from stack
+        int numElements = rule.getToList().size();
+        for (int i = 0; i < numElements; i++) {
+            pdaStack.pop();
+        }
+        //push left side along with nextState
+        pdaStack.push(new PDAStackItem(nextState, rule.getFrom()));
     }
 
     private static void printSyntaxTree() {
-
+        //TODO
     }
 
 }
