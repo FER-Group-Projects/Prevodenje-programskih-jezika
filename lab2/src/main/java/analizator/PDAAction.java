@@ -20,7 +20,10 @@ public class PDAAction implements Serializable {
         this.actionType = actionType;
         this.number = number;
     }
-
+    
+    public PDAAction(ActionType actionType) {
+        this(actionType, -1);
+    }
 
     public ActionType getActionType() {
         return actionType;
