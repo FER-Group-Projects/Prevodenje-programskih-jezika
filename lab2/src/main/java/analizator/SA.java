@@ -70,7 +70,9 @@ public class SA {
                     break;
             }
         }
-        tree = nonTerminalNodes.pop();
+
+        // get first child, instead of <S'>
+        tree = nonTerminalNodes.pop().getChildren().get(0);
     }
 
     private static void loadInputCharacter() {
@@ -151,6 +153,9 @@ public class SA {
 
             pdaStack.pop();
         }
+
+        Collections.reverse(children);
+
         //put this node on the non terminal stack
         NonTerminalNode thisNode = new NonTerminalNode(rule.getFrom(), children);
         nonTerminalNodes.push(thisNode);
