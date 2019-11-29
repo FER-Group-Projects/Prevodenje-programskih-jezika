@@ -129,8 +129,8 @@ public class SA {
             System.err.println("Skipping [" +
                     lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
                     " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
-            loadInputCharacter();
             inputTape.step();
+            loadInputCharacter();
         }
         System.err.println("Found sync character [" +
                 lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
