@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,11 +17,14 @@ import java.util.Set;
 import analizator.ActionType;
 import analizator.GrammarRule;
 import analizator.PDAAction;
+import analizator.SADescriptor;
 import analizator.Symbol;
 
 public class GSA {
 	
-	public static void main(String[] args) throws IOException {
+	public static final String PATH_TO_DESCRIPTOR = "analizator/descriptor";
+	
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
 		List<Symbol> symbols = new ArrayList<>();
 		Set<Symbol> syncSymbols = new HashSet<>();
@@ -105,7 +110,15 @@ public class GSA {
 			
 		}
 		
-		System.out.println(actionTable);
+		SADescriptor saDescriptor = new SADescriptor();
+		saDescriptor.actionTable = actionTable;
+		saDescriptor.grammarReductionRules = grammarRules;
+		saDescriptor.syncSymbolSet = syncSymbols;
+		
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PATH_TO_DESCRIPTOR));
+		oos.writeObject(saDescriptor);
+		oos.flush();
+		oos.close();
 		
 	}
 	

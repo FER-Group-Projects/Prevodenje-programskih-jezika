@@ -1,10 +1,16 @@
 package analizator;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Symbol {
+public class Symbol implements Serializable {
 
-    public static final Symbol EPSILON = new Symbol("$");
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1729527224572702665L;
+
+	public static final Symbol EPSILON = new Symbol("$");
 
     private final String symbol;
     private final boolean isTerminal;

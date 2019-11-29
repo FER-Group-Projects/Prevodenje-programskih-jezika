@@ -1,8 +1,15 @@
 package analizator;
 
-public class PDAAction {
+import java.io.Serializable;
 
-    private ActionType actionType;
+public class PDAAction implements Serializable {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2598133677637491697L;
+
+	private ActionType actionType;
     
     // if actionType=PUT or actionType=SHIFT => number = state
     // else if actionType=REDUCE or actionType=ACCEPT => number = reductionRuleIndex
