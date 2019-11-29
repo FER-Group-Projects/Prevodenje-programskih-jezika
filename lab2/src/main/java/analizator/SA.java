@@ -37,14 +37,8 @@ public class SA {
             String currentPdaState = getTopState();
             Symbol currentPdaSymbol = getTopSymbol();
 
-            PDAAction action;
-
-            if (currentPdaSymbol.equals(Symbol.STACK_BOTTOM)) {
-                action = getActionFromDescriptor(currentPdaState, currentCharacter.getIdSymbol());
-            } else {
-                action = getActionFromDescriptor(currentPdaState, currentPdaSymbol);
-            }
-
+            PDAAction action = getActionFromDescriptor(currentPdaState, currentCharacter.getIdSymbol());
+            
             switch (action.getActionType()) {
                 case ACCEPT: //special case of REDUCE
                     makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()));
