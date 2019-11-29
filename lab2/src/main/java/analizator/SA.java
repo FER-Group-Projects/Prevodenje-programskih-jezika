@@ -148,14 +148,19 @@ public class SA {
     private static void performReductionRule(GrammarRule rule) {
         //remove right side from pdastack
         ArrayList<TreeNode> children = new ArrayList<>();
-        for (Symbol s : rule.getToList()) {
-            if (s.isTerminal()) {
-                children.add(terminalNodes.pop());
-            } else {
-                children.add(nonTerminalNodes.pop());
-            }
+        //if epsilon production dont pop stack, just add epsilon charachter as child node
+        if (rule.getToList().size() == 1 && rule.getToList().get(0).equals(Symbol.EPSILON)) {
+            children.add(new TerminalNode(new UniformCharacter(Symbol.EPSILON, 0, Symbol.EPSILON.toString())));
+        } else {
+            for (Symbol s : rule.getToList()) {
+                if (s.isTerminal()) {
+                    children.add(terminalNodes.pop());
+                } else {
+                    children.add(nonTerminalNodes.pop());
+                }
 
-            pdaStack.pop();
+                pdaStack.pop();
+            }
         }
 
         Collections.reverse(children);

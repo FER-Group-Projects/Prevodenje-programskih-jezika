@@ -25,6 +25,7 @@ public class UniformCharacter {
 
     @Override
     public String toString() {
+        if (idSymbol.equals(Symbol.EPSILON)) return Symbol.EPSILON.toString();
         return idSymbol.getSymbol() + " " + line + " " + text;
     }
 }
