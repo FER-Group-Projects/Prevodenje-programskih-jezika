@@ -1,5 +1,4 @@
 #!/bin/bash
-exit 0 # TODO: remove this line when project is ready
 CLASSPATH=../../../target/classes
 WORKING_DIRECTORY=src/main/java
 TEST_EXAMPLES=../../test/resources/test_examples

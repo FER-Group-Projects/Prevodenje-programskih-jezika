@@ -1,6 +1,7 @@
 package analizator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Stack;
 
@@ -42,7 +43,9 @@ public class SA {
             Symbol currentPdaSymbol = getTopSymbol();
 
             PDAAction action = getActionFromDescriptor(currentPdaState, currentCharacter.getIdSymbol());
-
+            System.out.println(currentPdaState);
+            System.out.println(currentCharacter.getIdSymbol());
+            System.out.println(descriptor.actionTable);
             switch (action.getActionType()) {
                 case ACCEPT: //special case of REDUCE
                     performReductionRule(getReductionRuleFromIndex(action.getNumber()));
@@ -74,7 +77,7 @@ public class SA {
     }
 
     private static void loadInputCharacter() {
-        if (lastInputCharacter.getIdSymbol().equals(Symbol.TAPE_END)) return;
+        if (lastInputCharacter != null && lastInputCharacter.getIdSymbol().equals(Symbol.TAPE_END)) return;
         UniformCharacter c = inputTape.getCurrent();
         lastInputCharacter = c;
         characterInLineIndex++;
@@ -97,7 +100,7 @@ public class SA {
     }
 
     private static PDAAction getActionFromDescriptor(String pdaState, Symbol symbol) {
-        return descriptor.actionTable.get(pdaState).getOrDefault(symbol, new PDAAction(ActionType.REJECT));
+        return descriptor.actionTable.getOrDefault(pdaState, Collections.emptyMap()).getOrDefault(symbol, new PDAAction(ActionType.REJECT));
     }
 
     private static GrammarRule getReductionRuleFromIndex(int index) {
@@ -113,7 +116,7 @@ public class SA {
                 lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
                 " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
         //output expected characters on stderr
-        Map<Symbol, PDAAction> stateActions = descriptor.actionTable.get(getTopState());
+        Map<Symbol, PDAAction> stateActions = descriptor.actionTable.getOrDefault(getTopState(), Collections.emptyMap());
         System.err.println("Expected one of the following: ");
         for (Map.Entry<Symbol, PDAAction> e : stateActions.entrySet()) {
             if (e.getKey().isTerminal()) {
@@ -136,7 +139,7 @@ public class SA {
     }
 
     private static boolean actionIsDefined(String pdaState, Symbol symbol) {
-        return descriptor.actionTable.get(pdaState).getOrDefault(symbol, new PDAAction(ActionType.REJECT)).getActionType() != ActionType.REJECT;
+        return descriptor.actionTable.getOrDefault(pdaState, Collections.emptyMap()).getOrDefault(symbol, new PDAAction(ActionType.REJECT)).getActionType() != ActionType.REJECT;
     }
 
     private static void performReductionRule(GrammarRule rule) {

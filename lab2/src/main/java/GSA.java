@@ -22,7 +22,7 @@ import analizator.Symbol;
 
 public class GSA {
 	
-	public static final String PATH_TO_DESCRIPTOR = "analizator/descriptor";
+	public static final String PATH_TO_DESCRIPTOR = "analizator/sa-descriptor";
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
