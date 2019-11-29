@@ -33,6 +33,7 @@ public class SA {
     }
 
     private static void parse() {
+        getInputCharacter(); //load the first character
         while (isParsing) {
             UniformCharacter currentCharacter = lastInputCharacter;
             String currentPdaState = getTopState();
@@ -57,7 +58,7 @@ public class SA {
                     //move input one place to the right
                     pdaStack.push(new PDAStackItem(action.getNextState(), null, true, currentCharacter));
                     inputTape.step();
-                    getInputCharacter();
+                    getInputCharacter(); //load the character
                     break;
                 case REJECT:
                     //error happened, handle it
