@@ -5,6 +5,8 @@ import java.util.Objects;
 public class Symbol {
 
     public static final Symbol EPSILON = new Symbol("$");
+    public static final Symbol STACK_BOTTOM = new Symbol("[#]");
+    public static final Symbol TAPE_END = new Symbol("||#");
 
     private final String symbol;
     private final boolean isTerminal;
