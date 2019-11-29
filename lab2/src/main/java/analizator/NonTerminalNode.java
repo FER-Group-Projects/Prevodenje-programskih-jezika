@@ -19,7 +19,20 @@ public class NonTerminalNode extends TreeNode {
 
     @Override
     public String toString() {
-        //TODO
-        return null;
+        return symbol.toString();
+    }
+
+    @Override
+    public void printTree(int depth) {
+        //output space 'depth' times
+        for (int i = 0; i < depth; i++) {
+            System.out.print(" ");
+        }
+        //print symbol
+        System.out.println(symbol);
+        //then the children
+        for (TreeNode node : super.getChildren()) {
+            node.printTree(depth + 1);
+        }
     }
 }

@@ -29,7 +29,7 @@ public class SA {
         //do actions until done
         //and watch out for errors
         parse();
-        printSyntaxTree(tree);
+        TreeNode.printTree(tree,0);
     }
 
     private static void parse() {
@@ -144,10 +144,6 @@ public class SA {
         for (Symbol s : rule.getToList()) {
 
         }
-    }
-
-    private static void printSyntaxTree(TreeNode tree) {
-        //TODO
     }
 
 }

@@ -25,9 +25,6 @@ public class UniformCharacter {
 
     @Override
     public String toString() {
-        String s = idSymbol.getSymbol() + "," +
-                line + "," +
-                text;
-        return s;
+        return idSymbol.getSymbol() + " " + line + " " + text;
     }
 }

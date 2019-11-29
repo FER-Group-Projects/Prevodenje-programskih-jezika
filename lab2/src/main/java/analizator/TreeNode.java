@@ -3,7 +3,7 @@ package analizator;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TreeNode {
+public abstract class TreeNode {
     //reference children nodes
     private ArrayList<TreeNode> children;
 
@@ -19,7 +19,5 @@ public class TreeNode {
         return children;
     }
 
-    public static void printTree(TreeNode root, int depth) {
-        //TODO
-    }
+    public abstract void printTree(int depth);
 }

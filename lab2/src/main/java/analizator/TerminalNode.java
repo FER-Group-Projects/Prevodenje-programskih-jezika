@@ -11,7 +11,16 @@ public class TerminalNode extends TreeNode {
 
     @Override
     public String toString(){
-        //TODO
-        return null;
+        return character.toString();
+    }
+
+    @Override
+    public void printTree(int depth) {
+        //output space 'depth' times
+        for(int i =0;i<depth;i++){
+            System.out.print(" ");
+        }
+        //then the character
+        System.out.println(character);
     }
 }
