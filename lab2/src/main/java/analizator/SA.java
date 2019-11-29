@@ -22,13 +22,13 @@ public class SA {
     private static Stack<NonTerminalNode> nonTerminalNodes = new Stack<>();
 
     public static void main(String[] args) {
-        //init stack
-        pdaStack = new Stack<>();
-        pdaStack.push(new PDAStackItem("0", Symbol.STACK_BOTTOM));
-        //init UniformCharacterStream with stdin
-        inputTape = new UniformCharacterStream(System.in);
         //deserialize sa-descriptor
         descriptor = DescriptorSerializer.deserialize();
+        //init stack
+        pdaStack = new Stack<>();
+        pdaStack.push(new PDAStackItem(descriptor.startingState, Symbol.STACK_BOTTOM));
+        //init UniformCharacterStream with stdin
+        inputTape = new UniformCharacterStream(System.in);
         //do actions until done
         //and watch out for errors
         parse();
@@ -43,9 +43,6 @@ public class SA {
             Symbol currentPdaSymbol = getTopSymbol();
 
             PDAAction action = getActionFromDescriptor(currentPdaState, currentCharacter.getIdSymbol());
-            System.out.println(currentPdaState);
-            System.out.println(currentCharacter.getIdSymbol());
-            System.out.println(descriptor.actionTable);
             switch (action.getActionType()) {
                 case ACCEPT: //special case of REDUCE
                     performReductionRule(getReductionRuleFromIndex(action.getNumber()));

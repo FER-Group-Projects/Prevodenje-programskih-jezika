@@ -111,7 +111,7 @@ public class Dfa {
 
                     if (newEnfaStates.isEmpty()) continue;
 
-                    String newStateName = "d" + stateNumber;
+                    String newStateName = String.valueOf(stateNumber);
                     states.put(newStateName, newEnfaStates);
                     stateNumber++;
 
