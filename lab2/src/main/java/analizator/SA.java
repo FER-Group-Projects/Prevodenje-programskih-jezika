@@ -1,6 +1,7 @@
 package analizator;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Stack;
 
 public class SA {
@@ -108,10 +109,19 @@ public class SA {
     }
 
     private static void handleError() {
-        System.err.println("Error parsing [" +
+        System.err.println("Error while parsing [" +
                 lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
                 " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
-        //TODO: output expected characters on stderr
+        //output expected characters on stderr
+        Map<Symbol, PDAAction> stateActions = descriptor.actionTable.get(getTopState());
+        System.err.println("Expected one of the following: ");
+        for (Map.Entry<Symbol, PDAAction> e : stateActions.entrySet()) {
+            if (e.getKey().isTerminal()) {
+                if (e.getValue().getActionType() != ActionType.REJECT) {
+                    System.err.println(e.getKey().toString());
+                }
+            }
+        }
         //Skip input until a sync character appears
         while (!isSyncSymbol(lastInputCharacter.getIdSymbol())) {
             System.err.println("Skipping [" +
