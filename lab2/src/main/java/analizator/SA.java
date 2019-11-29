@@ -1,9 +1,6 @@
 package analizator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class SA {
     private static UniformCharacterStream inputTape;
@@ -152,7 +149,11 @@ public class SA {
         if (rule.getToList().size() == 1 && rule.getToList().get(0).equals(Symbol.EPSILON)) {
             children.add(new TerminalNode(new UniformCharacter(Symbol.EPSILON, 0, Symbol.EPSILON.toString())));
         } else {
-            for (Symbol s : rule.getToList()) {
+            List<Symbol> reversed = new ArrayList<>(rule.getToList());
+
+            Collections.reverse(reversed);
+
+            for (Symbol s : reversed) {
                 if (s.isTerminal()) {
                     children.add(terminalNodes.pop());
                 } else {
