@@ -96,7 +96,7 @@ public class SA {
     }
 
     private static PDAAction getActionFromDescriptor(String pdaState, Symbol symbol) {
-        return descriptor.actionTable.get(pdaState).get(symbol);
+        return descriptor.actionTable.get(pdaState).getOrDefault(symbol, new PDAAction(ActionType.REJECT));
     }
 
     private static GrammarRule getReductionRuleFromIndex(int index) {
@@ -126,7 +126,7 @@ public class SA {
     }
 
     private static boolean actionIsDefined(String pdaState, Symbol symbol) {
-        return descriptor.actionTable.get(pdaState).get(symbol).getActionType() != ActionType.REDUCE;
+        return descriptor.actionTable.get(pdaState).getOrDefault(symbol, new PDAAction(ActionType.REJECT)).getActionType() != ActionType.REJECT;
     }
 
     private static void performReductionRule(GrammarRule rule) {
