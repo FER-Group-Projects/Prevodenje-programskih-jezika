@@ -1,9 +1,6 @@
-package analizator;
-
 import java.util.*;
 
 public class Dfa {
-
 
     private String name;
 
@@ -199,6 +196,24 @@ public class Dfa {
 
         return allTransitionsFromState.get(trigger);
     }
-
+    
+    public Set<String> getEnfaStatesForDfaState(String dfaState) {
+    	return states.get(dfaState);
+    }
+    
+    public String getStartingState() {
+    	return "d0";
+    }
+    
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+		for(String s : getStates()) {
+			sb.append(String.format("State : %s%n", s));
+			sb.append(String.format("Encapsulated enfa states : %s%n", getEnfaStatesForDfaState(s).toString()));
+			sb.append(String.format("Triggered by : %s%n%n", getTransitionsForState(s)==null ? "null" : getTransitionsForState(s).toString()));
+		}
+		return sb.toString();
+    }
 
 }

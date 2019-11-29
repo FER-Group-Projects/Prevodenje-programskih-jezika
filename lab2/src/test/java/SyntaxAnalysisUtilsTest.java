@@ -1,4 +1,3 @@
-import analizator.ENfa;
 import analizator.GrammarRule;
 import analizator.Symbol;
 import org.junit.jupiter.api.BeforeEach;

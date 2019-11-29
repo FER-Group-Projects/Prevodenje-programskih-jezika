@@ -1,43 +1,31 @@
 package analizator;
 
-import java.util.Objects;
-
 public class PDAAction {
 
     private ActionType actionType;
+    
+    // if actionType=PUT or actionType=SHIFT => number = state
+    // else if actionType=REDUCE or actionType=ACCEPT => number = reductionRuleIndex
+    // else no meaning
+    private int number;
 
-    private String nextState;
-
-    private int reductionRuleIndex;
-
-    public PDAAction(ActionType actionType, String nextState, int reductionRuleIndex) {
+    public PDAAction(ActionType actionType, int number) {
         this.actionType = actionType;
-        this.nextState = nextState;
-        this.reductionRuleIndex = reductionRuleIndex;
+        this.number = number;
     }
 
-    public PDAAction(ActionType actionType, String nextState) {
-        this(actionType, nextState, -1);
-    }
-
-    public PDAAction(ActionType actionType) {
-        this(actionType, null, -1);
-    }
-
-    public PDAAction(ActionType actionType, int reductionRuleIndex) {
-        this(actionType, null, reductionRuleIndex);
-    }
 
     public ActionType getActionType() {
         return actionType;
     }
 
-    public String getNextState() {
-        return nextState;
-    }
-
-    public int getReductionRuleIndex() {
-        return reductionRuleIndex;
+    public int getNumber() {
+		return number;
+	}
+    
+    @Override
+    public String toString() {
+    	return actionType.toString() + number;
     }
 
 }

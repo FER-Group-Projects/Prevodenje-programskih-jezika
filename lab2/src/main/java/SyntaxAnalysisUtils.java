@@ -1,4 +1,3 @@
-import analizator.ENfa;
 import analizator.GrammarRule;
 import analizator.Symbol;
 
@@ -9,7 +8,7 @@ public class SyntaxAnalysisUtils {
 
     public static ENfa convertRulesToENfa(List<GrammarRule> rules, Symbol startingSymbol, List<Symbol> symbols) {
         ENfa enfa = new ENfa("lrItems");
-
+        
         addStartingTransitions(rules, startingSymbol, enfa);
         addShiftUpdateTransitions(rules, symbols, enfa);
         addBranchUpdateTransitions(rules, symbols, enfa);

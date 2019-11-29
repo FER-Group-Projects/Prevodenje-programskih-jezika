@@ -1,4 +1,4 @@
-package analizator;
+
 
 import java.io.Serializable;
 import java.util.Collections;

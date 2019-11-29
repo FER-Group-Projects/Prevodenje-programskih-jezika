@@ -34,6 +34,10 @@ public class LR1Item {
 
         return new LR1Item(new GrammarRule(from, toList), dotIndex, after);
     }
+    
+    public boolean isFinalItem() {
+    	return dotIndex == grammarRule.getToList().size();
+    }
 
     public Symbol getFrom() {
         return grammarRule.getFrom();
@@ -50,6 +54,10 @@ public class LR1Item {
     public Symbol getAfter() {
         return after;
     }
+    
+    public GrammarRule getGrammarRule() {
+		return grammarRule;
+	}
 
     @Override
     public String toString() {

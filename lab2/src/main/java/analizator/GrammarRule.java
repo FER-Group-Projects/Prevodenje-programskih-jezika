@@ -34,4 +34,10 @@ public class GrammarRule {
     public int hashCode() {
         return Objects.hash(from, toList);
     }
+
+	@Override
+	public String toString() {
+		return "GrammarRule [from=" + from + ", toList=" + toList + "]";
+	}
+    
 }

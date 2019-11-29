@@ -30,17 +30,22 @@ public class Symbol {
     public String toString() {
         return symbol;
     }
-
+    
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Symbol symbol1 = (Symbol) o;
-        return Objects.equals(symbol, symbol1.symbol);
-    }
+	public int hashCode() {
+		return Objects.hash(isTerminal, symbol);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Symbol))
+			return false;
+		Symbol other = (Symbol) obj;
+		return isTerminal == other.isTerminal && Objects.equals(symbol, other.symbol);
+	}
+    
 }
