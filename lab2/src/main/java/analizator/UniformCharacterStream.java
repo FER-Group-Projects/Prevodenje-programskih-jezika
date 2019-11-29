@@ -38,6 +38,14 @@ public class UniformCharacterStream {
         return c;
     }
 
+    public UniformCharacter getCurrent() {
+        return lines.get(currentindex);
+    }
+
+    public void step() {
+        currentindex++;
+    }
+
     public boolean hasNext() {
         return currentindex < lines.size();
     }
