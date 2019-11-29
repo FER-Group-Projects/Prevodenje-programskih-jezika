@@ -15,7 +15,8 @@ public class SA {
     private static UniformCharacter lastInputCharacter;
 
     //used to fill children of parent node when reducing, previous parents are pushed on stack
-    private Stack<TreeNode> nodestack = new Stack<>();
+    private Stack<TerminalNode> terminalStack = new Stack<>();
+    private Stack<NonTerminalNode> nonTerminalStack = new Stack<>();
 
     public static void main(String[] args) {
         //init stack
@@ -33,15 +34,15 @@ public class SA {
 
     private static void parse() {
         while (isParsing) {
-            UniformCharacter currentCharacter = getInputCharacter();
+            UniformCharacter currentCharacter = lastInputCharacter;
             String currentPdaState = getTopState();
             Symbol currentPdaSymbol = getTopSymbol();
 
             PDAAction action = getActionFromDescriptor(currentPdaState, currentCharacter.getIdSymbol());
-            
+
             switch (action.getActionType()) {
                 case ACCEPT: //special case of REDUCE
-                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()));
+                    reduceAndAccept(getReductionRuleFromIndex(action.getReductionRuleIndex()));
                     isParsing = false;
                     break;
                 case REDUCE:
@@ -56,6 +57,7 @@ public class SA {
                     //move input one place to the right
                     pdaStack.push(new PDAStackItem(action.getNextState(), null, true, currentCharacter));
                     inputTape.step();
+                    getInputCharacter();
                     break;
                 case REJECT:
                     //error happened, handle it
@@ -68,6 +70,7 @@ public class SA {
     private static UniformCharacter getInputCharacter() {
         if (lastInputCharacter.getIdSymbol().equals(Symbol.TAPE_END)) return lastInputCharacter;
         UniformCharacter c = inputTape.getCurrent();
+        lastInputCharacter = c;
         characterInLineIndex++;
         if (lastLineIndex + 1 == c.getLine()) {
             characterInLineIndex = 0;
@@ -101,7 +104,21 @@ public class SA {
     }
 
     private static void handleError() {
-        //TODO
+        System.err.println("Error parsing [" +
+                lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
+                " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
+        //TODO: output expected characters on stderr
+        //Skip input until a sync character appears
+        while (!isSyncSymbol(lastInputCharacter.getIdSymbol())) {
+            System.err.println("Skipping [" +
+                    lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
+                    " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
+            getInputCharacter();
+        }
+        //pop elements from stack until an action is defined (different from reject or put)
+        while (!actionIsDefined(getTopState(), lastInputCharacter.getIdSymbol())) {
+            pdaStack.pop();
+        }
     }
 
     private static boolean actionIsDefined(String pdaState, Symbol symbol) {
@@ -110,9 +127,8 @@ public class SA {
 
     private static void makeReduction(GrammarRule rule) {
         //TODO: build syntax tree
-        //remove right side from stack
-        int numElements = rule.getToList().size();
-        for (int i = 0; i < numElements; i++) {
+        //remove right side from pdastack
+        for (Symbol s : rule.getToList()) {
             pdaStack.pop();
         }
         //get next state based on left side and state on top of stack
@@ -120,6 +136,13 @@ public class SA {
         String nextState = getActionFromDescriptor(getTopState(), rule.getFrom()).getNextState();
         //push left side along with nextState
         pdaStack.push(new PDAStackItem(nextState, rule.getFrom()));
+    }
+
+    private static void reduceAndAccept(GrammarRule rule) {
+        //TODO: connect elements from stacks to tree(root)
+        for (Symbol s : rule.getToList()) {
+
+        }
     }
 
     private static void printSyntaxTree(TreeNode tree) {
