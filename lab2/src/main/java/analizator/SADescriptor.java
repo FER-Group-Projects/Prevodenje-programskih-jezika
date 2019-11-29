@@ -1,7 +1,7 @@
 package analizator;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,7 +15,7 @@ public class SADescriptor implements Serializable {
      */
     public Set<Symbol> syncSymbolSet;
 
-    public ArrayList<GrammarRule> grammarReductionRules;
+    public List<GrammarRule> grammarReductionRules;
 
     /**
      * PDAState -> (Symbol -> PDAAction)
@@ -23,5 +23,11 @@ public class SADescriptor implements Serializable {
      * PUT(int nextState), REJECT
      */
     public Map<String, Map<Symbol, PDAAction>> actionTable;
+    
+    @Override
+    public String toString() {
+    	return String.format("SyncSymbolSet : %s%n%nGrammarReductionRules : %s%n%nActionTable : %s%n%n%n",
+    			syncSymbolSet.toString(), grammarReductionRules.toString(), actionTable.toString());
+    }
 
 }

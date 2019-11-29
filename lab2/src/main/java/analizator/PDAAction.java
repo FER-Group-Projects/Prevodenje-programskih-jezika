@@ -1,43 +1,41 @@
 package analizator;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class PDAAction {
+public class PDAAction implements Serializable {
 
-    private ActionType actionType;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2598133677637491697L;
 
-    private String nextState;
+	private ActionType actionType;
+    
+    // if actionType=PUT or actionType=SHIFT => number = state
+    // else if actionType=REDUCE or actionType=ACCEPT => number = reductionRuleIndex
+    // else no meaning
+    private int number;
 
-    private int reductionRuleIndex;
-
-    public PDAAction(ActionType actionType, String nextState, int reductionRuleIndex) {
+    public PDAAction(ActionType actionType, int number) {
         this.actionType = actionType;
-        this.nextState = nextState;
-        this.reductionRuleIndex = reductionRuleIndex;
+        this.number = number;
     }
-
-    public PDAAction(ActionType actionType, String nextState) {
-        this(actionType, nextState, -1);
-    }
-
+    
     public PDAAction(ActionType actionType) {
-        this(actionType, null, -1);
-    }
-
-    public PDAAction(ActionType actionType, int reductionRuleIndex) {
-        this(actionType, null, reductionRuleIndex);
+        this(actionType, -1);
     }
 
     public ActionType getActionType() {
         return actionType;
     }
 
-    public String getNextState() {
-        return nextState;
-    }
-
-    public int getReductionRuleIndex() {
-        return reductionRuleIndex;
+    public int getNumber() {
+		return number;
+	}
+    
+    @Override
+    public String toString() {
+    	return actionType.toString() + number;
     }
 
 }

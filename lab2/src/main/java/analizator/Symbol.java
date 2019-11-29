@@ -1,12 +1,18 @@
 package analizator;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Symbol {
+public class Symbol implements Serializable {
+  
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1729527224572702665L;
 
-    public static final Symbol EPSILON = new Symbol("$");
-    public static final Symbol TAPE_END = new Symbol("$");
-    public static final Symbol STACK_BOTTOM = new Symbol("[#]");
+	public static final Symbol EPSILON = new Symbol("$");
+  public static final Symbol TAPE_END = new Symbol("$");
+  public static final Symbol STACK_BOTTOM = new Symbol("[#]");
 
     private final String symbol;
     private final boolean isTerminal;
@@ -32,17 +38,22 @@ public class Symbol {
     public String toString() {
         return symbol;
     }
-
+    
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Symbol symbol1 = (Symbol) o;
-        return Objects.equals(symbol, symbol1.symbol);
-    }
+	public int hashCode() {
+		return Objects.hash(isTerminal, symbol);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Symbol))
+			return false;
+		Symbol other = (Symbol) obj;
+		return isTerminal == other.isTerminal && Objects.equals(symbol, other.symbol);
+	}
+    
 }

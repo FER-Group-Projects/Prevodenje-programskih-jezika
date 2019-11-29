@@ -1,4 +1,3 @@
-import analizator.ENfa;
 import analizator.GrammarRule;
 import analizator.Symbol;
 
@@ -9,7 +8,7 @@ public class SyntaxAnalysisUtils {
 
     public static ENfa convertRulesToENfa(List<GrammarRule> rules, Symbol startingSymbol, List<Symbol> symbols) {
         ENfa enfa = new ENfa("lrItems");
-
+        
         addStartingTransitions(rules, startingSymbol, enfa);
         addShiftUpdateTransitions(rules, symbols, enfa);
         addBranchUpdateTransitions(rules, symbols, enfa);
@@ -68,6 +67,9 @@ public class SyntaxAnalysisUtils {
             }
         }
 
+        firstSets.put(Symbol.EPSILON, new HashSet<>());
+        firstSets.get(Symbol.EPSILON).add(Symbol.EPSILON);
+
         for (GrammarRule rule : rules) {
             if (rule.getToList().get(0).isTerminal()) {
                 firstSets.get(rule.getFrom()).add(rule.getToList().get(0));
@@ -79,7 +81,14 @@ public class SyntaxAnalysisUtils {
 
             for (GrammarRule rule : rules) {
                 if (!rule.getToList().get(0).isTerminal()) {
-                    firstSets.get(rule.getFrom()).addAll(firstSets.get(rule.getToList().get(0)));
+                    Set<Symbol> firstSet = firstSets.get(rule.getFrom());
+                    int sizeBefore = firstSet.size();
+
+                    firstSet.addAll(firstSets.get(rule.getToList().get(0)));
+
+                    if (sizeBefore != firstSet.size()) {
+                        anyChanges = true;
+                    }
                 }
             }
 
@@ -102,32 +111,32 @@ public class SyntaxAnalysisUtils {
         for (GrammarRule fromRule : rules) {
             List<Symbol> toList = fromRule.getToList();
 
-            for (int dotIndex = 0; dotIndex < fromRule.getToList().size(); dotIndex++) {
-                if (!toList.get(dotIndex).isTerminal()) {
-                    for (Symbol fromAfter : terminalSymbols) {
-                        Set<Symbol> toAfters;
+            for (int dotIndex = 0; dotIndex < toList.size(); dotIndex++) {
+                if (toList.get(dotIndex).isTerminal()) continue;
 
-                        if (toList.size() == dotIndex + 1) {
-                            toAfters = new HashSet<>();
+                Set<Symbol> fromSymbols = new HashSet<>(terminalSymbols);
 
-                            toAfters.add(Symbol.EPSILON);
+                for (GrammarRule toRule : rules) {
+                    if (!toRule.getFrom().equals(toList.get(dotIndex))) continue;
+
+                    for (Symbol fromSymbol : fromSymbols) {
+                        Set<Symbol> toSymbols;
+
+                        if (toList.size() > dotIndex + 1) {
+                            toSymbols = firstSets.get(toList.get(dotIndex + 1));
                         }
                         else {
-                            toAfters = firstSets.get(toList.get(dotIndex + 1));
+                            toSymbols = firstSets.get(fromSymbol);
                         }
 
-                        for (Symbol toAfter : toAfters) {
-                            for (GrammarRule toRule : rules) {
-                                if (!toRule.getFrom().equals(toList.get(dotIndex))) continue;
+                        for (Symbol toSymbol : toSymbols) {
+                            LR1Item fromItem = new LR1Item(fromRule, dotIndex, fromSymbol);
+                            LR1Item toItem = new LR1Item(toRule, 0, toSymbol);
 
-                                LR1Item from = new LR1Item(fromRule, dotIndex, fromAfter);
-                                LR1Item to = new LR1Item(toRule, 0, toAfter);
+                            if (!enfa.containsState(fromItem.toString())) enfa.addState(fromItem.toString());
+                            if (!enfa.containsState(toItem.toString())) enfa.addState(toItem.toString());
 
-                                if (!enfa.containsState(from.toString())) enfa.addState(from.toString());
-                                if (!enfa.containsState(to.toString())) enfa.addState(to.toString());
-
-                                enfa.addEpsilonTransition(from.toString(), to.toString());
-                            }
+                            enfa.addEpsilonTransition(fromItem.toString(), toItem.toString());
                         }
                     }
                 }

@@ -1,11 +1,16 @@
 package analizator;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class GrammarRule {
+public class GrammarRule implements Serializable {
 
-    private final Symbol from;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6127798985212294891L;
+	private final Symbol from;
     private final List<Symbol> toList;
 
     public GrammarRule(Symbol from, List<Symbol> toList) {
@@ -34,4 +39,10 @@ public class GrammarRule {
     public int hashCode() {
         return Objects.hash(from, toList);
     }
+
+	@Override
+	public String toString() {
+		return "GrammarRule [from=" + from + ", toList=" + toList + "]";
+	}
+    
 }

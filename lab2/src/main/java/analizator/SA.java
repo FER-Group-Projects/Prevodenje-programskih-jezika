@@ -45,20 +45,20 @@ public class SA {
 
             switch (action.getActionType()) {
                 case ACCEPT: //special case of REDUCE
-                    performReductionRule(getReductionRuleFromIndex(action.getReductionRuleIndex()));
+                    performReductionRule(getReductionRuleFromIndex(action.getNumber()));
                     isParsing = false;
                     break;
                 case REDUCE:
                     //remove symbols from right side of reduction rule from stack
                     //push next state along with symbol from left side of reduction rule to stack
-                    actionReduce(getReductionRuleFromIndex(action.getReductionRuleIndex()));
+                    actionReduce(getReductionRuleFromIndex(action.getNumber()));
                     break;
                 case PUT: //part of REDUCE
                     break;
                 case SHIFT:
                     //push current character to stack along with next state
                     //move input one place to the right
-                    pdaStack.push(new PDAStackItem(action.getNextState(), null, true, currentCharacter));
+                    pdaStack.push(new PDAStackItem(Integer.toString(action.getNumber()), null, true, currentCharacter));
                     //save the character for building the syntax tree
                     terminalNodes.push(new TerminalNode(currentCharacter));
                     inputTape.step();
@@ -161,7 +161,7 @@ public class SA {
 
         //get next state based on left side and state on top of stack
         //this is the PUT action
-        String nextState = getActionFromDescriptor(getTopState(), rule.getFrom()).getNextState();
+        String nextState = Integer.toString(getActionFromDescriptor(getTopState(), rule.getFrom()).getNumber());
         //push left side along with nextState
         pdaStack.push(new PDAStackItem(nextState, rule.getFrom()));
     }
