@@ -1,5 +1,6 @@
 package analizator;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class SA {
@@ -15,8 +16,8 @@ public class SA {
     private static UniformCharacter lastInputCharacter;
 
     //used to fill children of parent node when reducing, previous parents are pushed on stack
-    private Stack<TerminalNode> terminalStack = new Stack<>();
-    private Stack<NonTerminalNode> nonTerminalStack = new Stack<>();
+    private static Stack<TerminalNode> terminalNodes = new Stack<>();
+    private static Stack<NonTerminalNode> nonTerminalNodes = new Stack<>();
 
     public static void main(String[] args) {
         //init stack
@@ -33,7 +34,7 @@ public class SA {
     }
 
     private static void parse() {
-        getInputCharacter(); //load the first character
+        loadInputCharacter(); //load the first character
         while (isParsing) {
             UniformCharacter currentCharacter = lastInputCharacter;
             String currentPdaState = getTopState();
@@ -43,13 +44,13 @@ public class SA {
 
             switch (action.getActionType()) {
                 case ACCEPT: //special case of REDUCE
-                    reduceAndAccept(getReductionRuleFromIndex(action.getReductionRuleIndex()));
+                    performReductionRule(getReductionRuleFromIndex(action.getReductionRuleIndex()));
                     isParsing = false;
                     break;
                 case REDUCE:
                     //remove symbols from right side of reduction rule from stack
                     //push next state along with symbol from left side of reduction rule to stack
-                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()));
+                    actionReduce(getReductionRuleFromIndex(action.getReductionRuleIndex()));
                     break;
                 case PUT: //part of REDUCE
                     break;
@@ -57,8 +58,10 @@ public class SA {
                     //push current character to stack along with next state
                     //move input one place to the right
                     pdaStack.push(new PDAStackItem(action.getNextState(), null, true, currentCharacter));
+                    //save the character for building the syntax tree
+                    terminalNodes.push(new TerminalNode(currentCharacter));
                     inputTape.step();
-                    getInputCharacter(); //load the character
+                    loadInputCharacter(); //load the character
                     break;
                 case REJECT:
                     //error happened, handle it
@@ -66,10 +69,11 @@ public class SA {
                     break;
             }
         }
+        tree = nonTerminalNodes.pop();
     }
 
-    private static UniformCharacter getInputCharacter() {
-        if (lastInputCharacter.getIdSymbol().equals(Symbol.TAPE_END)) return lastInputCharacter;
+    private static void loadInputCharacter() {
+        if (lastInputCharacter.getIdSymbol().equals(Symbol.TAPE_END)) return;
         UniformCharacter c = inputTape.getCurrent();
         lastInputCharacter = c;
         characterInLineIndex++;
@@ -77,7 +81,6 @@ public class SA {
             characterInLineIndex = 0;
         }
         lastLineIndex = c.getLine();
-        return c;
     }
 
     private void makeStepOnTape() {
@@ -114,7 +117,7 @@ public class SA {
             System.err.println("Skipping [" +
                     lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
                     " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
-            getInputCharacter();
+            loadInputCharacter();
         }
         //pop elements from stack until an action is defined (different from reject or put)
         while (!actionIsDefined(getTopState(), lastInputCharacter.getIdSymbol())) {
@@ -126,24 +129,31 @@ public class SA {
         return descriptor.actionTable.get(pdaState).get(symbol).getActionType() != ActionType.REDUCE;
     }
 
-    private static void makeReduction(GrammarRule rule) {
-        //TODO: build syntax tree
+    private static void performReductionRule(GrammarRule rule) {
         //remove right side from pdastack
+        ArrayList<TreeNode> children = new ArrayList<>();
         for (Symbol s : rule.getToList()) {
+            if (s.isTerminal()) {
+                children.add(terminalNodes.pop());
+            } else {
+                children.add(nonTerminalNodes.pop());
+            }
+
             pdaStack.pop();
         }
+        //put this node on the non terminal stack
+        NonTerminalNode thisNode = new NonTerminalNode(rule.getFrom(), children);
+        nonTerminalNodes.push(thisNode);
+    }
+
+    private static void actionReduce(GrammarRule rule) {
+        performReductionRule(rule);
+
         //get next state based on left side and state on top of stack
         //this is the PUT action
         String nextState = getActionFromDescriptor(getTopState(), rule.getFrom()).getNextState();
         //push left side along with nextState
         pdaStack.push(new PDAStackItem(nextState, rule.getFrom()));
-    }
-
-    private static void reduceAndAccept(GrammarRule rule) {
-        //TODO: connect elements from stacks to tree(root)
-        for (Symbol s : rule.getToList()) {
-
-        }
     }
 
 }
