@@ -25,9 +25,11 @@ public class NonTerminalNode extends TreeNode {
     @Override
     public void printTree(int depth) {
         //output space 'depth' times
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < depth; i++) {
-            System.out.print(" ");
+            sb.append(" ");
         }
+        System.out.print(sb.toString());
         //print symbol
         System.out.println(symbol);
         //then the children
