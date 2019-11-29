@@ -130,6 +130,7 @@ public class SA {
                     lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
                     " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
             loadInputCharacter();
+            inputTape.step();
         }
         //pop elements from stack until an action is defined (different from reject or put)
         while (!actionIsDefined(getTopState(), lastInputCharacter.getIdSymbol())) {
