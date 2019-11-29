@@ -5,7 +5,7 @@ import java.util.Stack;
 public class SA {
     private static UniformCharacterStream inputTape;
     private static Stack<PDAStackItem> pdaStack;
-    private TreeNode tree;
+    private static TreeNode tree;
     private static SADescriptor descriptor;
 
     private static boolean isParsing = true;
@@ -14,6 +14,7 @@ public class SA {
     private static int characterInLineIndex = 0;
     private static UniformCharacter lastInputCharacter;
 
+    //used to fill children of parent node when reducing, previous parents are pushed on stack
     private Stack<TreeNode> nodestack = new Stack<>();
 
     public static void main(String[] args) {
@@ -27,7 +28,7 @@ public class SA {
         //do actions until done
         //and watch out for errors
         parse();
-        printSyntaxTree();
+        printSyntaxTree(tree);
     }
 
     private static void parse() {
@@ -46,16 +47,15 @@ public class SA {
 
             switch (action.getActionType()) {
                 case ACCEPT: //special case of REDUCE
-                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()), action.getNextState());
+                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()));
                     isParsing = false;
                     break;
                 case REDUCE:
                     //remove symbols from right side of reduction rule from stack
                     //push next state along with symbol from left side of reduction rule to stack
-                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()), action.getNextState());
+                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()));
                     break;
-                case PUT: //special case of REDUCE
-                    makeReduction(getReductionRuleFromIndex(action.getReductionRuleIndex()), action.getNextState());
+                case PUT: //part of REDUCE
                     break;
                 case SHIFT:
                     //push current character to stack along with next state
@@ -110,18 +110,25 @@ public class SA {
         //TODO
     }
 
-    private static void makeReduction(GrammarRule rule, String nextState) {
+    private static boolean actionIsDefined(String pdaState, Symbol symbol) {
+        return descriptor.actionTable.get(pdaState).get(symbol).getActionType() != ActionType.REDUCE;
+    }
+
+    private static void makeReduction(GrammarRule rule) {
         //TODO: build syntax tree
         //remove right side from stack
         int numElements = rule.getToList().size();
         for (int i = 0; i < numElements; i++) {
             pdaStack.pop();
         }
+        //get next state based on left side and state on top of stack
+        //this is the PUT action
+        String nextState = getActionFromDescriptor(getTopState(), rule.getFrom()).getNextState();
         //push left side along with nextState
         pdaStack.push(new PDAStackItem(nextState, rule.getFrom()));
     }
 
-    private static void printSyntaxTree() {
+    private static void printSyntaxTree(TreeNode tree) {
         //TODO
     }
 
