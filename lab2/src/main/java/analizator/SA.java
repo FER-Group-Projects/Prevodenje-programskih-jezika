@@ -132,6 +132,9 @@ public class SA {
             loadInputCharacter();
             inputTape.step();
         }
+        System.err.println("Found sync character [" +
+                lastInputCharacter.getIdSymbol() + "] " + lastInputCharacter.getText() +
+                " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
         //pop elements from stack until an action is defined (different from reject or put)
         while (!actionIsDefined(getTopState(), lastInputCharacter.getIdSymbol())) {
             pdaStack.pop();
