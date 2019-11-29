@@ -53,7 +53,7 @@ public class GSA {
 		
 		reader.close();
 		
-		grammarRules.add(0, new GrammarRule(new Symbol("<S'>"), Arrays.asList(new Symbol("<S>"))));
+		grammarRules.add(0, new GrammarRule(new Symbol("<S'>"), Arrays.asList(symbols.get(1))));
 		
 		// CREATE DFA
 		Dfa lr1dfa = new Dfa(SyntaxAnalysisUtils.convertRulesToENfa(grammarRules, symbols.get(0), symbols));
@@ -88,7 +88,7 @@ public class GSA {
 				actionTable.get(next).put(item.getAfter(), new PDAAction(ActionType.REDUCE, grIndex));
 			}
 			
-			if(containsStartingLR1Item(lr1dfa.getEnfaStatesForDfaState(next))) {
+			if(containsStartingLR1Item(lr1dfa.getEnfaStatesForDfaState(next), symbols.get(1))) {
 				actionTable.get(next).put(Symbol.EPSILON, new PDAAction(ActionType.ACCEPT, 0));
 			}
 			
@@ -122,8 +122,8 @@ public class GSA {
 		
 	}
 	
-	private static boolean containsStartingLR1Item(Set<String> lr1Items) {
-		LR1Item start = new LR1Item(new GrammarRule(new Symbol("<S'>"), Arrays.asList(new Symbol("<S>"))), 1, Symbol.EPSILON);
+	private static boolean containsStartingLR1Item(Set<String> lr1Items, Symbol startingSymbol) {
+		LR1Item start = new LR1Item(new GrammarRule(new Symbol("<S'>"), Arrays.asList(startingSymbol)), 1, Symbol.EPSILON);
 	
 		for(String s : lr1Items) {
 			LR1Item itm;
