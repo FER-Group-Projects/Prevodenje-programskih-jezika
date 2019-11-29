@@ -29,7 +29,7 @@ public class SA {
         //do actions until done
         //and watch out for errors
         parse();
-        TreeNode.printTree(tree,0);
+        tree.printTree(0);
     }
 
     private static void parse() {
