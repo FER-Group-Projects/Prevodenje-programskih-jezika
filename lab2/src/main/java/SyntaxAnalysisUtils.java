@@ -50,14 +50,42 @@ public class SyntaxAnalysisUtils {
                     if (!enfa.containsState(from.toString())) enfa.addState(from.toString());
                     if (!enfa.containsState(to.toString())) enfa.addState(to.toString());
 
-                    enfa.addTransition(from.toString(), rule.getToList().get(dotIndex).getSymbol(), to.toString());
+                    if (rule.getToList().get(dotIndex).equals(Symbol.EPSILON)) enfa.addEpsilonTransition(from.toString(), to.toString());
+                    else enfa.addTransition(from.toString(), rule.getToList().get(dotIndex).getSymbol(), to.toString());
                 }
             }
         }
     }
 
+    private static Set<Symbol> computeEmptySymbols(List<GrammarRule> rules) {
+        Set<Symbol> emptySymbols = new HashSet<>();
+
+        emptySymbols.add(Symbol.EPSILON);
+
+        boolean anyChanges;
+
+        while (true) {
+            anyChanges = false;
+
+            for (GrammarRule rule : rules) {
+                if (canBeEmpty(rule.getToList(), emptySymbols)) {
+                    anyChanges |= emptySymbols.add(rule.getFrom());
+                }
+            }
+
+            if (!anyChanges) break;
+        }
+
+        return emptySymbols;
+    }
+
+    private static boolean canBeEmpty(List<Symbol> toList, Set<Symbol> emptySymbols) {
+        return emptySymbols.containsAll(toList);
+    }
+
     private static Map<Symbol, Set<Symbol>> computeFirstSets(List<GrammarRule> rules, List<Symbol> symbols) {
         Map<Symbol, Set<Symbol>> firstSets = new HashMap<>();
+        Set<Symbol> emptySymbols = computeEmptySymbols(rules);
 
         for (Symbol symbol : symbols) {
             firstSets.put(symbol, new HashSet<>());
@@ -80,16 +108,27 @@ public class SyntaxAnalysisUtils {
             boolean anyChanges = false;
 
             for (GrammarRule rule : rules) {
-                if (!rule.getToList().get(0).isTerminal()) {
-                    Set<Symbol> firstSet = firstSets.get(rule.getFrom());
-                    int sizeBefore = firstSet.size();
+                int index = 0;
 
-                    firstSet.addAll(firstSets.get(rule.getToList().get(0)));
+                while (true) {
+                    if (!rule.getToList().get(index).isTerminal()) {
+                        Set<Symbol> firstSet = firstSets.get(rule.getFrom());
+                        int sizeBefore = firstSet.size();
 
-                    if (sizeBefore != firstSet.size()) {
-                        anyChanges = true;
+                        firstSet.addAll(firstSets.get(rule.getToList().get(index)));
+
+                        if (sizeBefore != firstSet.size()) {
+                            anyChanges = true;
+                        }
                     }
+                    else break;
+
+                    if (index + 1 >= rule.getToList().size()) break;
+                    if (!emptySymbols.contains(rule.getToList().get(index))) break;
+
+                    ++index;
                 }
+
             }
 
             if (!anyChanges) break;

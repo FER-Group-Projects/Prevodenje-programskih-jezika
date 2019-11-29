@@ -34,4 +34,14 @@ public class PDAStackItem {
     public boolean isUniformCharacter() {
         return isUniformCharacter;
     }
+
+    @Override
+    public String toString() {
+        return "PDAStackItem{" +
+                "state='" + state + '\'' +
+                ", stackSymbol=" + stackSymbol +
+                ", isUniformCharacter=" + isUniformCharacter +
+                ", uc=" + uc +
+                '}';
+    }
 }
