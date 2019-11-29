@@ -48,7 +48,7 @@ public class Dfa {
                 Set<String> charTrans = new HashSet<>();
 
                 for (String c : chars) {
-                    if (c != ENfa.EPSILON) {
+                    if (!c.equals(ENfa.EPSILON)) {
                         charTrans.add(c);
                     }
                 }
