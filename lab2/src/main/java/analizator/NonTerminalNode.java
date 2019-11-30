@@ -1,5 +1,3 @@
-package analizator;
-
 import java.util.ArrayList;
 
 public class NonTerminalNode extends TreeNode {

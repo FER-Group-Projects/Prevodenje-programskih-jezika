@@ -1,5 +1,3 @@
-package analizator;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,7 +5,7 @@ import java.nio.file.Paths;
 
 public class DescriptorSerializer {
     public static final String GENERATOR_PATH_TO_SA_DESCRIPTOR = "analizator/sa-descriptor";
-    public static final String ANALYZER_PATH_TO_SA_DESCRIPTOR = "analizator/sa-descriptor";
+    public static final String ANALYZER_PATH_TO_SA_DESCRIPTOR = "sa-descriptor";
 
     public static void serialize(SADescriptor descriptor)throws IOException{
         FileOutputStream fileOutputStream = new FileOutputStream(GENERATOR_PATH_TO_SA_DESCRIPTOR);

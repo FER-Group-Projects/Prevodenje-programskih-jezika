@@ -1,5 +1,3 @@
-package analizator;
-
 public class TerminalNode extends TreeNode {
     //has no children nodes
     //UniformCharacter with terminal symbol

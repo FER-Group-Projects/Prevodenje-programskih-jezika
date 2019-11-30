@@ -14,12 +14,6 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
-import analizator.ActionType;
-import analizator.GrammarRule;
-import analizator.PDAAction;
-import analizator.SADescriptor;
-import analizator.Symbol;
-
 public class GSA {
 	
 	public static final String PATH_TO_DESCRIPTOR = "analizator/sa-descriptor";

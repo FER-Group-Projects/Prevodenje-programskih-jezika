@@ -1,5 +1,3 @@
-package analizator;
-
 public class UniformCharacter {
     private Symbol idSymbol;
     private int line;

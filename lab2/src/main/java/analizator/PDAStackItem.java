@@ -1,5 +1,3 @@
-package analizator;
-
 public class PDAStackItem {
     private String state;
     private Symbol stackSymbol;
