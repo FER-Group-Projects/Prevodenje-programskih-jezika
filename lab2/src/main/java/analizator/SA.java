@@ -134,6 +134,12 @@ public class SA {
                 " in line " + lastInputCharacter.getLine() + " at index " + characterInLineIndex);
         //pop elements from stack until an action is defined (different from reject or put)
         while (!actionIsDefined(getTopState(), lastInputCharacter.getIdSymbol())) {
+            if (pdaStack.peek().getStackSymbol().isTerminal()) {
+                terminalNodes.pop();
+            } else {
+                nonTerminalNodes.pop();
+            }
+
             pdaStack.pop();
         }
     }
