@@ -24,7 +24,8 @@ public class UniformCharacterStream {
             while (reader.ready()) {
                 String line = reader.readLine();
                 String[] temp = line.split(" ");
-                lines.add(new UniformCharacter(new Symbol(temp[0], true), Integer.parseInt(temp[1]), temp[2]));
+                lines.add(new UniformCharacter(new Symbol(temp[0], true), Integer.parseInt(temp[1]),
+                        line.substring(temp[0].length() + temp[1].length() + 2)));
             }
             lines.add(new UniformCharacter(Symbol.TAPE_END, 0, Symbol.TAPE_END.getSymbol()));
         } catch (IOException e) {

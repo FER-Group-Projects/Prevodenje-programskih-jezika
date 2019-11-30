@@ -199,5 +199,5 @@ buildNumber.properties
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,intellij
 
-lab1/src/main/java/analizator/*descriptor
+lab*/src/main/java/analizator/*descriptor
 

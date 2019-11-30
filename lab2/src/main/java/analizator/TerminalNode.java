@@ -21,7 +21,7 @@ public class TerminalNode extends TreeNode {
         for (int i = 0; i < depth; i++) {
             sb.append(" ");
         }
-        System.out.println(sb.toString());
+        System.out.print(sb.toString());
         //then the character
         System.out.println(character);
     }

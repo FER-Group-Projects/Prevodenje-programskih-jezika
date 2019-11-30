@@ -4,7 +4,7 @@ public class Dfa {
 
     private String name;
 
-    // maps Dfa starting state ("d0") to enfa starting states set
+    // maps Dfa starting state ("0") to enfa starting states set
     private Map<String, Set<String>> startingState = new HashMap<>();
 
     private Map<String, Set<String>> states = new HashMap<>();
@@ -18,13 +18,13 @@ public class Dfa {
         this.name = enfa.getName();
 
         Set<String> startingStateSet = enfa.getCurrentActiveStates();
-        startingState.put("d0", startingStateSet);
-        states.put("d0", startingStateSet);
+        startingState.put("0", startingStateSet);
+        states.put("0", startingStateSet);
 
 
         List<String> discoveredStates = new ArrayList<>();
 
-        discoveredStates.add("d0");
+        discoveredStates.add("0");
 
 
         while (!discoveredStates.isEmpty()) {
@@ -111,7 +111,7 @@ public class Dfa {
 
                     if (newEnfaStates.isEmpty()) continue;
 
-                    String newStateName = "d" + stateNumber;
+                    String newStateName = String.valueOf(stateNumber);
                     states.put(newStateName, newEnfaStates);
                     stateNumber++;
 
@@ -202,7 +202,7 @@ public class Dfa {
     }
     
     public String getStartingState() {
-    	return "d0";
+    	return "0";
     }
     
     @Override

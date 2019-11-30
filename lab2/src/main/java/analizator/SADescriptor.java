@@ -23,7 +23,9 @@ public class SADescriptor implements Serializable {
      * PUT(int nextState), REJECT
      */
     public Map<String, Map<Symbol, PDAAction>> actionTable;
-    
+
+    public String startingState;
+
     @Override
     public String toString() {
     	return String.format("SyncSymbolSet : %s%n%nGrammarReductionRules : %s%n%nActionTable : %s%n%n%n",

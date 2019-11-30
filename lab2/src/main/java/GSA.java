@@ -22,7 +22,7 @@ import analizator.Symbol;
 
 public class GSA {
 	
-	public static final String PATH_TO_DESCRIPTOR = "analizator/descriptor";
+	public static final String PATH_TO_DESCRIPTOR = "analizator/sa-descriptor";
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
@@ -80,8 +80,8 @@ public class GSA {
 				} catch (IllegalArgumentException ex) {
 					continue;
 				}
-				if(!item.isFinalItem()) continue;
-				
+				if (!item.isFinalItem()) continue;
+
 				int grIndex = grammarRules.indexOf(item.getGrammarRule());
 				PDAAction old = actionTable.get(next).get(item.getAfter());
 				if(old!=null && (old.getActionType()==ActionType.SHIFT || old.getActionType()==ActionType.REDUCE && old.getNumber()<grIndex)) continue;
@@ -102,9 +102,9 @@ public class GSA {
 				}
 				
 				if(entry.getKey().startsWith("<")) {
-					actionTable.get(next).put(new Symbol(entry.getKey()), new PDAAction(ActionType.PUT, Integer.parseInt(entry.getValue().substring(1))));
+					actionTable.get(next).put(new Symbol(entry.getKey()), new PDAAction(ActionType.PUT, Integer.parseInt(entry.getValue())));
 				} else {
-					actionTable.get(next).put(new Symbol(entry.getKey()), new PDAAction(ActionType.SHIFT, Integer.parseInt(entry.getValue().substring(1))));
+					actionTable.get(next).put(new Symbol(entry.getKey()), new PDAAction(ActionType.SHIFT, Integer.parseInt(entry.getValue())));
 				}	
 			}
 			
@@ -114,6 +114,7 @@ public class GSA {
 		saDescriptor.actionTable = actionTable;
 		saDescriptor.grammarReductionRules = grammarRules;
 		saDescriptor.syncSymbolSet = syncSymbols;
+		saDescriptor.startingState = lr1dfa.getStartingState();
 		
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PATH_TO_DESCRIPTOR));
 		oos.writeObject(saDescriptor);
