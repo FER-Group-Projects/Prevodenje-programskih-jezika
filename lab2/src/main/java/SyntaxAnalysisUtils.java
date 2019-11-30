@@ -111,17 +111,14 @@ public class SyntaxAnalysisUtils {
                 int index = 0;
 
                 while (true) {
-                    if (!rule.getToList().get(index).isTerminal()) {
-                        Set<Symbol> firstSet = firstSets.get(rule.getFrom());
-                        int sizeBefore = firstSet.size();
+                    Set<Symbol> firstSet = firstSets.get(rule.getFrom());
+                    int sizeBefore = firstSet.size();
 
-                        firstSet.addAll(firstSets.get(rule.getToList().get(index)));
+                    firstSet.addAll(firstSets.get(rule.getToList().get(index)));
 
-                        if (sizeBefore != firstSet.size()) {
-                            anyChanges = true;
-                        }
+                    if (sizeBefore != firstSet.size()) {
+                        anyChanges = true;
                     }
-                    else break;
 
                     if (index + 1 >= rule.getToList().size()) break;
                     if (!emptySymbols.contains(rule.getToList().get(index))) break;
