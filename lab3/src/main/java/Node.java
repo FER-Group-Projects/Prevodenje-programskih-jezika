@@ -1,9 +1,9 @@
 import java.util.List;
 
 public abstract class Node {
-    private List<Node> rightSide;
-    private int currentRightSideIndex;
-    private int rightSideType;
+    protected List<Node> rightSide;
+    protected int currentRightSideIndex;
+    protected int rightSideType;
 
     public abstract Node analyze();
     public abstract String toText();
