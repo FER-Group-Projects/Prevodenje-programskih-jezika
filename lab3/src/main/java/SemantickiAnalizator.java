@@ -24,7 +24,7 @@ public class SemantickiAnalizator {
             if (next != null) {
                 nodeStack.push(next);
             } else {
-		nodeStack.pop()
+		nodeStack.pop();
 		} 
         }
     }
