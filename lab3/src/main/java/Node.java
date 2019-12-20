@@ -5,6 +5,8 @@ public abstract class Node {
     protected List<Node> rightSide;
     protected int currentRightSideIndex;
     protected int rightSideType;
+    // block table contains: parent node and local identifiers table
+    protected BlockTable blockTable;
 
     public abstract Node analyze();
 
