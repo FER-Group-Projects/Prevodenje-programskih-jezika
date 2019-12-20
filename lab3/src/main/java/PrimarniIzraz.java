@@ -1,4 +1,9 @@
 public class PrimarniIzraz extends Node {
+
+    public PrimarniIzraz(){
+        super();
+    }
+
     @Override
     public Node analyze() {
         //TODO
