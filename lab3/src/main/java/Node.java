@@ -15,6 +15,10 @@ public abstract class Node {
         currentRightSideIndex = 0;
     }
 
+    public void appendChild(Node child) {
+        rightSide.add(child);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(toText());
