@@ -22,9 +22,10 @@ public class SemantickiAnalizator {
             Node current = nodeStack.pop();
             Node next = current.analyze();
             if (next != null) {
-                nodeStack.push(current);
                 nodeStack.push(next);
-            }
+            } else {
+		nodeStack.pop()
+		} 
         }
     }
 
