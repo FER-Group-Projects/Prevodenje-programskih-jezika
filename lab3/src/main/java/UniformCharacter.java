@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class UniformCharacter extends Node {
 
     private String identifier;
@@ -9,21 +11,19 @@ public class UniformCharacter extends Node {
     }
 
     public UniformCharacter(String identifier, int line, String text) {
-        this.identifier = identifier;
+        this.identifier = Objects.requireNonNull(identifier, "Identifier cannot be null.");
         this.line = line;
-        this.text = text;
+        this.text = Objects.requireNonNull(text, "Text cannot be null.");
     }
 
     @Override
     public Node analyze() {
-        //TODO
         return null;
     }
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return identifier + "(" + line + "," + text + ")";
     }
 
     public int getLine() {
@@ -48,6 +48,26 @@ public class UniformCharacter extends Node {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UniformCharacter that = (UniformCharacter) o;
+        return line == that.line &&
+                identifier.equals(that.identifier) &&
+                text.equals(that.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier, line, text);
+    }
+
+    @Override
+    public String toString() {
+        return toText();
     }
 
 }
