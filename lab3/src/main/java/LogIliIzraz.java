@@ -1,4 +1,4 @@
-public class PrimarniIzraz extends Node {
+public class LogIliIzraz extends Node {
 
     @Override
     public Node analyze() {

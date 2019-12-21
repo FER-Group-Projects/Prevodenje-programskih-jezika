@@ -1,4 +1,4 @@
-public class PrimarniIzraz extends Node {
+public class NaredbaSkoka extends Node {
 
     @Override
     public Node analyze() {
