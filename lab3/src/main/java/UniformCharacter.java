@@ -1,12 +1,17 @@
 public class UniformCharacter extends Node {
 
-    //TODO: geteri i konstruktor
-    private int line;
     private String identifier;
+    private int line;
     private String text;
 
     public UniformCharacter(){
         super();
+    }
+
+    public UniformCharacter(String identifier, int line, String text) {
+        this.identifier = identifier;
+        this.line = line;
+        this.text = text;
     }
 
     @Override
@@ -20,4 +25,29 @@ public class UniformCharacter extends Node {
         //TODO
         return null;
     }
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
 }
