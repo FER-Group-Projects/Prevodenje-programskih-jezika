@@ -1,4 +1,4 @@
-public class PrimarniIzraz extends Node {
+public class PostfiksIzraz extends Node {
 
     @Override
     public Node analyze() {
@@ -8,7 +8,7 @@ public class PrimarniIzraz extends Node {
 
     @Override
     public String toText() {
-        return LeftSideNames.PRIMARNI_IZRAZ;
+        return LeftSideNames.POSTFIKS_IZRAZ;
     }
 }
 
