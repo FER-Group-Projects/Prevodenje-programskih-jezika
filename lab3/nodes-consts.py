@@ -1,4 +1,4 @@
-prdac="""<primarni izraz>
+nodes="""<primarni_izraz>
 <postfiks_izraz>
 <lista_argumenata>
 <unarni_izraz>
@@ -36,10 +36,10 @@ prdac="""<primarni izraz>
 <izravni_deklarator>
 <inicijalizator>
 <lista_izraza_pridruzivanja>"""
-prdac=prdac.split("\n")
-for i in range(len(prdac)):
-    temp=prdac[i][1:len(prdac[i])-1]
-    prdac[i]="public static final String "+temp.upper()+" = \""+prdac[i]+"\";"
+nodes=nodes.split("\n")
+for i in range(len(nodes)):
+    temp=nodes[i][1:len(nodes[i])-1]
+    nodes[i]="public static final String "+temp.upper()+" = \""+nodes[i]+"\";"
     
-for i in prdac:
+for i in nodes:
     print(i)
