@@ -1,5 +1,5 @@
 public class LeftSideNames {
-    public static final String PRIMARNI_IZRAZ = "<primarni izraz>";
+    public static final String PRIMARNI_IZRAZ = "<primarni_izraz>";
     public static final String POSTFIKS_IZRAZ = "<postfiks_izraz>";
     public static final String LISTA_ARGUMENATA = "<lista_argumenata>";
     public static final String UNARNI_IZRAZ = "<unarni_izraz>";
