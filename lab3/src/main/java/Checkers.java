@@ -12,7 +12,7 @@ public class Checkers {
         allowedEscapeChars.add("\\0");  // char = \0
         allowedEscapeChars.add("\\'");  // char = \'
         allowedEscapeChars.add("\\\"");  // char = \"
-        allowedEscapeChars.add("\\\\");  // char = \\"
+        allowedEscapeChars.add("\\\\");  // char = \\
     }
 
     // check that attribute "vrijednost" of uniform character "ZNAK" is allowed
@@ -45,8 +45,8 @@ public class Checkers {
         try {
             // Integer range in Java is same as for ppjC (checked javadoc at https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#parseInt(java.lang.String))
             // -2147483648 <= v <= 2147483647
-            Integer.parseInt(varValueStr);
-            return true;
+            int varVal = Integer.parseInt(varValueStr);
+            return -2147483648 <= varVal && varVal <= 2147483647;
         } catch (NumberFormatException ex) {
             return false;
         }

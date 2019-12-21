@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 public class SemantickiAnalizator {
 
@@ -32,10 +31,52 @@ public class SemantickiAnalizator {
     public void functionTableCheck() {
         //TODO
         System.out.println("Radim provjere funkcija nakon obilaska");
+
+        if (!containsMainFunction()) {
+            System.out.println("main");
+            System.exit(1);
+        }
+
+        if (!allDeclaredFunctionsDefined(tree)) {
+            System.out.println("funkcija");
+            System.exit(1);
+        }
+
     }
 
     public static void main(String[] args) {
         SemantickiAnalizator semantickiAnalizator = new SemantickiAnalizator();
         semantickiAnalizator.execute();
+    }
+
+
+
+
+    //TODO check method!!!!!
+    //metoda containsMainFunction - specijalno za main
+    private boolean containsMainFunction() {
+        List<String> mainInputTypes = Arrays.asList("void");
+        return tree.functionTable.containsFunction(tree, "main", "int", mainInputTypes);
+    }
+
+    //TODO check method!!!!! ----> Is recursion OK?
+    //metoda provjerava jesu li sve deklarirane funkcije u cijelom programu i definirane
+    private boolean allDeclaredFunctionsDefined(Node root) {
+
+        if (root == null)
+            return true;
+
+        FunctionTable currentNodeFunTable = root.functionTable;
+        Collection<Function> functionsDeclared = currentNodeFunTable.functionNameToInOutTypeMap.values();
+        for (Function function : functionsDeclared) {
+            if (!function.isDefined())
+                return false;
+        }
+
+        List<Node> children = root.rightSide;
+        for (Node child : children)
+            allDeclaredFunctionsDefined(child);
+
+        return true;
     }
 }

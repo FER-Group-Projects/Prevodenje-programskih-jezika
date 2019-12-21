@@ -4,30 +4,27 @@ import java.util.Map;
 
 public class FunctionTable {
     //map<imeFunkcije, Map<return tip, lista tipova argumenata>>
-    private Map<String, Function> functionNameToInOutTypeMap = new HashMap<>();
+    public Map<String, Function> functionNameToInOutTypeMap = new HashMap<>();
 
-    // parent node's function table
-    private FunctionTable parent;
-
-
-    // TODO: REFACTOR -> prebaci u SemantickiAnalizator u functionTableCheck metodu
-    //metoda containsMainFunction - specijalno za main
-    public boolean containsMainFunction() {
-        Function function = functionNameToInOutTypeMap.get("main");
-        if (function == null)
-            return false;
-
-        List<String> inputTypes = function.getInputTypes();
-        return function.getReturnType().equals("int") && inputTypes.contains("void") && inputTypes.size() == 1;
-    }
+    // node which has this function table
+    private Node node;
 
     //metoda contains
-    public boolean containsFunction(String funName, String funOutType, List<String> funInType) {
+
+    /**
+     *
+     * @throws
+     */
+    public boolean containsFunction(Node currentNode, String funName, String funOutType, List<String> funInType) {
         Function funInMap = functionNameToInOutTypeMap.get(funName);
         if (funInMap == null) {
-            return getFunctionFromParentBlock(funName, funOutType, funInType);   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
+            try {
+                return getFunctionFromParentBlock(currentNode, funName, funOutType, funInType);   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
+            } catch (NullPointerException ex) {
+                return false;
+            }
         }
-        return true;
+        return funInMap.getInputTypes().equals(funInType) && funInMap.getReturnType().equals(funOutType);
     }
 
     /**
@@ -40,25 +37,43 @@ public class FunctionTable {
      */
     //TODO PROBLEM: sljedece ce vjerojatno raditi za nalazenje funkcije unutar parent bloka funkcija rekurzivno, ali sto s funkcijama? -> treba razlikovati funkcije od obicnih blokova
     // npr. funkcija A zove funkcije B i C -> A NE smije provjeravati deklaracije funkcija u B i C nego odmah direktno u globalnom scopeu
-    // POTENCIJALNO RJESENJE: u BlockTable ili Node staviti neki flag "isFunction" i ovisno o tome postupiti:
-    // if isFunction==false: radi ovako rekurzivno kao ovdje
+    // RJESENJE - provjeriti: u Node staviti flag "isFunction" i ovisno o tome postupiti:
+    // if isFunction==false: radi ovako rekurzivno kao ovdje sve dok ne dode do nekog function bloka
     // else: samo pogledaj deklaracije u globalnom scopeu
-    public boolean getFunctionFromParentBlock(String funName, String funOutType, List<String> funInType) {
-        Map<String, Function> parentFunctionMap = parent.functionNameToInOutTypeMap;
+    public boolean getFunctionFromParentBlock(Node currentNode, String funName, String funOutType, List<String> funInType) {
 
-        if (parentFunctionMap.containsKey(funName)) {
-            return true;
+        // ako je blok = blok funkcije
+        if (currentNode.isFunction) {
+            Map<String, Function> currentNodeFunctionMap = currentNode.functionTable.functionNameToInOutTypeMap;
+            // ako je ovaj blok funkcija i nema deklariranu funkciju pogledaj u global scope
+            if (!currentNodeFunctionMap.containsKey(funName)) {
+                // doci do roota (njegov parent je null) i potraziti deklaraciju funkcije u njemu
+                while (currentNode.parent != null) {
+                    currentNode = currentNode.parent;
+                }
+                return getFunctionFromParentBlock(currentNode, funName, funOutType, funInType);
+            }
+            // ako funkcija sadrzi deklaraciju funkcije istih tipova -> true
+            Function function = currentNodeFunctionMap.get(funName);
+            return function.getInputTypes().equals(funInType) && function.getReturnType().equals(funOutType);
         }
 
-        return parent.getFunctionFromParentBlock(funName, funOutType, funInType);
+        //////////////////////////////////////
+
+        // ako blok = obican blok (NE-funkcija)
+        // ako blok sadrzi deklaraciju funkcije istih tipova -> true
+        if (containsFunction(currentNode, funName, funOutType, funInType))
+            return true;
+        // inace pitaj blok roditelja rekurzivno
+        return getFunctionFromParentBlock(currentNode.parent, funName, funOutType, funInType);
     }
 
 
 
     //metoda za dodavanje
-    public void addFunctionToFunctionTable(String funName, String funOutType, List<String> funInType) {
+    public void addFunctionToFunctionTable(Node node, String funName, String funOutType, List<String> funInType) {
         // if the block or one of block's parents declared the function, do not add it again
-        if (containsFunction(funName, funOutType, funInType))
+        if (containsFunction(node, funName, funOutType, funInType))
             return;
 
         Function function = functionNameToInOutTypeMap.get(funName);

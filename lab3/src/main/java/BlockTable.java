@@ -4,12 +4,10 @@ import java.util.Map;
 
 public class BlockTable {
     //map<imeVarijable, (tip, vrijednost)>
-    private Map<String, VariableTypeValue> nameToTypeValueMap = new HashMap<>();
-    // declarations of functions declared in this block
-    private FunctionTable blockFunctionDeclarations = new FunctionTable();
+    public Map<String, VariableTypeValue> nameToTypeValueMap = new HashMap<>();
 
-    // parent node's block table
-    private BlockTable parent;
+    // node which has this block table
+    private Node node;
 
 
     //////////////////// block VARIABLES ////////////////////
@@ -38,13 +36,14 @@ public class BlockTable {
      *  @throws NullPointerException - ako ne nadje varijablu sve do root nodea
      */
     public VariableTypeValue getVariableFromParentBlock(String varName) {
-        Map<String, VariableTypeValue> parentVariableMap = parent.nameToTypeValueMap;
+        Node parent = node.parent;
+        Map<String, VariableTypeValue> parentVariableMap = parent.blockTable.nameToTypeValueMap;
 
         if (parentVariableMap.containsKey(varName)) {
             return parentVariableMap.get(varName);
         }
 
-        return parent.getVariableFromParentBlock(varName);
+        return parent.blockTable.getVariableFromParentBlock(varName);
     }
 
 
@@ -95,6 +94,4 @@ public class BlockTable {
             this.varValue = varValue;
         }
     }
-
-    //////////////////// block FUNCTIONS ///////////////////
 }

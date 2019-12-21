@@ -28,4 +28,12 @@ public class Function {
     public void setInputTypes(List<String> inputTypes) {
         this.inputTypes = inputTypes;
     }
+
+    public boolean isDefined() {
+        return isDefined;
+    }
+
+    public void setDefined(boolean defined) {
+        isDefined = defined;
+    }
 }

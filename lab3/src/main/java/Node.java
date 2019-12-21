@@ -7,9 +7,11 @@ public abstract class Node {
     protected int rightSideType;
     // block table contains: local identifiers/variables and functions table
     protected BlockTable blockTable;
+    protected FunctionTable functionTable;
+    // flag set to true if block is function block; false otherwise - if it is block or global scope block
+    protected boolean isFunction;
 
     // TODO: Je li ovo bolje nego da pamti samo BlockTable? -> napomena: vidi i odgovarajuce "parent" atribute u BlockTable i FunctionTable - to je sve povezano... - SREDITI!
-    // parent Node
     protected Node parent;
 
     public abstract Node analyze();
@@ -39,4 +41,5 @@ public abstract class Node {
         System.out.println(toString());
         System.exit(0);
     }
+
 }
