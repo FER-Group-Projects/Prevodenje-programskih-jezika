@@ -8,8 +8,7 @@ public class IzravniDeklarator extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.IZRAVNI_DEKLARATOR;
     }
 }
 

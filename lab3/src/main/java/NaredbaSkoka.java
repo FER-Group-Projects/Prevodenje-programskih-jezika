@@ -8,8 +8,7 @@ public class NaredbaSkoka extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.NAREDBA_SKOKA;
     }
 }
 

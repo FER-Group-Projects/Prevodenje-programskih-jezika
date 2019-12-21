@@ -8,8 +8,7 @@ public class DefinicijaFunkcije extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.DEFINICIJA_FUNKCIJE;
     }
 }
 

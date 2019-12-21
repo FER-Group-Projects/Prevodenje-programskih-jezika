@@ -8,8 +8,7 @@ public class BinXiliIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.BIN_XILI_IZRAZ;
     }
 }
 

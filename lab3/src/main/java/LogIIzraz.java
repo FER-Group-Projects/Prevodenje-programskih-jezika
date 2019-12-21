@@ -8,8 +8,7 @@ public class LogIIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.LOG_I_IZRAZ;
     }
 }
 

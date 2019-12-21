@@ -8,8 +8,7 @@ public class ListaIzrazaPridruzivanja extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.LISTA_IZRAZA_PRIDRUZIVANJA;
     }
 }
 

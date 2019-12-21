@@ -8,8 +8,7 @@ public class InitDeklarator extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.INIT_DEKLARATOR;
     }
 }
 

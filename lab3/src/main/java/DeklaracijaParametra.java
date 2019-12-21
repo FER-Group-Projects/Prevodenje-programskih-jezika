@@ -8,8 +8,7 @@ public class DeklaracijaParametra extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.DEKLARACIJA_PARAMETRA;
     }
 }
 

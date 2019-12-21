@@ -8,8 +8,7 @@ public class VanjskaDeklaracija extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.VANJSKA_DEKLARACIJA;
     }
 }
 

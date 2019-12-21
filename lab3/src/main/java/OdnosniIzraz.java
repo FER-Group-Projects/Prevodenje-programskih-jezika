@@ -8,8 +8,7 @@ public class OdnosniIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.ODNOSNI_IZRAZ;
     }
 }
 

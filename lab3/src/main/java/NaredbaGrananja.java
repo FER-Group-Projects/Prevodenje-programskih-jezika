@@ -8,8 +8,7 @@ public class NaredbaGrananja extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.NAREDBA_GRANANJA;
     }
 }
 

@@ -8,8 +8,7 @@ public class ImeTipa extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.IME_TIPA;
     }
 }
 

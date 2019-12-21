@@ -8,8 +8,7 @@ public class ListaDeklaracija extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.LISTA_DEKLARACIJA;
     }
 }
 

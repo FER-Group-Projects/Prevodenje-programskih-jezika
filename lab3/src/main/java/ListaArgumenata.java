@@ -8,8 +8,7 @@ public class ListaArgumenata extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.LISTA_ARGUMENATA;
     }
 }
 

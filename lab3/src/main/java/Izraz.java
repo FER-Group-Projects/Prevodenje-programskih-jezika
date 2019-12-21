@@ -8,8 +8,7 @@ public class Izraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.IZRAZ;
     }
 }
 

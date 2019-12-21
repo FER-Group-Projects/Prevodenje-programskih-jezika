@@ -8,8 +8,7 @@ public class IzrazNaredba extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.IZRAZ_NAREDBA;
     }
 }
 

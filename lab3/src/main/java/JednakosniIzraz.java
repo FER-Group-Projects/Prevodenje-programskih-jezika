@@ -8,8 +8,7 @@ public class JednakosniIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.JEDNAKOSNI_IZRAZ;
     }
 }
 

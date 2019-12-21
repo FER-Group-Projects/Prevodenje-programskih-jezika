@@ -8,8 +8,7 @@ public class SpecifikatorTipa extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.SPECIFIKATOR_TIPA;
     }
 }
 

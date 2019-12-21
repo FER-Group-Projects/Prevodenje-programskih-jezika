@@ -8,8 +8,7 @@ public class UnarniIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.UNARNI_IZRAZ;
     }
 }
 

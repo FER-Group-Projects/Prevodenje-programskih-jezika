@@ -8,8 +8,7 @@ public class MultiplikativniIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.MULTIPLIKATIVNI_IZRAZ;
     }
 }
 

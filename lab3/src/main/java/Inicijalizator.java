@@ -8,8 +8,7 @@ public class Inicijalizator extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.INICIJALIZATOR;
     }
 }
 

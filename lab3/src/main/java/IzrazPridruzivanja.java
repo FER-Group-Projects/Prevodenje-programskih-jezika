@@ -8,8 +8,7 @@ public class IzrazPridruzivanja extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.IZRAZ_PRIDRUZIVANJA;
     }
 }
 

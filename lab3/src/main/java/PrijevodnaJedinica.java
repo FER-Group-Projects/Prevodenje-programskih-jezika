@@ -8,8 +8,7 @@ public class PrijevodnaJedinica extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.PRIJEVODNA_JEDINICA;
     }
 }
 

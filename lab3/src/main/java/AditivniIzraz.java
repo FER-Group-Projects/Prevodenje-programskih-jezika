@@ -8,8 +8,7 @@ public class AditivniIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.ADITIVNI_IZRAZ;
     }
 }
 

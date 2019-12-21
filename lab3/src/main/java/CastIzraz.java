@@ -8,8 +8,7 @@ public class CastIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.CAST_IZRAZ;
     }
 }
 

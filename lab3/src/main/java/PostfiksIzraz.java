@@ -8,8 +8,7 @@ public class PostfiksIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.POSTFIKS_IZRAZ;
     }
 }
 

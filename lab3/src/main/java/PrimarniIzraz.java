@@ -8,8 +8,7 @@ public class PrimarniIzraz extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.PRIMARNI_IZRAZ;
     }
 }
 

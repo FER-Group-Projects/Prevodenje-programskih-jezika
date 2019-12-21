@@ -8,8 +8,7 @@ public class ListaInitDeklaratora extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.LISTA_INIT_DEKLARATORA;
     }
 }
 

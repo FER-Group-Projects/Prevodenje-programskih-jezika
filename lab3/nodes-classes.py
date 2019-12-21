@@ -47,8 +47,9 @@ classText=""" extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames."""
+# return LeftSideNames.IME_KLASE
+rest=""";
     }
 }
 
@@ -57,8 +58,11 @@ classText=""" extends Node {
 import os
 
 nodes=nodes.split("\n")
+nodes2=list(nodes)
+print(nodes2)
 for i in range(len(nodes)):
     nodes[i]=nodes[i][1:len(nodes[i])-1]
+    nodes2[i]=nodes2[i][1:len(nodes2[i])-1]
     temp=nodes[i].split("_")
     temp2=""
     for t in temp:
@@ -69,10 +73,10 @@ if(os.path.isdir("nodes-classes")):
     os.rmdir("nodes-classes")
 os.mkdir("nodes-classes")
 
-for i in nodes:
-    javaClass="public class "+i+classText
+for i in range(len(nodes)):
+    javaClass="public class "+nodes[i]+classText+nodes2[i].upper()+rest
     #print(javaClass)
-    with open("nodes-classes/"+i+".java", "a") as out:
+    with open("nodes-classes/"+nodes[i]+".java", "a") as out:
         out.write(javaClass)
 
 for i in nodes:

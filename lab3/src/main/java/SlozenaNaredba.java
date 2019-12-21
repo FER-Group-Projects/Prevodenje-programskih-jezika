@@ -8,8 +8,7 @@ public class SlozenaNaredba extends Node {
 
     @Override
     public String toText() {
-        //TODO
-        return null;
+        return LeftSideNames.SLOZENA_NAREDBA;
     }
 }
 
