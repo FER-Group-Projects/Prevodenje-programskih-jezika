@@ -5,8 +5,12 @@ public abstract class Node {
     protected List<Node> rightSide;
     protected int currentRightSideIndex;
     protected int rightSideType;
-    // block table contains: parent node and local identifiers table
+    // block table contains: local identifiers/variables and functions table
     protected BlockTable blockTable;
+
+    // TODO: Je li ovo bolje nego da pamti samo BlockTable? -> napomena: vidi i odgovarajuce "parent" atribute u BlockTable i FunctionTable - to je sve povezano... - SREDITI!
+    // parent Node
+    protected Node parent;
 
     public abstract Node analyze();
 

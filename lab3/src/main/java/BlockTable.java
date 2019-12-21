@@ -1,26 +1,31 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BlockTable {
     //map<imeVarijable, (tip, vrijednost)>
     private Map<String, VariableTypeValue> nameToTypeValueMap = new HashMap<>();
+    // declarations of functions declared in this block
+    private FunctionTable blockFunctionDeclarations = new FunctionTable();
+
     // parent node's block table
     private BlockTable parent;
 
 
+    //////////////////// block VARIABLES ////////////////////
     /**
      * metoda za dohvat vrijednosti neke varijable
      *
      * @param varName
      * @return
-     * @throws NullPointerException - ako ne nadje varijablu sve do root nodea !!!!!!VAZNO!!!!!!!
+     * @throws NullPointerException - ako ne nadje varijablu sve do root nodea
      */
     public String getVariableValue(String varName) {
         VariableTypeValue varInMap = nameToTypeValueMap.get(varName);
         if (varInMap == null) {
             return getVariableFromParentBlock(varName).getVarValue();   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
         }
-        return nameToTypeValueMap.get(varName).getVarValue();
+        return varInMap.getVarValue();
     }
 
     /**
@@ -30,7 +35,7 @@ public class BlockTable {
      * inace pita svog roditelja itd. rekurzivno
      * @param varName
      * @return
-     *  @throws NullPointerException - ako ne nadje varijablu sve do root nodea !!!!!!VAZNO!!!!!!!
+     *  @throws NullPointerException - ako ne nadje varijablu sve do root nodea
      */
     public VariableTypeValue getVariableFromParentBlock(String varName) {
         Map<String, VariableTypeValue> parentVariableMap = parent.nameToTypeValueMap;
@@ -90,4 +95,6 @@ public class BlockTable {
             this.varValue = varValue;
         }
     }
+
+    //////////////////// block FUNCTIONS ///////////////////
 }
