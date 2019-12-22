@@ -5,12 +5,11 @@ public abstract class Node {
     protected List<Node> rightSide;
     protected int currentRightSideIndex;
     protected int rightSideType;
-    protected Properties properties;
 
+    protected Properties properties;
     // block table contains: local identifiers/variables
     protected BlockTable blockTable;
-    // flag set to true if block is function block; false otherwise - if it is block or global scope block
-    protected boolean isFunction;
+
 
     protected Node parent;
 

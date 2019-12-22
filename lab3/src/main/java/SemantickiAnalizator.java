@@ -37,7 +37,7 @@ public class SemantickiAnalizator {
             System.exit(1);
         }
 
-        if (!allDeclaredFunctionsDefined(tree)) {
+        if (!allDeclaredFunctionsDefined()) {
             System.out.println("funkcija");
             System.exit(1);
         }
@@ -58,20 +58,13 @@ public class SemantickiAnalizator {
     }
 
     //metoda provjerava jesu li sve deklarirane funkcije u cijelom programu i definirane
-    private boolean allDeclaredFunctionsDefined(Node root) {
-
-        if (root == null)
-            return true;
+    private boolean allDeclaredFunctionsDefined() {
 
         Collection<Function> functionsDeclared = FunctionTable.functionNameToInOutTypeMap.values();
         for (Function function : functionsDeclared) {
             if (!function.isDefined())
                 return false;
         }
-
-        List<Node> children = root.rightSide;
-        for (Node child : children)
-            allDeclaredFunctionsDefined(child);
 
         return true;
     }

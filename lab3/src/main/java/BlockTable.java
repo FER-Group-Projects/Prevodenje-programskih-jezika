@@ -130,32 +130,8 @@ public class BlockTable {
      *
      *  @throws NullPointerException - ako ne nadje funkciju sve do root nodea
      */
-    //TODO PROBLEM: sljedece ce vjerojatno raditi za nalazenje funkcije unutar parent bloka funkcija rekurzivno, ali sto s funkcijama? -> treba razlikovati funkcije od obicnih blokova
-    // npr. funkcija A zove funkcije B i C -> A NE smije provjeravati deklaracije funkcija u B i C nego odmah direktno u globalnom scopeu
-    // RJESENJE - provjeriti: u Node staviti flag "isFunction" i ovisno o tome postupiti:
-    // if isFunction==false: radi ovako rekurzivno kao ovdje sve dok ne dode do nekog function bloka
-    // else: samo pogledaj deklaracije u globalnom scopeu
     public boolean getFunctionFromParentBlock(Node currentNode, String funName, String funOutType, List<String> funInType) {
 
-        // ako je blok = blok funkcije
-        if (currentNode.isFunction) {
-            Map<String, Function> currentNodeFunctionMap = FunctionTable.functionNameToInOutTypeMap;
-            // ako je ovaj blok funkcija i nema deklariranu funkciju pogledaj u global scope
-            if (!currentNodeFunctionMap.containsKey(funName)) {
-                // doci do roota (root node nije funkcija i njegov parent je null) i potraziti deklaraciju funkcije u njemu
-                while (currentNode.parent != null) {
-                    currentNode = currentNode.parent;
-                }
-                return getFunctionFromParentBlock(currentNode, funName, funOutType, funInType);
-            }
-            // ako funkcija sadrzi deklaraciju funkcije istih tipova -> true
-            Function function = FunctionTable.getFunctionFromFunctionTable(funName);
-            return function.getInputTypes().equals(funInType) && function.getReturnType().equals(funOutType);
-        }
-
-        //////////////////////////////////////
-
-        // ako blok = obican blok (NE-funkcija)
         // ako blok sadrzi deklaraciju funkcije istih tipova -> true
         if (containsFunction(currentNode, funName, funOutType, funInType))
             return true;

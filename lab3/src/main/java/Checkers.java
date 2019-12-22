@@ -1,4 +1,5 @@
 
+
 import java.util.*;
 
 public class Checkers {
@@ -26,17 +27,32 @@ public class Checkers {
     }
 
     // check that attribute "vrijednost" of uniform character "NIZ_ZNAKOVA" is allowed
-    public static boolean checkCharacterArray(String[] charConstValuesStrArr) {
+    public static boolean checkCharacterArray(String charConstValuesStrArr) {
 
-        // niz(const(char)) array must end with char = \0
-        if (!charConstValuesStrArr[charConstValuesStrArr.length-1].equals("\\0"))
-            return false;
+        char[] chars = charConstValuesStrArr.toCharArray();
 
-        // check each char const in the array
-        for (String charConst : charConstValuesStrArr) {
-            if (!checkCharacterConst(charConst))
+
+        // check each char const in the array - all the way up to NOT including last character
+        int i=0;
+        while (i < charConstValuesStrArr.length()-1) {
+            char currentChar = chars[i];
+            char nextChar = chars[i+1];
+            Boolean isValidCharConst = null;
+            if (currentChar == '\\') {
+                isValidCharConst = checkCharacterConst(Character.toString(currentChar) + Character.toString(nextChar));
+                // two characters checked - escaping and escaped char
+                i += 2;
+            } else {
+                isValidCharConst = checkCharacterConst(Character.toString(currentChar));
+                i += 1;
+            }
+            if (!isValidCharConst)
                 return false;
         }
+
+        // check last character - it cannot be escape char (\) because there is nothing to be esacpe (no more characters after the last character)
+        if (chars[chars.length-1] == '\\')
+            return  false;
 
         return true;
     }
@@ -45,8 +61,8 @@ public class Checkers {
         try {
             // Integer range in Java is same as for ppjC (checked javadoc at https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#parseInt(java.lang.String))
             // -2147483648 <= v <= 2147483647
-            int varVal = Integer.parseInt(varValueStr);
-            return -2147483648 <= varVal && varVal <= 2147483647;
+            Integer.parseInt(varValueStr);
+            return true;
         } catch (NumberFormatException ex) {
             return false;
         }
@@ -63,7 +79,7 @@ public class Checkers {
 
     // checks if variable of type A can be explicitly casted to variable of type B using (castType)
     // varBType <- (castType) varAType
-    public static boolean checkExplicitCast(String varAType, String varBType, String castType){
+    public static boolean checkExplicitCast(Type varAType, Type varBType, Type castType){
         // first mandatory check:
         // e.g. char <- (int) char: castType = int cannot be implicity cast to varBType = char
         if (!checkImplicitCast(castType, varBType))
@@ -73,7 +89,7 @@ public class Checkers {
         // e.g. char <- (char) int
         // e.g. int <- (char) int
         // possible variants considering implicit casting: int/const(int)/char/const(char) <- (char/const(char)) int/const(int)/char/const(char)
-        if (checkImplicitCast(varAType,"int") && checkImplicitCast(castType, "char"))
+        if (checkImplicitCast(varAType,Type.INT) && checkImplicitCast(castType, Type.CHAR))
             return true;
         // e.g. const(char) <- (SOMETHING THAT CAN BE IMPLICITY CAST TO const(char)) char
         // note:
@@ -89,7 +105,7 @@ public class Checkers {
     // checks if variable of type A can be explicitly casted to variable of type B using ONE OR MORE castTypes - list of (castType)
     // varBType <- (castType1) (castType2) (castType3) varAType
     // NOTE: elements of castTypes list are added from left to right but the order of casting is REVERSED.
-    public static boolean checkExplicitCast(String varAType, String varBType, List<String> castTypes){
+    public static boolean checkExplicitCast(Type varAType, Type varBType, List<Type> castTypes){
         if (castTypes.size() == 1)
             return checkExplicitCast(varAType, varBType, castTypes.get(0));
 
@@ -105,13 +121,13 @@ public class Checkers {
 
 
         // save inter-results
-        String[] interResults = new String[castListSize-1];
+        Type[] interResults = new Type[castListSize-1];
 
-        String currentType = varAType;
+        Type currentType = varAType;
         for (int i=0; i < castListSize-1; i++) {
 
-            if (checkImplicitCast(currentType, "int") && checkImplicitCast(castTypes.get(i), "char")) {
-                currentType = "char";
+            if (checkImplicitCast(currentType, Type.INT) && checkImplicitCast(castTypes.get(i), Type.CHAR)) {
+                currentType = Type.CHAR;
             } else {
                 currentType = castTypes.get(i);
             }
@@ -131,7 +147,7 @@ public class Checkers {
 
     // checks if variable of type A can be implicitly casted to variable of type B
     // varBType <- varAType
-    public static boolean checkImplicitCast(String varAType, String varBType){
+    public static boolean checkImplicitCast(Type varAType, Type varBType){
         // T = int / char
 
         // equal types - no casting, just true
@@ -140,22 +156,22 @@ public class Checkers {
         else if (checkImplicitConstIntChar(varAType, varBType))
             return true;
         // char/const(char) -> int/const(int)
-        else if (checkImplicitConstIntChar(varAType, "char") && checkImplicitConstIntChar(varBType, "int"))
+        else if (checkImplicitConstIntChar(varAType, Type.CHAR) && checkImplicitConstIntChar(varBType, Type.INT))
             return true;
         // niz(T) -> niz(const(T))
-        else if ((varAType.equals("niz(char)") && varBType.equals("niz(const(char))")) || (varAType.equals("niz(int)") && varBType.equals("niz(const(int))")))
+        else if ((varAType.equals(Type.ARRAY_CHAR) && varBType.equals(Type.CONST_ARRAY_CHAR)) || (varAType.equals(Type.ARRAY_INT) && varBType.equals(Type.CONST_ARRAY_INT)))
             return true;
 
         // all other cases of implicit casting - UNALLOWED
         return false;
     }
 
-    private static boolean checkImplicitConstIntChar(String varAType, String varBType) {
+    private static boolean checkImplicitConstIntChar(Type varAType, Type varBType) {
         // const(T) -> T
-        if ((varAType.equals("const(char)") && varBType.equals("char")) || (varAType.equals("const(int)") && varBType.equals("int")))
+        if ((varAType.equals(Type.CONST_CHAR) && varBType.equals(Type.CHAR)) || (varAType.equals(Type.CONST_INT) && varBType.equals(Type.INT)))
             return true;
         // T -> const(T)
-        else if ((varAType.equals("char") && varBType.equals("const(char)")) || (varAType.equals("int") && varBType.equals("const(int)")))
+        else if ((varAType.equals(Type.CHAR) && varBType.equals(Type.CONST_CHAR)) || (varAType.equals(Type.INT) && varBType.equals(Type.CONST_INT)))
             return true;
         return false;
     }
