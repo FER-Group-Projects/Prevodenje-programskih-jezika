@@ -42,4 +42,19 @@ public abstract class Node {
     public String getName(){
         return toText();
     }
+
+    public void printTree(int depth) {
+        //output space 'depth' times
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            sb.append(" ");
+        }
+        System.out.print(sb.toString());
+        //print symbol
+        System.out.println(toText());
+        //then the children
+        for (Node node : rightSide) {
+            node.printTree(depth + 1);
+        }
+    }
 }
