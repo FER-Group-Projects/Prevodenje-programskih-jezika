@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 public class SemantickiAnalizator {
 
@@ -31,10 +30,41 @@ public class SemantickiAnalizator {
     public void functionTableCheck() {
         //TODO
         System.out.println("Radim provjere funkcija nakon obilaska");
+
+        if (!containsMainFunction()) {
+            System.out.println("main");
+            System.exit(1);
+        }
+
+        if (!allDeclaredFunctionsDefined()) {
+            System.out.println("funkcija");
+            System.exit(1);
+        }
+
     }
 
     public static void main(String[] args) {
         SemantickiAnalizator semantickiAnalizator = new SemantickiAnalizator();
         semantickiAnalizator.execute();
+    }
+
+
+
+    //metoda containsMainFunction - specijalno za main
+    private boolean containsMainFunction() {
+        List<String> mainInputTypes = Arrays.asList("void");
+        return FunctionTable.containsFunction("main", "int", mainInputTypes);
+    }
+
+    //metoda provjerava jesu li sve deklarirane funkcije u cijelom programu i definirane
+    private boolean allDeclaredFunctionsDefined() {
+
+        Collection<Function> functionsDeclared = FunctionTable.functionNameToInOutTypeMap.values();
+        for (Function function : functionsDeclared) {
+            if (!function.isDefined())
+                return false;
+        }
+
+        return true;
     }
 }

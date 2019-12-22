@@ -7,8 +7,11 @@ public abstract class Node {
     protected int rightSideType;
 
     protected Properties properties;
-    // block table contains: parent node and local identifiers table
+    // block table contains: local identifiers/variables
     protected BlockTable blockTable;
+
+
+    protected Node parent;
 
     public abstract Node analyze();
     public abstract String toText();
@@ -40,6 +43,7 @@ public abstract class Node {
         System.exit(0);
     }
 
+
     public String getName() {
         return toText();
     }
@@ -58,4 +62,5 @@ public abstract class Node {
             node.printTree(depth + 1);
         }
     }
+
 }
