@@ -26,6 +26,11 @@ public class UniformCharacter extends Node {
         return identifier + "(" + line + "," + text + ")";
     }
 
+    @Override
+    public void determineRightSideType() {
+        //do nothing
+    }
+
     public int getLine() {
         return line;
     }
