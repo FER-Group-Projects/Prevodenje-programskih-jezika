@@ -11,12 +11,13 @@ public abstract class Node {
     protected BlockTable blockTable;
 
     public abstract Node analyze();
-
     public abstract String toText();
+    public abstract void determineRightSideType();
 
     public Node() {
         rightSide = new ArrayList<>();
         currentRightSideIndex = 0;
+        rightSideType = -1;
         properties = new Properties();
     }
 
@@ -39,7 +40,7 @@ public abstract class Node {
         System.exit(0);
     }
 
-    public String getName(){
+    public String getName() {
         return toText();
     }
 
