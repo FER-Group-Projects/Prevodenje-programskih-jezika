@@ -7,6 +7,7 @@ public class BlockTable {
     // node which has this block table
     private Node node;
 
+    // set containing function names declared in the block
     Set<String> declaredFunctions = new HashSet<>();
 
 
