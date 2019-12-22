@@ -26,6 +26,11 @@ public class UniformCharacter extends Node {
         return identifier + "(" + line + "," + text + ")";
     }
 
+    @Override
+    public void determineRightSideType() {
+        //do nothing
+    }
+
     public int getLine() {
         return line;
     }
@@ -70,4 +75,20 @@ public class UniformCharacter extends Node {
         return toText();
     }
 
+    @Override
+    public String getName() {
+        return identifier;
+    }
+
+    @Override
+    public void printTree(int depth) {
+        //output space 'depth' times
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            sb.append(" ");
+        }
+        System.out.print(sb.toString());
+        //print symbol
+        System.out.println(identifier + " " + line + " " + text);
+    }
 }
