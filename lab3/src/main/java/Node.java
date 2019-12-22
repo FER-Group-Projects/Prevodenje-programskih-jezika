@@ -38,4 +38,8 @@ public abstract class Node {
         System.out.println(toString());
         System.exit(0);
     }
+
+    public String getName(){
+        return toText();
+    }
 }

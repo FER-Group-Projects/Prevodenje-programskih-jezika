@@ -70,4 +70,8 @@ public class UniformCharacter extends Node {
         return toText();
     }
 
+    @Override
+    public String getName() {
+        return identifier;
+    }
 }
