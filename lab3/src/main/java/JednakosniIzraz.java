@@ -2,6 +2,7 @@ public class JednakosniIzraz extends Node {
 
     @Override
     public Node analyze() {
+        if (rightSideType == -1) determineRightSideType();
         //TODO
         return null;
     }
@@ -9,6 +10,11 @@ public class JednakosniIzraz extends Node {
     @Override
     public String toText() {
         return LeftSideNames.JEDNAKOSNI_IZRAZ;
+    }
+
+    @Override
+    public void determineRightSideType() {
+        //TODO
     }
 }
 

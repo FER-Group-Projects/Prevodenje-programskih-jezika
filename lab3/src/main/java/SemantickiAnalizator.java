@@ -16,15 +16,14 @@ public class SemantickiAnalizator {
     }
 
     public void dfs() {
-        System.out.println("Radim dfs obilazak stabla");
         while (!nodeStack.isEmpty()) {
             Node current = nodeStack.peek();
             Node next = current.analyze();
             if (next != null) {
                 nodeStack.push(next);
             } else {
-		nodeStack.pop();
-		} 
+                nodeStack.pop();
+            }
         }
     }
 

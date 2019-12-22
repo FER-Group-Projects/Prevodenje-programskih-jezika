@@ -14,12 +14,13 @@ public abstract class Node {
     protected Node parent;
 
     public abstract Node analyze();
-
     public abstract String toText();
+    public abstract void determineRightSideType();
 
     public Node() {
         rightSide = new ArrayList<>();
         currentRightSideIndex = 0;
+        rightSideType = -1;
         properties = new Properties();
     }
 
@@ -40,6 +41,26 @@ public abstract class Node {
     public void errorHappened() {
         System.out.println(toString());
         System.exit(0);
+    }
+
+
+    public String getName() {
+        return toText();
+    }
+
+    public void printTree(int depth) {
+        //output space 'depth' times
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            sb.append(" ");
+        }
+        System.out.print(sb.toString());
+        //print symbol
+        System.out.println(toText());
+        //then the children
+        for (Node node : rightSide) {
+            node.printTree(depth + 1);
+        }
     }
 
 }

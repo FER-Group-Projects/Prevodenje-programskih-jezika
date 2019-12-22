@@ -41,6 +41,7 @@ classText=""" extends Node {
 
     @Override
     public Node analyze() {
+        if (rightSideType == -1) determineRightSideType();
         //TODO
         return null;
     }
@@ -50,6 +51,11 @@ classText=""" extends Node {
         return LeftSideNames."""
 # return LeftSideNames.IME_KLASE
 rest=""";
+    }
+
+    @Override
+    public void determineRightSideType() {
+        //TODO
     }
 }
 

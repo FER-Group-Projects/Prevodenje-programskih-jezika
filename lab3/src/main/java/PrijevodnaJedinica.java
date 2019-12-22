@@ -2,6 +2,7 @@ public class PrijevodnaJedinica extends Node {
 
     @Override
     public Node analyze() {
+        if (rightSideType == -1) determineRightSideType();
         //TODO
         return null;
     }
@@ -9,6 +10,11 @@ public class PrijevodnaJedinica extends Node {
     @Override
     public String toText() {
         return LeftSideNames.PRIJEVODNA_JEDINICA;
+    }
+
+    @Override
+    public void determineRightSideType() {
+        //TODO
     }
 }
 
