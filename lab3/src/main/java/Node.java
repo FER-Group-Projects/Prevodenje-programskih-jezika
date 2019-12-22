@@ -5,9 +5,8 @@ public abstract class Node {
     protected List<Node> rightSide;
     protected int currentRightSideIndex;
     protected int rightSideType;
-    // block table contains: local identifiers/variables and functions table
+    // block table contains: local identifiers/variables
     protected BlockTable blockTable;
-    protected FunctionTable functionTable;
     // flag set to true if block is function block; false otherwise - if it is block or global scope block
     protected boolean isFunction;
 

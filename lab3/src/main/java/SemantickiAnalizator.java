@@ -51,23 +51,19 @@ public class SemantickiAnalizator {
 
 
 
-
-    //TODO check method!!!!!
     //metoda containsMainFunction - specijalno za main
     private boolean containsMainFunction() {
         List<String> mainInputTypes = Arrays.asList("void");
-        return tree.functionTable.containsFunction(tree, "main", "int", mainInputTypes);
+        return FunctionTable.containsFunction("main", "int", mainInputTypes);
     }
 
-    //TODO check method!!!!! ----> Is recursion OK?
     //metoda provjerava jesu li sve deklarirane funkcije u cijelom programu i definirane
     private boolean allDeclaredFunctionsDefined(Node root) {
 
         if (root == null)
             return true;
 
-        FunctionTable currentNodeFunTable = root.functionTable;
-        Collection<Function> functionsDeclared = currentNodeFunTable.functionNameToInOutTypeMap.values();
+        Collection<Function> functionsDeclared = FunctionTable.functionNameToInOutTypeMap.values();
         for (Function function : functionsDeclared) {
             if (!function.isDefined())
                 return false;
