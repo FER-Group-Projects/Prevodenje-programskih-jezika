@@ -5,6 +5,8 @@ public abstract class Node {
     protected List<Node> rightSide;
     protected int currentRightSideIndex;
     protected int rightSideType;
+    protected Properties properties;
+
     // block table contains: local identifiers/variables
     protected BlockTable blockTable;
     // flag set to true if block is function block; false otherwise - if it is block or global scope block
@@ -19,6 +21,7 @@ public abstract class Node {
     public Node() {
         rightSide = new ArrayList<>();
         currentRightSideIndex = 0;
+        properties = new Properties();
     }
 
     public void appendChild(Node child) {
