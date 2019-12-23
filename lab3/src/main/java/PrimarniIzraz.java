@@ -100,13 +100,9 @@ public class PrimarniIzraz extends Node {
                 case Identifiers.NIZ_ZNAKOVA:
                     rightSideType = 3;
                     break;
-                default:
-                    errorHappened();
             }
-        } else if (len == 3) {
-            rightSideType = 4;
         } else {
-            errorHappened();
+            rightSideType = 4;
         }
     }
 }
