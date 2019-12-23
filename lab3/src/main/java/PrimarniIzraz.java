@@ -5,68 +5,59 @@ public class PrimarniIzraz extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        if (currentRightSideIndex > rightSide.size()) return null;
 
         switch (rightSideType) {
             case 0:
                 if (currentRightSideIndex == 0) {
-                    currentRightSideIndex++;
+
+                    VariableTypeValueLExpression variableTypeValue = null;
+
                     try {
-                        blockTable.getVariableValue(((UniformCharacter) rightSide.get(0)).getText());
+                        variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
                     } catch (NullPointerException ex) {
                         errorHappened();
                     }
-                } else {
+
                     Properties rightSideCharProperties = rightSide.get(0).properties;
-                    properties.setTip(rightSideCharProperties.getTip());
-                    properties.setlIzraz(rightSideCharProperties.getlIzraz());
+                    properties.setTip(variableTypeValue.getTip());
+                    properties.setlIzraz(variableTypeValue.getlIzraz());
                 }
                 break;
             case 1:
                 if (currentRightSideIndex == 0) {
-                    currentRightSideIndex++;
                     if (!Checkers.checkInt(((UniformCharacter) rightSide.get(0)).getText()))
                         errorHappened();
-                } else {
+
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
                 }
                 break;
             case 2:
                 if (currentRightSideIndex == 0) {
-                    currentRightSideIndex++;
                     if (!Checkers.checkCharacterConst(((UniformCharacter) rightSide.get(0)).getText()))
                         errorHappened();
-                } else {
+
                     properties.setTip(Type.CHAR);
                     properties.setlIzraz(0);
                 }
                 break;
             case 3:
                 if (currentRightSideIndex == 0) {
-                    currentRightSideIndex++;
                     if (!Checkers.checkCharacterArray(((UniformCharacter) rightSide.get(0)).getText()))
                         errorHappened();
-                } else {
+
                     properties.setTip(Type.CONST_ARRAY_CHAR);
                     properties.setlIzraz(0);
                 }
                 break;
             case 4:
                 if (currentRightSideIndex == 0) {
-                    currentRightSideIndex++;
-                    //TODO je li potrebno?
                     if (!((UniformCharacter) rightSide.get(0)).getIdentifier().equals(Identifiers.L_ZAGRADA))
                         errorHappened();
-                    return rightSide.get(currentRightSideIndex);
-                } else if (currentRightSideIndex == 1) {
-                    currentRightSideIndex++;
-                } else if (currentRightSideIndex == 2) {
-                    currentRightSideIndex++;
-                    //TODO je li potrebno?
+                    return rightSide.get(1);
+                } else {
                     if (!((UniformCharacter) rightSide.get(2)).getIdentifier().equals(Identifiers.D_ZAGRADA))
                         errorHappened();
-                } else {
                     properties.setTip(rightSide.get(1).properties.getTip());
                     properties.setlIzraz(rightSide.get(1).properties.getlIzraz());
                 }
