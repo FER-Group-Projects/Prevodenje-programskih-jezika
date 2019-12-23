@@ -63,4 +63,7 @@ public abstract class Node {
         }
     }
 
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
 }
