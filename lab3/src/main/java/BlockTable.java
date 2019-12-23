@@ -114,7 +114,7 @@ public class BlockTable {
      *
      * @throws NullPointerException - ako ne nadje funkciju sve do root nodea
      */
-    public boolean containsFunction(Node currentNode, String funName, String funOutType, List<String> funInType) {
+    public boolean containsFunction(Node currentNode, String funName, Type funOutType, List<Type> funInType) {
 
         // if the block does not have the function declaration, see the parent nodes recursively
         if (!declaredFunctions.contains(funName)) {
@@ -140,7 +140,7 @@ public class BlockTable {
      *
      *  @throws NullPointerException - ako ne nadje funkciju sve do root nodea
      */
-    public boolean getFunctionFromParentBlock(Node currentNode, String funName, String funOutType, List<String> funInType) {
+    public boolean getFunctionFromParentBlock(Node currentNode, String funName, Type funOutType, List<Type> funInType) {
 
         // ako blok sadrzi deklaraciju funkcije istih tipova -> true
         if (containsFunction(currentNode, funName, funOutType, funInType))
@@ -152,7 +152,7 @@ public class BlockTable {
 
 
     //metoda za dodavanje
-    public void addFunctionToBlockTable(String funName, String funOutType, List<String> funInType) {
+    public void addFunctionToBlockTable(String funName, Type funOutType, List<Type> funInType) {
         // if the block or one of block's parents declared the function -> do not add it again
         if (containsFunction(node, funName, funOutType, funInType))
             return;
