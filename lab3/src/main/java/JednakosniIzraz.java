@@ -1,11 +1,4 @@
-public class JednakosniIzraz extends Node {
-
-    @Override
-    public Node analyze() {
-        if (rightSideType == -1) determineRightSideType();
-        //TODO
-        return null;
-    }
+public class JednakosniIzraz extends AbstractIzraz {
 
     @Override
     public String toText() {
@@ -14,7 +7,17 @@ public class JednakosniIzraz extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        switch (rightSide.get(0).getName()) {
+            case LeftSideNames.ODNOSNI_IZRAZ:
+                rightSideType = 0;
+                break;
+            case LeftSideNames.JEDNAKOSNI_IZRAZ:
+                rightSideType = 1;
+                break;
+            default:
+                errorHappened();
+        }
     }
+    
 }
 
