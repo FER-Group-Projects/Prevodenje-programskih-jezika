@@ -54,18 +54,18 @@ public class PrimarniIzraz extends Node {
                 break;
             case 4:
                 if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
                     //TODO je li potrebno?
                     if (!((UniformCharacter) rightSide.get(0)).getIdentifier().equals(Identifiers.L_ZAGRADA))
                         errorHappened();
-                    currentRightSideIndex++;
                     return rightSide.get(currentRightSideIndex);
                 } else if (currentRightSideIndex == 1) {
                     currentRightSideIndex++;
                 } else if (currentRightSideIndex == 2) {
-                    //TODO je li potrebno?
-                    if (!((UniformCharacter) rightSide.get(0)).getIdentifier().equals(Identifiers.D_ZAGRADA))
-                        errorHappened();
                     currentRightSideIndex++;
+                    //TODO je li potrebno?
+                    if (!((UniformCharacter) rightSide.get(2)).getIdentifier().equals(Identifiers.D_ZAGRADA))
+                        errorHappened();
                 } else {
                     properties.setTip(rightSide.get(1).properties.getTip());
                     properties.setlIzraz(rightSide.get(1).properties.getlIzraz());
