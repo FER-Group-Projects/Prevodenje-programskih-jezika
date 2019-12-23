@@ -18,6 +18,6 @@ public class JednakosniIzraz extends AbstractIzraz {
                 errorHappened();
         }
     }
-    
+
 }
 
