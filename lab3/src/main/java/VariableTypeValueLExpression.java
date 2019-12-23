@@ -3,12 +3,10 @@
 public  class VariableTypeValueLExpression {
     private Type tip;
     private String vrijednost;
-    private int lIzraz;
 
     public VariableTypeValueLExpression(Type tip, String vrijednost, int lIzraz) {
         this.tip = tip;
         this.vrijednost = vrijednost;
-        this.lIzraz = lIzraz;
     }
 
     public Type getTip() {
@@ -28,10 +26,8 @@ public  class VariableTypeValueLExpression {
     }
 
     public int getlIzraz() {
-        return lIzraz;
+        return (tip == Type.INT || tip == Type.CHAR) ? 1 : 0;
     }
 
-    public void setlIzraz(int lIzraz) {
-        this.lIzraz = lIzraz;
-    }
+
 }

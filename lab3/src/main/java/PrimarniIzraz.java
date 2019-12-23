@@ -14,13 +14,11 @@ public class PrimarniIzraz extends Node {
 
                     try {
                         variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+                        properties.setTip(variableTypeValue.getTip());
+                        properties.setlIzraz(variableTypeValue.getlIzraz());
                     } catch (NullPointerException ex) {
                         errorHappened();
                     }
-
-                    Properties rightSideCharProperties = rightSide.get(0).properties;
-                    properties.setTip(variableTypeValue.getTip());
-                    properties.setlIzraz(variableTypeValue.getlIzraz());
                 }
                 break;
             case 1:
@@ -52,6 +50,7 @@ public class PrimarniIzraz extends Node {
                 break;
             case 4:
                 if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
                     if (!((UniformCharacter) rightSide.get(0)).getIdentifier().equals(Identifiers.L_ZAGRADA))
                         errorHappened();
                     return rightSide.get(1);
