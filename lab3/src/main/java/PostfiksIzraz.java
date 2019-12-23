@@ -109,6 +109,9 @@ public class PostfiksIzraz extends Node {
                     Properties rightSideCharProperties = rightSide.get(0).properties;
                     if (!(rightSideCharProperties.getlIzraz() == 1 && Checkers.checkImplicitCast(rightSideCharProperties.getTip(), Type.INT)))
                         errorHappened();
+
+                    properties.setTip(Type.INT);
+                    properties.setlIzraz(0);
                 }
                 break;
         }
