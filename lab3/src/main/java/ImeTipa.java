@@ -3,12 +3,14 @@ public class ImeTipa extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        if (currentRightSideIndex >= rightSide.size()) return null;
+
         switch (rightSideType) {
             case 0:
                 if (currentRightSideIndex == 0) {
                     currentRightSideIndex++;
                     return rightSide.get(currentRightSideIndex - 1);
+                } else {
+                    properties.setTip(rightSide.get(0).properties.getTip());
                 }
                 break;
             case 1:
@@ -18,7 +20,7 @@ public class ImeTipa extends Node {
                 } else {
                     if (rightSide.get(1).properties.getTip() == Type.VOID) {
                         errorHappened();
-                    } 
+                    }
                     if (rightSide.get(1).properties.getTip() == Type.INT) {
                         properties.setTip(Type.CONST_INT);
                     } else if (rightSide.get(1).properties.getTip() == Type.CHAR) {
