@@ -3,7 +3,37 @@ public class ListaNaredbi extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        //TODO
+
+        switch (rightSideType) {
+            case 0:
+                if (currentRightSideIndex == 0) {
+                    ++currentRightSideIndex;
+
+                    return rightSide.get(0);
+                }
+                else {
+                    return null;
+                }
+
+            case 1:
+                if (currentRightSideIndex == 0) {
+                    ++currentRightSideIndex;
+
+                    return rightSide.get(0);
+                }
+                else if (currentRightSideIndex == 1) {
+                    ++currentRightSideIndex;
+
+                    return rightSide.get(1);
+                }
+                else {
+                    return null;
+                }
+
+            default:
+                errorHappened();
+        }
+
         return null;
     }
 
@@ -14,7 +44,16 @@ public class ListaNaredbi extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        switch (rightSide.get(0).getName()) {
+            case LeftSideNames.NAREDBA:
+                rightSideType = 0;
+                break;
+            case LeftSideNames.LISTA_NAREDBI:
+                rightSideType = 1;
+                break;
+            default:
+                errorHappened();
+        }
     }
 }
 
