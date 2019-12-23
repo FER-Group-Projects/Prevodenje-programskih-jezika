@@ -3,7 +3,13 @@ public class Naredba extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        //TODO
+
+        if (currentRightSideIndex == 0) {
+            ++currentRightSideIndex;
+
+            return rightSide.get(0);
+        }
+
         return null;
     }
 
@@ -14,7 +20,25 @@ public class Naredba extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        switch (rightSide.get(0).getName()) {
+            case LeftSideNames.SLOZENA_NAREDBA:
+                rightSideType = 0;
+                break;
+            case LeftSideNames.IZRAZ_NAREDBA:
+                rightSideType = 1;
+                break;
+            case LeftSideNames.NAREDBA_GRANANJA:
+                rightSideType = 2;
+                break;
+            case LeftSideNames.NAREDBA_PETLJE:
+                rightSideType = 3;
+                break;
+            case LeftSideNames.NAREDBA_SKOKA:
+                rightSideType = 4;
+                break;
+            default:
+                errorHappened();
+        }
     }
 }
 
