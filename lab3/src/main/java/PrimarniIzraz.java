@@ -1,9 +1,79 @@
+
+
 public class PrimarniIzraz extends Node {
 
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        //TODO
+        if (currentRightSideIndex > rightSide.size()) return null;
+
+        switch (rightSideType) {
+            case 0:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    try {
+                        blockTable.getVariableValue(((UniformCharacter) rightSide.get(0)).getText());
+                    } catch (NullPointerException ex) {
+                        errorHappened();
+                    }
+                } else {
+                    Properties rightSideCharProperties = rightSide.get(0).properties;
+                    properties.setTip(rightSideCharProperties.getTip());
+                    properties.setlIzraz(rightSideCharProperties.getlIzraz());
+                }
+                break;
+            case 1:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    if (!Checkers.checkInt(((UniformCharacter) rightSide.get(0)).getText()))
+                        errorHappened();
+                } else {
+                    properties.setTip(Type.INT);
+                    properties.setlIzraz(0);
+                }
+                break;
+            case 2:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    if (!Checkers.checkCharacterConst(((UniformCharacter) rightSide.get(0)).getText()))
+                        errorHappened();
+                } else {
+                    properties.setTip(Type.CHAR);
+                    properties.setlIzraz(0);
+                }
+                break;
+            case 3:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    if (!Checkers.checkCharacterArray(((UniformCharacter) rightSide.get(0)).getText()))
+                        errorHappened();
+                } else {
+                    properties.setTip(Type.CONST_ARRAY_CHAR);
+                    properties.setlIzraz(0);
+                }
+                break;
+            case 4:
+                if (currentRightSideIndex == 0) {
+                    //TODO je li potrebno?
+                    if (!((UniformCharacter) rightSide.get(0)).getIdentifier().equals(Identifiers.L_ZAGRADA))
+                        errorHappened();
+                    currentRightSideIndex++;
+                    return rightSide.get(currentRightSideIndex);
+                } else if (currentRightSideIndex == 1) {
+                    currentRightSideIndex++;
+                } else if (currentRightSideIndex == 2) {
+                    //TODO je li potrebno?
+                    if (!((UniformCharacter) rightSide.get(0)).getIdentifier().equals(Identifiers.D_ZAGRADA))
+                        errorHappened();
+                    currentRightSideIndex++;
+                } else {
+                    properties.setTip(rightSide.get(1).properties.getTip());
+                    properties.setlIzraz(rightSide.get(1).properties.getlIzraz());
+                }
+                break;
+        }
+
+
         return null;
     }
 
@@ -14,7 +84,26 @@ public class PrimarniIzraz extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        int len = rightSide.size();
+        if (len == 1) {
+            String idn = ((UniformCharacter) rightSide.get(0)).getIdentifier();
+            switch (idn) {
+                case Identifiers.IDN:
+                    rightSideType = 0;
+                    break;
+                case Identifiers.BROJ:
+                    rightSideType = 1;
+                    break;
+                case Identifiers.ZNAK:
+                    rightSideType = 2;
+                    break;
+                case Identifiers.NIZ_ZNAKOVA:
+                    rightSideType = 3;
+                    break;
+            }
+        } else {
+            rightSideType = 4;
+        }
     }
 }
 
