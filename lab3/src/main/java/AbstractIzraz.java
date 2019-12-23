@@ -28,14 +28,14 @@ public abstract class AbstractIzraz extends Node {
                     // Skip uniform character
                     currentRightSideIndex += 2;
 
-                    if (!Checkers.checkImplicitCast(Type.INT, rightSide.get(0).properties.getTip())) {
+                    if (!Checkers.checkImplicitCast(rightSide.get(0).properties.getTip(), Type.INT)) {
                         errorHappened();
                     }
 
                     return rightSide.get(currentRightSideIndex - 1);
                 }
                 else {
-                    if (!Checkers.checkImplicitCast(Type.INT, rightSide.get(2).properties.getTip())) {
+                    if (!Checkers.checkImplicitCast(rightSide.get(2).properties.getTip(), Type.INT)) {
                         errorHappened();
                     }
 
