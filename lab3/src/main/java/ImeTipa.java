@@ -18,7 +18,8 @@ public class ImeTipa extends Node {
                 } else {
                     if (rightSide.get(1).properties.getTip() == Type.VOID) {
                         errorHappened();
-                    } else if (rightSide.get(1).properties.getTip() == Type.INT) {
+                    } 
+                    if (rightSide.get(1).properties.getTip() == Type.INT) {
                         properties.setTip(Type.CONST_INT);
                     } else if (rightSide.get(1).properties.getTip() == Type.CHAR) {
                         properties.setTip(Type.CONST_CHAR);
