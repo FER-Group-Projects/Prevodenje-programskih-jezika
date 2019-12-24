@@ -107,19 +107,47 @@ public class BlockTable {
 
 
     //////////////////// block FUNCTIONS ////////////////////
+    // method returning if the block contains the function identified ONLY by name, but not in-out types
+    public boolean containsFunctionByName(String funName) {
 
-    // method returning if the block contains the function
+        // if the block does not have the function declaration, see the parent nodes recursively
+        if (!declaredFunctions.contains(funName)) {
+            try {
+                return getFunctionFromParentBlockByName(node, funName);
+            } catch (NullPointerException ex) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      *
-     * @throws NullPointerException - ako ne nadje funkciju sve do root nodea
+     * metoda contains koja na kraju lokalne provjere pita roditelja
+     * ako roditelj ima deklariranu tu funkciju (identificira SAMO sa imenom, ali ne i in-out tipovima) onda vraca true
+     * inace pita svog roditelja itd. rekurzivno
+     *
+     *
+     *  @throws NullPointerException - ako ne nadje funkciju sve do root nodea
      */
+    public boolean getFunctionFromParentBlockByName(Node currentNode, String funName) {
+
+        // ako blok sadrzi deklaraciju funkcije istih tipova -> true
+        if (containsFunctionByName(funName))
+            return true;
+        // inace pitaj blok roditelja rekurzivno
+        return getFunctionFromParentBlockByName(currentNode.parent, funName);
+    }
+
+
+    // method returning if the block contains the function
     public boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {
 
         // if the block does not have the function declaration, see the parent nodes recursively
         if (!declaredFunctions.contains(funName)) {
             try {
-                return getFunctionFromParentBlock(node, funName, funOutType, funInType);   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
+                return getFunctionFromParentBlock(node, funName, funOutType, funInType);
             } catch (NullPointerException ex) {
                 return false;
             }
@@ -135,10 +163,10 @@ public class BlockTable {
     /**
      *
      * metoda contains koja na kraju lokalne provjere pita roditelja
-     * ako roditelj ima varijablu u svom FunctionTable, onda vraca true
+     * ako roditelj ima deklariranu tu funkciju, onda vraca true
      * inace pita svog roditelja itd. rekurzivno
      *
-     *  @throws NullPointerException - ako ne nadje funkciju sve do root nodea
+     * @throws NullPointerException - ako ne nadje funkciju sve do root nodea
      */
     public boolean getFunctionFromParentBlock(Node currentNode, String funName, Type funOutType, List<Type> funInType) {
 
