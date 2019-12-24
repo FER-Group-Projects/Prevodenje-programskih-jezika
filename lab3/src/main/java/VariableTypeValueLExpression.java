@@ -4,7 +4,7 @@ public  class VariableTypeValueLExpression {
     private Type tip;
     private String vrijednost;
 
-    public VariableTypeValueLExpression(Type tip, String vrijednost, int lIzraz) {
+    public VariableTypeValueLExpression(Type tip, String vrijednost) {
         this.tip = tip;
         this.vrijednost = vrijednost;
     }

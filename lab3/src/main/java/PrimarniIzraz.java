@@ -10,15 +10,43 @@ public class PrimarniIzraz extends Node {
             case 0:
                 if (currentRightSideIndex == 0) {
 
-                    VariableTypeValueLExpression variableTypeValue = null;
+                    UniformCharacter uniChar = (UniformCharacter) rightSide.get(0);
+
+                    String idnName = uniChar.getText();
+
+                    boolean foundIdnAsVariableOrFunction = false;
 
                     try {
-                        variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+                        VariableTypeValueLExpression variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+
                         properties.setTip(variableTypeValue.getTip());
                         properties.setlIzraz(variableTypeValue.getlIzraz());
+
+                        foundIdnAsVariableOrFunction = true;
                     } catch (NullPointerException ex) {
-                        errorHappened();
                     }
+
+                    // didn't find variable with idnName, then try to find function with that name
+                    if (!foundIdnAsVariableOrFunction) {
+                        if (blockTable.containsFunctionByName(idnName)) {
+
+                            Function function = FunctionTable.getFunctionFromFunctionTable(idnName);
+
+                            if (function != null) {
+                                foundIdnAsVariableOrFunction = true;
+
+                                properties.setTip(Type.FUNCTION);
+                                properties.setTipovi(function.getInputTypes());
+                                properties.setPov(function.getReturnType());
+
+                                properties.setlIzraz(0);
+                            }
+                        }
+                    }
+
+
+                    if (!foundIdnAsVariableOrFunction)
+                        errorHappened();
                 }
                 break;
             case 1:

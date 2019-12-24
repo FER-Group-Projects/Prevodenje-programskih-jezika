@@ -4,9 +4,11 @@ public class SemantickiAnalizator {
 
     private Node tree;
     private Stack<Node> nodeStack = new Stack<>();
+    private BlockTable globalScope = new BlockTable();
 
     public SemantickiAnalizator() {
         tree = TreeBuilder.buildTreeFromInput(System.in);
+        tree.setBlockTable(globalScope);
         nodeStack.push(tree);
     }
 
@@ -20,6 +22,7 @@ public class SemantickiAnalizator {
             Node current = nodeStack.peek();
             Node next = current.analyze();
             if (next != null) {
+                next.setBlockTable(current.getBlockTable());
                 nodeStack.push(next);
             } else {
                 nodeStack.pop();
