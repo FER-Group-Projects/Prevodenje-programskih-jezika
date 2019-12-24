@@ -15,7 +15,7 @@ public class DeklaracijaParametra extends Node {
                         errorHappened();
                     }
                     properties.setTip(rightSide.get(0).properties.getTip());
-                    properties.setIme(rightSide.get(1).properties.getIme());
+                    properties.setIme(((UniformCharacter) rightSide.get(1)).getText());
                 } else {
                     errorHappened();
                 }
@@ -41,7 +41,7 @@ public class DeklaracijaParametra extends Node {
                     } else {
                         errorHappened();
                     }
-                    properties.setIme(rightSide.get(1).properties.getIme());
+                    properties.setIme(((UniformCharacter) rightSide.get(1)).getText());
                 } else {
                     errorHappened();
                 }
