@@ -3,7 +3,28 @@ public class ListaInitDeklaratora extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        //TODO
+
+        switch (rightSideType) {
+            case 0:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    rightSide.get(0).properties.setNtip(properties.getNtip());
+                    return rightSide.get(0);
+                }
+                break;
+            case 1:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    rightSide.get(0).properties.setNtip(properties.getNtip());
+                    return rightSide.get(0);
+                } else if (currentRightSideIndex == 1) {
+                    currentRightSideIndex++;
+                    rightSide.get(2).properties.setNtip(properties.getNtip());
+                    return rightSide.get(2);
+                }
+                break;
+        }
+
         return null;
     }
 
@@ -14,7 +35,14 @@ public class ListaInitDeklaratora extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        int len = rightSide.size();
+        if (len == 1) {
+            rightSideType = 0;
+        } else if (len == 3) {
+            rightSideType = 1;
+        } else {
+            errorHappened();
+        }
     }
 }
 

@@ -11,8 +11,6 @@ public class BlockTable {
     private Set<String> declaredFunctions = new HashSet<>();
 
 
-
-
     //////////////////// block VARIABLES ////////////////////
 
     /**
@@ -62,15 +60,14 @@ public class BlockTable {
     }
 
 
-
     /**
-     *
      * metoda contains koja na kraju lokalne provjere pita roditelja
      * ako roditelj ima varijablu u svom BlockTable, onda vraca tu varijablu
      * inace pita svog roditelja itd. rekurzivno
+     *
      * @param varName
      * @return
-     *  @throws NullPointerException - ako ne nadje varijablu sve do root nodea
+     * @throws NullPointerException - ako ne nadje varijablu sve do root nodea
      */
     public VariableTypeValueLExpression getVariableFromParentBlock(String varName) {
         Node parent = node.parent;
@@ -93,7 +90,7 @@ public class BlockTable {
     public void addVariableToBlockTable(String varName, Type varType, String varValue) {
         VariableTypeValueLExpression varTypeValueLExpression = nameToTypeValueMap.get(varName);
 
-        if (varTypeValueLExpression  == null) {
+        if (varTypeValueLExpression == null) {
             nameToTypeValueMap.put(varName, new VariableTypeValueLExpression(varType, varValue));
         } else {
             // if the variable is already recorded in the block table
@@ -107,6 +104,10 @@ public class BlockTable {
 
 
     //////////////////// block FUNCTIONS ////////////////////
+    public boolean containsFunctionByNameLocally(String funName) {
+        return declaredFunctions.contains(funName);
+    }
+
     // method returning if the block contains the function identified ONLY by name, but not in-out types
     public boolean containsFunctionByName(String funName) {
 
@@ -123,13 +124,11 @@ public class BlockTable {
     }
 
     /**
-     *
      * metoda contains koja na kraju lokalne provjere pita roditelja
      * ako roditelj ima deklariranu tu funkciju (identificira SAMO sa imenom, ali ne i in-out tipovima) onda vraca true
      * inace pita svog roditelja itd. rekurzivno
      *
-     *
-     *  @throws NullPointerException - ako ne nadje funkciju sve do root nodea
+     * @throws NullPointerException - ako ne nadje funkciju sve do root nodea
      */
     public boolean getFunctionFromParentBlockByName(Node currentNode, String funName) {
 
@@ -140,6 +139,11 @@ public class BlockTable {
         return getFunctionFromParentBlockByName(currentNode.parent, funName);
     }
 
+    public boolean containsFunctionLocally(String funName, Type funOutType, List<Type> funInType) {
+        if (!declaredFunctions.contains(funName)) return false;
+        Function function = FunctionTable.getFunctionFromFunctionTable(funName);
+        return function.getReturnType().equals(funOutType) && function.getInputTypes().equals(funInType);
+    }
 
     // method returning if the block contains the function
     public boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {
@@ -161,7 +165,6 @@ public class BlockTable {
     }
 
     /**
-     *
      * metoda contains koja na kraju lokalne provjere pita roditelja
      * ako roditelj ima deklariranu tu funkciju, onda vraca true
      * inace pita svog roditelja itd. rekurzivno
@@ -176,6 +179,7 @@ public class BlockTable {
         // inace pitaj blok roditelja rekurzivno
         return getFunctionFromParentBlock(currentNode.parent, funName, funOutType, funInType);
     }
+
 
     //metoda za dodavanje
     public void addFunctionToBlockTable(String funName, Type funOutType, List<Type> funInType) {
@@ -198,5 +202,9 @@ public class BlockTable {
 
             // at this place, function is trying to be declared but it is already declared in one of the block's parents -> do not add it again
         }
+    }
+
+    public boolean containsVariableInLocalBlock(String varName) {
+        return nameToTypeValueMap.containsKey(varName);
     }
 }
