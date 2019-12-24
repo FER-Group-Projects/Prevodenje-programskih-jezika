@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.List;
+
 public class DefinicijaFunkcije extends Node {
 
     @Override
@@ -11,24 +14,103 @@ public class DefinicijaFunkcije extends Node {
         			currentRightSideIndex++;
         			return rightSide.get(0);
         		} else if(currentRightSideIndex==1) {
-        			currentRightSideIndex+=2;
+        			currentRightSideIndex+=5;
         			
-        			Type t = rightSide.get(0).properties.getTip();
-        			if(t == Type.CONST_ARRAY_CHAR || t ==Type.CONST_ARRAY_INT || t ==Type.CONST_CHAR || t ==Type.CONST_INT) {
+        			// Provjera 2) jeli ti razlicit od const(T)
+        			Type returnType = rightSide.get(0).properties.getTip();
+        			if(returnType == Type.CONST_ARRAY_CHAR || returnType ==Type.CONST_ARRAY_INT || returnType ==Type.CONST_CHAR || returnType ==Type.CONST_INT) {
         				errorHappened();
         			}
         			
-        			Function f = FunctionTable.getFunctionFromFunctionTable(rightSide.get(1).properties.getIme());
+        			// Provjera 3) postoji li vec prije definirana f-ja istog imena
+        			String imeFje = rightSide.get(1).properties.getIme();
+        			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
         			if(f!=null && f.isDefined())
         				errorHappened();
         			
-        			// WIP: Jos provjeriti 4, 5 i 6
-        			// TODO
+        			// Provjera 4) postoji li vec prije deklarirana globalna varijabla istog imena
+        			try {
+        				blockTable.getVariableType(imeFje);
+        				errorHappened();
+        			} catch (NullPointerException ex) {
+        				// Ignore
+        			}
         			
-        			return rightSide.get(0);
+        			// Provjera 4) potsoji li vec prije deklarirana funkcija istog imena (ako da, jesu li ista svojstva)
+        			if(blockTable.containsFunctionByName(imeFje) && 
+        					(f.getInputTypes().size()!=1 || f.getInputTypes().get(0)!=Type.VOID || f.getReturnType()!=returnType)) 
+        				errorHappened();
+        			
+        			// Provjera 5) zabiljezi definiciju i deklaraciju funkcije
+        			if(f!=null) {
+        				f.setDefined(true);
+        			} else {
+        				Function newFun = new Function(returnType, Arrays.asList(Type.VOID));
+        				FunctionTable.addFunctionToFunctionTable(imeFje, newFun);
+        			}
+        			
+        			return rightSide.get(5);
+        		} else {
+        			return null;
         		}
         	case 1:
-        		// TODO
+        		if(currentRightSideIndex==0) {
+        			currentRightSideIndex++;
+        			return rightSide.get(0);
+        		} else if(currentRightSideIndex==1) {
+        			currentRightSideIndex+=3;
+        			
+        			// Provjera 2) jeli ti razlicit od const(T)
+        			Type returnType = rightSide.get(0).properties.getTip();
+        			if(returnType == Type.CONST_ARRAY_CHAR || returnType ==Type.CONST_ARRAY_INT || returnType ==Type.CONST_CHAR || returnType ==Type.CONST_INT) {
+        				errorHappened();
+        			}
+        			
+        			// Provjera 3) postoji li vec prije definirana f-ja istog imena
+        			String imeFje = rightSide.get(1).properties.getIme();
+        			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
+        			if(f!=null && f.isDefined())
+        				errorHappened();
+        			
+        			return rightSide.get(3);
+        		} else if(currentRightSideIndex==4) {
+        			currentRightSideIndex+=2;
+        			
+        			// Provjera 5) postoji li vec prije deklarirana globalna varijabla istog imena
+        			Type returnType = rightSide.get(0).properties.getTip();
+        			String imeFje = rightSide.get(1).properties.getIme();
+        			List<Type> inputTypes = rightSide.get(3).properties.getTipovi();
+        			List<String> inputNames = rightSide.get(3).properties.getImena();
+        			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
+        			try {
+        				blockTable.getVariableType(imeFje);
+        				errorHappened();
+        			} catch (NullPointerException ex) {
+        				// Ignore
+        			}
+        			
+        			// Provjera 5) potsoji li vec prije deklarirana funkcija istog imena (ako da, jesu li ista svojstva)
+        			if(blockTable.containsFunctionByName(imeFje) && 
+        					(!f.getInputTypes().equals(inputTypes) || f.getReturnType()!=returnType)) 
+        				errorHappened();
+        			
+        			// Provjera 6) zabiljezi definiciju i deklaraciju funkcije
+        			if(f!=null) {
+        				f.setDefined(true);
+        			} else {
+        				Function newFun = new Function(returnType, inputTypes);
+        				FunctionTable.addFunctionToFunctionTable(imeFje, newFun);
+        			}
+        			
+        			// Ugradnja parametara f-je u lokalni djelokrug
+        			for(int i=0; i<inputTypes.size(); i++) {
+        				blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null);
+        			}
+        			
+        			return rightSide.get(5);
+        		} else {
+        			return null;
+        		}
         	default:
         		errorHappened();
         
@@ -50,6 +132,7 @@ public class DefinicijaFunkcije extends Node {
         		break;
         	case LeftSideNames.LISTA_PARAMETARA:
         		rightSideType = 1;
+        		blockTable = new BlockTable();
         		break;
         	default:
         		errorHappened();
