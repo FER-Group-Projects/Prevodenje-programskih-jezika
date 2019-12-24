@@ -57,8 +57,7 @@ public class SemantickiAnalizator {
 
     //metoda containsMainFunction - specijalno za main
     private boolean containsMainFunction() {
-        List<String> mainInputTypes = Arrays.asList("void");
-        return FunctionTable.containsFunction("main", "int", mainInputTypes);
+        return FunctionTable.containsFunction("main", Type.INT, Collections.emptyList());
     }
 
     //metoda provjerava jesu li sve deklarirane funkcije u cijelom programu i definirane

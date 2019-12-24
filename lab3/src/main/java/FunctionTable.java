@@ -17,7 +17,7 @@ public class FunctionTable {
      *
      * @throws
      */
-    public static boolean containsFunction(String funName, String funOutType, List<String> funInType) {
+    public static boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {
 
         Function funInMap = functionNameToInOutTypeMap.get(funName);
 
