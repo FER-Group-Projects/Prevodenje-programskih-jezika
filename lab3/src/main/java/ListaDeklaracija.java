@@ -3,7 +3,25 @@ public class ListaDeklaracija extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        //TODO
+
+        switch (rightSideType) {
+            case 0:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    return rightSide.get(0);
+                }
+                break;
+            case 1:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    return rightSide.get(0);
+                } else if (currentRightSideIndex == 1) {
+                    currentRightSideIndex++;
+                    return rightSide.get(1);
+                }
+                break;
+        }
+
         return null;
     }
 
@@ -14,7 +32,14 @@ public class ListaDeklaracija extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        int len = rightSide.size();
+        if (len == 1) {
+            rightSideType = 0;
+        } else if (len == 2) {
+            rightSideType = 1;
+        } else {
+            errorHappened();
+        }
     }
 }
 
