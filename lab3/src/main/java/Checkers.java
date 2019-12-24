@@ -78,7 +78,7 @@ public class Checkers {
     }
 
     // checks if variable of type A can be explicitly casted to variable of type B using (castType)
-    // varBType <- (castType) varAType
+    // Is this possible (true/false):(castType) varAType?
     public static boolean checkExplicitCast(Type varAType, Type castType){
 
         // EXPLICIT: char <- int
