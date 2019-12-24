@@ -47,8 +47,7 @@ public class IzravniDeklarator extends Node {
                 if (currentRightSideIndex == 0) {
                     currentRightSideIndex++;
                     if (blockTable.containsFunctionByNameLocally(idnIme)) {
-                        List<Type> paramTypes = new ArrayList<>();
-                        paramTypes.add(Type.VOID);
+                        List<Type> paramTypes = new ArrayList<>(); //empty => void
                         if (!blockTable.containsFunctionLocally(idnIme, properties.getNtip(), paramTypes)) {
                             errorHappened();
                         }
@@ -57,7 +56,8 @@ public class IzravniDeklarator extends Node {
                         paramTypes.add(Type.VOID);
                         blockTable.addFunctionToBlockTable(idnIme, properties.getNtip(), paramTypes);
                     }
-                    properties.setTip(properties.getNtip());
+                    properties.setTip(Type.FUNCTION);
+                    properties.setPov(properties.getNtip());
                 }
                 break;
             case 3:
@@ -77,7 +77,8 @@ public class IzravniDeklarator extends Node {
                         paramTypes.add(Type.VOID);
                         blockTable.addFunctionToBlockTable(idnIme, properties.getNtip(), paramTypes);
                     }
-                    properties.setTip(properties.getNtip());
+                    properties.setTip(Type.FUNCTION);
+                    properties.setPov(properties.getNtip());
                 }
                 break;
         }
