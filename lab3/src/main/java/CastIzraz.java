@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class CastIzraz extends Node {
 
     @Override
