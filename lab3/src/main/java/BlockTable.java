@@ -149,7 +149,13 @@ public class BlockTable {
         return getFunctionFromParentBlock(currentNode.parent, funName, funOutType, funInType);
     }
 
-
+    public boolean containsFunction(String funName) {
+    	
+    	
+    	
+		return false;
+    	
+    }
 
     //metoda za dodavanje
     public void addFunctionToBlockTable(String funName, String funOutType, List<String> funInType) {
