@@ -3,7 +3,15 @@ public class Deklaracija extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        //TODO
+
+        if (currentRightSideIndex == 0) {
+            currentRightSideIndex++;
+            return rightSide.get(0);
+        } else if (currentRightSideIndex == 1) {
+            rightSide.get(1).properties.setNtip(rightSide.get(0).properties.getTip());
+            return rightSide.get(1);
+        }
+
         return null;
     }
 
@@ -14,7 +22,12 @@ public class Deklaracija extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        int len = rightSide.size();
+        if (len == 3) {
+            rightSideType = 0;
+        } else {
+            errorHappened();
+        }
     }
 }
 
