@@ -18,12 +18,12 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 2) jeli ti razlicit od const(T)
         			Type returnType = rightSide.get(0).properties.getTip();
-        			if(returnType == Type.CONST_ARRAY_CHAR || returnType ==Type.CONST_ARRAY_INT || returnType ==Type.CONST_CHAR || returnType ==Type.CONST_INT) {
+        			if(returnType ==Type.CONST_CHAR || returnType ==Type.CONST_INT) {
         				errorHappened();
         			}
         			
         			// Provjera 3) postoji li vec prije definirana f-ja istog imena
-        			String imeFje = rightSide.get(1).properties.getIme();
+        			String imeFje = ((UniformCharacter) rightSide.get(1)).getText();
         			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
         			if(f!=null && f.isDefined())
         				errorHappened();
@@ -63,12 +63,12 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 2) jeli ti razlicit od const(T)
         			Type returnType = rightSide.get(0).properties.getTip();
-        			if(returnType == Type.CONST_ARRAY_CHAR || returnType ==Type.CONST_ARRAY_INT || returnType ==Type.CONST_CHAR || returnType ==Type.CONST_INT) {
+        			if(returnType ==Type.CONST_CHAR || returnType ==Type.CONST_INT) {
         				errorHappened();
         			}
         			
         			// Provjera 3) postoji li vec prije definirana f-ja istog imena
-        			String imeFje = rightSide.get(1).properties.getIme();
+        			String imeFje = ((UniformCharacter) rightSide.get(1)).getText();
         			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
         			if(f!=null && f.isDefined())
         				errorHappened();
@@ -79,7 +79,7 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 5) postoji li vec prije deklarirana globalna varijabla istog imena
         			Type returnType = rightSide.get(0).properties.getTip();
-        			String imeFje = rightSide.get(1).properties.getIme();
+        			String imeFje = ((UniformCharacter) rightSide.get(1)).getText();
         			List<Type> inputTypes = rightSide.get(3).properties.getTipovi();
         			List<String> inputNames = rightSide.get(3).properties.getImena();
         			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
