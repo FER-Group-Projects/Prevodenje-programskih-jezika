@@ -1,5 +1,3 @@
-import jdk.nashorn.internal.ir.UnaryNode;
-
 public class IzravniDeklarator extends Node {
 
     @Override
@@ -15,7 +13,7 @@ public class IzravniDeklarator extends Node {
                 if (blockTable.containsVariableInLocalBlock(idnIme)) {
                     errorHappened();
                 }
-                blockTable.addVariableToBlockTable(idnIme, properties.getNtip(), "", 0);
+                blockTable.addVariableToBlockTable(idnIme, properties.getNtip(), "");
                 properties.setTip(properties.getNtip());
                 break;
             case 1:
@@ -41,7 +39,7 @@ public class IzravniDeklarator extends Node {
                 } else if (ntip == Type.CONST_CHAR) {
                     properties.setTip(Type.CONST_ARRAY_CHAR);
                 }
-                blockTable.addVariableToBlockTable(idnIme2, properties.getTip(), "", 0);
+                blockTable.addVariableToBlockTable(idnIme2, properties.getTip(), "");
                 break;
             case 2:
 
