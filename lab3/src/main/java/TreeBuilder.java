@@ -33,6 +33,7 @@ public class TreeBuilder {
             Node newNode = NodeFactory.getNode(trimmedLine);
 
             nodeStack.peek().appendChild(newNode);
+            newNode.setParent(nodeStack.peek());
 
             nodeStack.push(newNode);
             indentationStack.push(currentIndentation);

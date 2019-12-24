@@ -70,4 +70,8 @@ public abstract class Node {
     public BlockTable getBlockTable() {
         return blockTable;
     }
+  
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
 }
