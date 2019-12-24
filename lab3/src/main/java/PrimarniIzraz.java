@@ -10,15 +10,40 @@ public class PrimarniIzraz extends Node {
             case 0:
                 if (currentRightSideIndex == 0) {
 
-                    VariableTypeValueLExpression variableTypeValue = null;
+                    UniformCharacter uniChar = (UniformCharacter) rightSide.get(0);
+
+                    String idnName = uniChar.getText();
+
+                    boolean foundIdnAsVariableOrFunction = false;
 
                     try {
-                        variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+                        VariableTypeValueLExpression variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+
                         properties.setTip(variableTypeValue.getTip());
                         properties.setlIzraz(variableTypeValue.getlIzraz());
+
+                        foundIdnAsVariableOrFunction = true;
                     } catch (NullPointerException ex) {
-                        errorHappened();
                     }
+
+                    // didn't find variable with idnName, then try to find function with that name
+                    if (!foundIdnAsVariableOrFunction) {
+                        Function function = FunctionTable.getFunctionFromFunctionTable(idnName);
+
+                        if (function != null)
+                            foundIdnAsVariableOrFunction = true;
+
+                            // TODO check if this setting the type is OK
+                            properties.setTip(Type.FUNCTION);
+                            properties.setTipovi(function.getInputTypes());
+                            properties.setPov(function.getReturnType());
+
+                            properties.setlIzraz(0);       // TODO check if this is OK - read from document page 51 the 1st paragraph: " Identifikator koji predstavlja funkciju ili niz nije l-izraz."
+                    }
+
+
+                    if (!foundIdnAsVariableOrFunction)
+                        errorHappened();
                 }
                 break;
             case 1:

@@ -4,8 +4,6 @@ public class Function {
     private Type returnType;
     private List<Type> inputTypes;
 
-    //TODO: vidjeti sto s ovim atributom - treba na kraju poslije obilaska stabla provjeriti je li svaka deklarirana funkcija ima definiciju
-    // mozda treba neka klasa FunctionDefinition ili sl. koja ce zapisati definiciju
     private boolean isDefined;
 
     public Function(Type returnType, List<Type> inputTypes) {

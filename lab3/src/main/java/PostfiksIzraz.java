@@ -64,12 +64,11 @@ public class PostfiksIzraz extends Node {
                 } else if (currentRightSideIndex == 1) {
                     Properties rightSideCharProperties = rightSide.get(0).properties;
 
-                    //TODO: check assumption: pov = rightSideCharProperties.pov ?
-                    if (!(rightSideCharProperties.getTip() == Type.FUNCTION && rightSideCharProperties.getTipovi().equals(new ArrayList<>())))
+                    // check for postfiks_izraz: type = FUNCTION & no input params
+                    if (!(rightSideCharProperties.getTip() == Type.FUNCTION && rightSideCharProperties.getTipovi().isEmpty()))
                         errorHappened();
 
-                    //TODO: assumption: pov = rightSideCharProperties.pov ?
-                    properties.setTip(rightSideCharProperties.getTip());
+                    properties.setTip(rightSideCharProperties.getTip());       // this is Type.FUNCTION
                     properties.setlIzraz(0);
                 }
 
@@ -82,22 +81,30 @@ public class PostfiksIzraz extends Node {
                     currentRightSideIndex += 2;
                     return rightSide.get(2);
                 } else {
-                    Properties rightSideCharProperties = rightSide.get(2).properties;
-                    List<Type> argTypes = rightSideCharProperties.getTipovi();
-                    Type argListType = rightSideCharProperties.getTip();
 
-                    if (argListType != Type.FUNCTION)
+                    Properties listArgumentsProperties = rightSide.get(2).properties;
+                    List<Type> argTypes = listArgumentsProperties.getTipovi();
+
+                    Properties postfixExpressionProperties = rightSide.get(0).properties;
+                    List<Type> params = postfixExpressionProperties.getTipovi();
+
+                    // check input params for postfiks_izraz: implicit <lista_argumenata>.tipovi (argType) -> <postfiks_izraz>.tipovi (params)
+                    if (argTypes.size() != params.size())
                         errorHappened();
 
-                    for (Type argType : argTypes) {
-                        if (!Checkers.checkImplicitCast(argType,argListType))
+                    for (int i=0; i < argTypes.size(); i++) {
+                        if (!Checkers.checkImplicitCast(argTypes.get(i), params.get(i)))
                             errorHappened();
 
                     }
-                    //TODO: check assumption: pov = rightSideCharProperties.pov ?
 
-                    //TODO: assumption: pov = rightSideCharProperties.pov ?
-                    properties.setTip(rightSideCharProperties.getTip());
+                    // check for postfiks_izraz: type = FUNCTION
+                    if (!(postfixExpressionProperties.getTip() == Type.FUNCTION))
+                        errorHappened();
+
+
+
+                    properties.setTip(postfixExpressionProperties.getTip());    // this is Type.FUNCTION
                     properties.setlIzraz(0);
                 }
                 break;
