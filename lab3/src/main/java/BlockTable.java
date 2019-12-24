@@ -2,16 +2,50 @@ import java.util.*;
 
 public class BlockTable {
     //map<imeVarijable, (tip, vrijednost)>
-    public Map<String, VariableTypeValue> nameToTypeValueMap = new HashMap<>();
+    private Map<String, VariableTypeValueLExpression> nameToTypeValueMap = new HashMap<>();
 
     // node which has this block table
     private Node node;
 
     // set containing function names declared in the block
-    Set<String> declaredFunctions = new HashSet<>();
+    private Set<String> declaredFunctions = new HashSet<>();
+
+
 
 
     //////////////////// block VARIABLES ////////////////////
+
+    /**
+     * metoda za dohvat vrijednosti i tipa neke varijable
+     *
+     * @param varName
+     * @return
+     * @throws NullPointerException - ako ne nadje varijablu sve do root nodea
+     */
+    public VariableTypeValueLExpression getVariableTypeValueLExpression(String varName) {
+        VariableTypeValueLExpression varInMap = nameToTypeValueMap.get(varName);
+        if (varInMap == null) {
+            return getVariableFromParentBlock(varName);   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
+        }
+        return varInMap;
+    }
+
+    /**
+     * metoda za dohvat tipa neke varijable
+     *
+     * @param varName
+     * @return
+     * @throws NullPointerException - ako ne nadje varijablu sve do root nodea
+     */
+    public Type getVariableType(String varName) {
+        VariableTypeValueLExpression varInMap = nameToTypeValueMap.get(varName);
+        if (varInMap == null) {
+            return getVariableFromParentBlock(varName).getTip();   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
+        }
+        return varInMap.getTip();
+    }
+
+
     /**
      * metoda za dohvat vrijednosti neke varijable
      *
@@ -20,12 +54,14 @@ public class BlockTable {
      * @throws NullPointerException - ako ne nadje varijablu sve do root nodea
      */
     public String getVariableValue(String varName) {
-        VariableTypeValue varInMap = nameToTypeValueMap.get(varName);
+        VariableTypeValueLExpression varInMap = nameToTypeValueMap.get(varName);
         if (varInMap == null) {
-            return getVariableFromParentBlock(varName).getVarValue();   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
+            return getVariableFromParentBlock(varName).getVrijednost();   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
         }
-        return varInMap.getVarValue();
+        return varInMap.getVrijednost();
     }
+
+
 
     /**
      *
@@ -36,9 +72,9 @@ public class BlockTable {
      * @return
      *  @throws NullPointerException - ako ne nadje varijablu sve do root nodea
      */
-    public VariableTypeValue getVariableFromParentBlock(String varName) {
+    public VariableTypeValueLExpression getVariableFromParentBlock(String varName) {
         Node parent = node.parent;
-        Map<String, VariableTypeValue> parentVariableMap = parent.blockTable.nameToTypeValueMap;
+        Map<String, VariableTypeValueLExpression> parentVariableMap = parent.blockTable.nameToTypeValueMap;
 
         if (parentVariableMap.containsKey(varName)) {
             return parentVariableMap.get(varName);
@@ -54,62 +90,64 @@ public class BlockTable {
      * @throws IllegalArgumentException ako se pokuša za varijablu istog imena promijeniti njezin tip
      */
 
-    public void addVariableToBlockTable(String varName, String varType, String varValue) {
-        VariableTypeValue varTypeValue = nameToTypeValueMap.get(varName);
+    public void addVariableToBlockTable(String varName, Type varType, String varValue, int varLExpression) {
+        VariableTypeValueLExpression varTypeValueLExpression = nameToTypeValueMap.get(varName);
 
-        if (varTypeValue  == null) {
-            nameToTypeValueMap.put(varName, new VariableTypeValue(varType, varValue));
+        if (varTypeValueLExpression  == null) {
+            nameToTypeValueMap.put(varName, new VariableTypeValueLExpression(varType, varValue));
         } else {
             // if the variable is already recorded in the block table
-            if (!varTypeValue.getVarType().equals(varType)) {
+            if (!varTypeValueLExpression.getTip().equals(varType)) {
                 throw new IllegalArgumentException("Cannot change variable type!");
             }
             // just change variable value
-            varTypeValue.setVarValue(varValue);
+            varTypeValueLExpression.setVrijednost(varValue);
         }
     }
 
-    // helper class - contains variable type and value
-    private static class VariableTypeValue {
-        private String varType;
-        private String varValue;
-
-        public VariableTypeValue(String varType, String varValue) {
-            this.varType = varType;
-            this.varValue = varValue;
-        }
-
-        public String getVarType() {
-            return varType;
-        }
-
-        public void setVarType(String varType) {
-            this.varType = varType;
-        }
-
-        public String getVarValue() {
-            return varValue;
-        }
-
-        public void setVarValue(String varValue) {
-            this.varValue = varValue;
-        }
-    }
 
     //////////////////// block FUNCTIONS ////////////////////
-
-    // method returning if the block contains the function
-
-    /**
-     *
-     * @throws NullPointerException - ako ne nadje funkciju sve do root nodea
-     */
-    public boolean containsFunction(Node currentNode, String funName, String funOutType, List<String> funInType) {
+    // method returning if the block contains the function identified ONLY by name, but not in-out types
+    public boolean containsFunctionByName(String funName) {
 
         // if the block does not have the function declaration, see the parent nodes recursively
         if (!declaredFunctions.contains(funName)) {
             try {
-                return getFunctionFromParentBlock(currentNode, funName, funOutType, funInType);   //potencijalno: NullPointerException (vidi javadoc metode: @throws)
+                return getFunctionFromParentBlockByName(node, funName);
+            } catch (NullPointerException ex) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     *
+     * metoda contains koja na kraju lokalne provjere pita roditelja
+     * ako roditelj ima deklariranu tu funkciju (identificira SAMO sa imenom, ali ne i in-out tipovima) onda vraca true
+     * inace pita svog roditelja itd. rekurzivno
+     *
+     *
+     *  @throws NullPointerException - ako ne nadje funkciju sve do root nodea
+     */
+    public boolean getFunctionFromParentBlockByName(Node currentNode, String funName) {
+
+        // ako blok sadrzi deklaraciju funkcije istih tipova -> true
+        if (containsFunctionByName(funName))
+            return true;
+        // inace pitaj blok roditelja rekurzivno
+        return getFunctionFromParentBlockByName(currentNode.parent, funName);
+    }
+
+
+    // method returning if the block contains the function
+    public boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {
+
+        // if the block does not have the function declaration, see the parent nodes recursively
+        if (!declaredFunctions.contains(funName)) {
+            try {
+                return getFunctionFromParentBlock(node, funName, funOutType, funInType);
             } catch (NullPointerException ex) {
                 return false;
             }
@@ -125,15 +163,15 @@ public class BlockTable {
     /**
      *
      * metoda contains koja na kraju lokalne provjere pita roditelja
-     * ako roditelj ima varijablu u svom FunctionTable, onda vraca true
+     * ako roditelj ima deklariranu tu funkciju, onda vraca true
      * inace pita svog roditelja itd. rekurzivno
      *
-     *  @throws NullPointerException - ako ne nadje funkciju sve do root nodea
+     * @throws NullPointerException - ako ne nadje funkciju sve do root nodea
      */
-    public boolean getFunctionFromParentBlock(Node currentNode, String funName, String funOutType, List<String> funInType) {
+    public boolean getFunctionFromParentBlock(Node currentNode, String funName, Type funOutType, List<Type> funInType) {
 
         // ako blok sadrzi deklaraciju funkcije istih tipova -> true
-        if (containsFunction(currentNode, funName, funOutType, funInType))
+        if (containsFunction(funName, funOutType, funInType))
             return true;
         // inace pitaj blok roditelja rekurzivno
         return getFunctionFromParentBlock(currentNode.parent, funName, funOutType, funInType);
@@ -142,9 +180,9 @@ public class BlockTable {
 
 
     //metoda za dodavanje
-    public void addFunctionToBlockTable(String funName, String funOutType, List<String> funInType) {
+    public void addFunctionToBlockTable(String funName, Type funOutType, List<Type> funInType) {
         // if the block or one of block's parents declared the function -> do not add it again
-        if (containsFunction(node, funName, funOutType, funInType))
+        if (containsFunction(funName, funOutType, funInType))
             return;
 
         Function funInFunctionTable = FunctionTable.getFunctionFromFunctionTable(funName);

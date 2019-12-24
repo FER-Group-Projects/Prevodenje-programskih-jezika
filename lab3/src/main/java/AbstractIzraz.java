@@ -1,4 +1,4 @@
-public class IzrazPridruzivanja extends Node {
+public abstract class AbstractIzraz extends Node {
 
     @Override
     public Node analyze() {
@@ -28,18 +28,18 @@ public class IzrazPridruzivanja extends Node {
                     // Skip uniform character
                     currentRightSideIndex += 2;
 
-                    if (rightSide.get(0).properties.getlIzraz() != 1) {
+                    if (!Checkers.checkImplicitCast(rightSide.get(0).properties.getTip(), Type.INT)) {
                         errorHappened();
                     }
 
                     return rightSide.get(currentRightSideIndex - 1);
                 }
                 else {
-                    if (!Checkers.checkImplicitCast(rightSide.get(2).properties.getTip(), rightSide.get(0).properties.getTip())) {
+                    if (!Checkers.checkImplicitCast(rightSide.get(2).properties.getTip(), Type.INT)) {
                         errorHappened();
                     }
 
-                    properties.setTip(rightSide.get(0).properties.getTip());
+                    properties.setTip(Type.INT);
                     properties.setlIzraz(0);
 
                     return null;
@@ -52,24 +52,4 @@ public class IzrazPridruzivanja extends Node {
         return null;
     }
 
-    @Override
-    public String toText() {
-        return LeftSideNames.IZRAZ_PRIDRUZIVANJA;
-    }
-
-    @Override
-    public void determineRightSideType() {
-        switch (rightSide.get(0).getName()) {
-            case LeftSideNames.LOG_ILI_IZRAZ:
-                rightSideType = 0;
-                break;
-            case LeftSideNames.POSTFIKS_IZRAZ:
-                rightSideType = 1;
-                break;
-            default:
-                errorHappened();
-        }
-    }
-
 }
-

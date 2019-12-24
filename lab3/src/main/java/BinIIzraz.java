@@ -1,11 +1,4 @@
-public class BinIIzraz extends Node {
-
-    @Override
-    public Node analyze() {
-        if (rightSideType == -1) determineRightSideType();
-        //TODO
-        return null;
-    }
+public class BinIIzraz extends AbstractIzraz {
 
     @Override
     public String toText() {
@@ -14,7 +7,16 @@ public class BinIIzraz extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        switch (rightSide.get(0).getName()) {
+            case LeftSideNames.JEDNAKOSNI_IZRAZ:
+                rightSideType = 0;
+                break;
+            case LeftSideNames.BIN_I_IZRAZ:
+                rightSideType = 1;
+                break;
+            default:
+                errorHappened();
+        }
     }
 }
 

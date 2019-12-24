@@ -63,4 +63,15 @@ public abstract class Node {
         }
     }
 
+    public void setBlockTable(BlockTable blockTable) {
+        this.blockTable = blockTable;
+    }
+
+    public BlockTable getBlockTable() {
+        return blockTable;
+    }
+  
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
 }
