@@ -1,11 +1,4 @@
-public class LogIIzraz extends Node {
-
-    @Override
-    public Node analyze() {
-        if (rightSideType == -1) determineRightSideType();
-        //TODO
-        return null;
-    }
+public class LogIIzraz extends AbstractIzraz {
 
     @Override
     public String toText() {
@@ -14,7 +7,17 @@ public class LogIIzraz extends Node {
 
     @Override
     public void determineRightSideType() {
-        //TODO
+        switch (rightSide.get(0).getName()) {
+            case LeftSideNames.BIN_ILI_IZRAZ:
+                rightSideType = 0;
+                break;
+            case LeftSideNames.LOG_I_IZRAZ:
+                rightSideType = 1;
+                break;
+            default:
+                errorHappened();
+        }
     }
+
 }
 

@@ -28,9 +28,6 @@ public class SemantickiAnalizator {
     }
 
     public void functionTableCheck() {
-        //TODO
-        System.out.println("Radim provjere funkcija nakon obilaska");
-
         if (!containsMainFunction()) {
             System.out.println("main");
             System.exit(1);
