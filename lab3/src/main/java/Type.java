@@ -7,5 +7,6 @@ public enum Type {
     CONST_ARRAY_INT,
     ARRAY_CHAR,
     CONST_ARRAY_CHAR,
-    VOID
+    VOID,
+    FUNCTION
 }
