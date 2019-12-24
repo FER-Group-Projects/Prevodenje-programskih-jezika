@@ -81,9 +81,9 @@ public class Inicijalizator extends Node {
     }
 
     private int countNizZnakovaLength(String text) {
-        int i = 0;
+        int i = 1;
         int len = 0;
-        while (i < text.length()) {
+        while (i < text.length() - 1) {
             if (text.charAt(i) == '\\') {
                 i += 2;
             } else {
