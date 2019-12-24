@@ -14,9 +14,8 @@ public class Inicijalizator extends Node {
                     return rightSide.get(0);
                 } else if (currentRightSideIndex == 1) {
                     currentRightSideIndex++;
-                    Type izrazTip = rightSide.get(0).properties.getTip();
-                    if (izrazTip == Type.CONST_ARRAY_CHAR) {
-                        int brelem = rightSide.get(0).properties.getBrElem();
+                    if (generatesNizZnakova(rightSide.get(0))) {
+                        int brelem = countNizZnakovaLength(getNizZnakova(rightSide.get(0)).getText()) + 1;
                         List<Type> tipovi = new ArrayList<>();
                         for (int i = 0; i < brelem; i++) {
                             tipovi.add(Type.CHAR);
@@ -24,6 +23,7 @@ public class Inicijalizator extends Node {
                         properties.setBrElem(brelem);
                         properties.setTipovi(tipovi);
                     } else {
+                        Type izrazTip = rightSide.get(0).properties.getTip();
                         properties.setTip(izrazTip);
                     }
                 }
@@ -58,6 +58,40 @@ public class Inicijalizator extends Node {
         } else {
             errorHappened();
         }
+    }
+
+    private boolean generatesNizZnakova(Node node) {
+        Node next = node;
+        while (next.rightSide.size() == 1) {
+            next = next.rightSide.get(0);
+            if (next.rightSide.size() > 1) return false;
+        }
+        if (next instanceof UniformCharacter) {
+            return ((UniformCharacter) next).getIdentifier().equals(Identifiers.NIZ_ZNAKOVA);
+        }
+        return false;
+    }
+
+    private UniformCharacter getNizZnakova(Node node) {
+        Node next = node;
+        while (next.rightSide.size() == 1) {
+            next = next.rightSide.get(0);
+        }
+        return (UniformCharacter) next;
+    }
+
+    private int countNizZnakovaLength(String text) {
+        int i = 0;
+        int len = 0;
+        while (i < text.length() - 1) {
+            if (text.charAt(i) == '\\') {
+                i += 2;
+            } else {
+                i += 1;
+            }
+            len++;
+        }
+        return len;
     }
 }
 
