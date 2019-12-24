@@ -185,6 +185,8 @@ public class Checkers {
     }
 
     private static boolean checkImplicitConstIntChar(Type varAType, Type varBType) {
+        if (varAType == varBType)
+            return true;
         // const(T) -> T
         if ((varAType.equals(Type.CONST_CHAR) && varBType.equals(Type.CHAR)) || (varAType.equals(Type.CONST_INT) && varBType.equals(Type.INT)))
             return true;
