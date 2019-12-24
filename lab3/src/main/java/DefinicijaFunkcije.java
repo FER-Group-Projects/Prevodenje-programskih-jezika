@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class DefinicijaFunkcije extends Node {
@@ -38,15 +38,16 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 4) potsoji li vec prije deklarirana funkcija istog imena (ako da, jesu li ista svojstva)
         			if(blockTable.containsFunctionByName(imeFje) && 
-        					(f.getInputTypes().size()!=1 || f.getInputTypes().get(0)!=Type.VOID || f.getReturnType()!=returnType)) 
+        					(f.getInputTypes().size()!=0 || f.getReturnType()!=returnType)) 
         				errorHappened();
         			
         			// Provjera 5) zabiljezi definiciju i deklaraciju funkcije
         			if(f!=null) {
         				f.setDefined(true);
         			} else {
-        				Function newFun = new Function(returnType, Arrays.asList(Type.VOID));
+        				Function newFun = new Function(returnType, Collections.emptyList());
         				FunctionTable.addFunctionToFunctionTable(imeFje, newFun);
+        				blockTable.addFunctionToBlockTable(imeFje, returnType, Collections.emptyList());
         			}
         			
         			return rightSide.get(5);
@@ -100,6 +101,7 @@ public class DefinicijaFunkcije extends Node {
         			} else {
         				Function newFun = new Function(returnType, inputTypes);
         				FunctionTable.addFunctionToFunctionTable(imeFje, newFun);
+        				blockTable.addFunctionToBlockTable(imeFje, returnType, inputTypes);
         			}
         			
         			// Ugradnja parametara f-je u lokalni djelokrug
