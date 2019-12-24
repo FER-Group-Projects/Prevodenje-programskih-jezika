@@ -104,6 +104,10 @@ public class BlockTable {
 
 
     //////////////////// block FUNCTIONS ////////////////////
+    public boolean containsFunctionByNameLocally(String funName) {
+        return declaredFunctions.contains(funName);
+    }
+
     // method returning if the block contains the function identified ONLY by name, but not in-out types
     public boolean containsFunctionByName(String funName) {
 
@@ -135,6 +139,11 @@ public class BlockTable {
         return getFunctionFromParentBlockByName(currentNode.parent, funName);
     }
 
+    public boolean containsFunctionLocally(String funName, Type funOutType, List<Type> funInType) {
+        if (!declaredFunctions.contains(funName)) return false;
+        Function function = FunctionTable.getFunctionFromFunctionTable(funName);
+        return function.getReturnType().equals(funOutType) && function.getInputTypes().equals(funInType);
+    }
 
     // method returning if the block contains the function
     public boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {

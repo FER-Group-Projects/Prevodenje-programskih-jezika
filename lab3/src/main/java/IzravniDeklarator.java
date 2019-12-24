@@ -1,15 +1,18 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class IzravniDeklarator extends Node {
 
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
+        String idnIme = ((UniformCharacter) rightSide.get(0)).getText();
         switch (rightSideType) {
             case 0:
                 if (properties.getNtip() == Type.VOID) {
                     errorHappened();
                 }
-                String idnIme = ((UniformCharacter) rightSide.get(0)).getText();
                 if (blockTable.containsVariableInLocalBlock(idnIme)) {
                     errorHappened();
                 }
@@ -20,8 +23,7 @@ public class IzravniDeklarator extends Node {
                 if (properties.getNtip() == Type.VOID) {
                     errorHappened();
                 }
-                String idnIme2 = ((UniformCharacter) rightSide.get(0)).getText();
-                if (blockTable.containsVariableInLocalBlock(idnIme2)) {
+                if (blockTable.containsVariableInLocalBlock(idnIme)) {
                     errorHappened();
                 }
                 int broj = Integer.parseInt(((UniformCharacter) rightSide.get(2)).getText());
@@ -39,12 +41,44 @@ public class IzravniDeklarator extends Node {
                 } else if (ntip == Type.CONST_CHAR) {
                     properties.setTip(Type.CONST_ARRAY_CHAR);
                 }
-                blockTable.addVariableToBlockTable(idnIme2, properties.getTip(), "");
+                blockTable.addVariableToBlockTable(idnIme, properties.getTip(), "");
                 break;
             case 2:
-
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    if (blockTable.containsFunctionByNameLocally(idnIme)) {
+                        List<Type> paramTypes = new ArrayList<>();
+                        paramTypes.add(Type.VOID);
+                        if (!blockTable.containsFunctionLocally(idnIme, properties.getNtip(), paramTypes)) {
+                            errorHappened();
+                        }
+                    } else {
+                        List<Type> paramTypes = new ArrayList<>();
+                        paramTypes.add(Type.VOID);
+                        blockTable.addFunctionToBlockTable(idnIme, properties.getNtip(), paramTypes);
+                    }
+                    properties.setTip(properties.getNtip());
+                }
                 break;
             case 3:
+                if (currentRightSideIndex == 0) {
+                    currentRightSideIndex++;
+                    return rightSide.get(2);
+                } else if (currentRightSideIndex == 1) {
+                    currentRightSideIndex++;
+
+                    if (blockTable.containsFunctionByNameLocally(idnIme)) {
+                        List<Type> paramTypes = new ArrayList<>(rightSide.get(2).properties.getTipovi());
+                        if (!blockTable.containsFunctionLocally(idnIme, properties.getNtip(), paramTypes)) {
+                            errorHappened();
+                        }
+                    } else {
+                        List<Type> paramTypes = new ArrayList<>();
+                        paramTypes.add(Type.VOID);
+                        blockTable.addFunctionToBlockTable(idnIme, properties.getNtip(), paramTypes);
+                    }
+                    properties.setTip(properties.getNtip());
+                }
                 break;
         }
 
