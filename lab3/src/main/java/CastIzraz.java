@@ -25,22 +25,21 @@ public class CastIzraz extends Node {
 
                     // rule number 2 --> START <--
                     Type castType = rightSide.get(1).properties.getTip();
-                    // TODO Is this check needed? It isn't directly numbered as a special check but reference from
+                    Type fromType = rightSide.get(3).properties.getTip();
                     //  document page 55: "Nadalje, vrijednost kojoj se tip pokusava promijeniti moze biti bilo kojeg tipa, pa se u tocki 2
                     //  mora provjeriti da se radi o brojevnom tipu, u skladu s pravilima iz poglavlja 4.3.1."
                     // see also: document page 56 at the top - "Ispis 4.22: Ispravne primjene cast-operatora."
-                    if (!(castType == Type.INT || castType == Type.CONST_INT || castType == Type.CHAR || castType == Type.CONST_CHAR))
+                    if (!(fromType == Type.INT || fromType == Type.CONST_INT || fromType == Type.CHAR || fromType == Type.CONST_CHAR))
                         errorHappened();
 
                     return rightSide.get(3);
                     // rule number 2 --> END <--
                 } else {
-                    Type expressionType = rightSide.get(3).properties.getTip();     // expression to be casted using to (ime_tipa)
+                    Type expressionType = rightSide.get(3).properties.getTip();     // expression to be cast using (ime_tipa)
                     Type castType = rightSide.get(1).properties.getTip();   // <ime_tipa>.tip - <ime_tipa> is cast type in ()
 
                     // rule number 3
-                    //TODO Is varBType (as param in Checkers.checkExplicitCast) == castType? (2nd argument here in function call)
-                    if (!Checkers.checkExplicitCast(expressionType, castType, castType))
+                    if (!Checkers.checkExplicitCast(expressionType, castType))
                         errorHappened();
 
                     properties.setTip(castType);

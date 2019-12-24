@@ -79,6 +79,24 @@ public class Checkers {
 
     // checks if variable of type A can be explicitly casted to variable of type B using (castType)
     // varBType <- (castType) varAType
+    public static boolean checkExplicitCast(Type varAType, Type castType){
+
+        // EXPLICIT: char <- int
+        // e.g. char <- (char) int
+        // e.g. int <- (char) int
+        // possible variants considering implicit casting: int/const(int)/char/const(char) <- (char/const(char)) int/const(int)/char/const(char)
+        if (checkImplicitCast(varAType,Type.INT) && checkImplicitCast(castType, Type.CHAR))
+            return true;
+        // IMPLICIT: varAType can be implicitly cast to castType
+        else if (checkImplicitCast(varAType, castType))
+            return true;
+
+        // all other cases - neither can be A implicitly or explicitly cast to castType
+        return false;
+    }
+
+    // checks if variable of type A can be explicitly casted to variable of type B using (castType)
+    // varBType <- (castType) varAType
     public static boolean checkExplicitCast(Type varAType, Type varBType, Type castType){
         // first mandatory check:
         // e.g. char <- (int) char: castType = int cannot be implicity cast to varBType = char

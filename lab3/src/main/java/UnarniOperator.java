@@ -20,11 +20,14 @@ public class UnarniOperator extends Node {
             case Identifiers.PLUS:
                 rightSideType = 0;
                 break;
-            case Identifiers.KR_CHAR:
+            case Identifiers.MINUS:
                 rightSideType = 1;
                 break;
-            case Identifiers.KR_INT:
+            case Identifiers.OP_TILDA:
                 rightSideType = 2;
+                break;
+            case Identifiers.OP_NEG:
+                rightSideType = 3;
                 break;
         }
     }
