@@ -90,7 +90,7 @@ public class BlockTable {
      * @throws IllegalArgumentException ako se pokuša za varijablu istog imena promijeniti njezin tip
      */
 
-    public void addVariableToBlockTable(String varName, Type varType, String varValue, int varLExpression) {
+    public void addVariableToBlockTable(String varName, Type varType, String varValue) {
         VariableTypeValueLExpression varTypeValueLExpression = nameToTypeValueMap.get(varName);
 
         if (varTypeValueLExpression  == null) {
@@ -134,7 +134,7 @@ public class BlockTable {
     public boolean getFunctionFromParentBlockByName(Node currentNode, String funName) {
 
         // ako blok sadrzi deklaraciju funkcije istih tipova -> true
-        if (containsFunctionByName(funName))
+        if (currentNode.getBlockTable().containsFunctionByName(funName))
             return true;
         // inace pitaj blok roditelja rekurzivno
         return getFunctionFromParentBlockByName(currentNode.parent, funName);
@@ -171,13 +171,11 @@ public class BlockTable {
     public boolean getFunctionFromParentBlock(Node currentNode, String funName, Type funOutType, List<Type> funInType) {
 
         // ako blok sadrzi deklaraciju funkcije istih tipova -> true
-        if (containsFunction(funName, funOutType, funInType))
+        if (currentNode.getBlockTable().containsFunction(funName, funOutType, funInType))
             return true;
         // inace pitaj blok roditelja rekurzivno
         return getFunctionFromParentBlock(currentNode.parent, funName, funOutType, funInType);
     }
-
-
 
     //metoda za dodavanje
     public void addFunctionToBlockTable(String funName, Type funOutType, List<Type> funInType) {

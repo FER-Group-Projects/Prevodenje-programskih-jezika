@@ -39,6 +39,7 @@ public class TreeBuilder {
             indentationStack.push(currentIndentation);
         }
 
+        sc.close();
         return root;
     }
     
