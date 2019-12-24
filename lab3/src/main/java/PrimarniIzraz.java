@@ -35,12 +35,11 @@ public class PrimarniIzraz extends Node {
                             if (function != null) {
                                 foundIdnAsVariableOrFunction = true;
 
-                                // TODO check if this setting the type is OK
                                 properties.setTip(Type.FUNCTION);
                                 properties.setTipovi(function.getInputTypes());
                                 properties.setPov(function.getReturnType());
 
-                                properties.setlIzraz(0);       // TODO check if this is OK - read from document page 51 the 1st paragraph: " Identifikator koji predstavlja funkciju ili niz nije l-izraz."
+                                properties.setlIzraz(0);
                             }
                         }
                     }
