@@ -33,7 +33,7 @@ public abstract class Node {
         StringBuilder sb = new StringBuilder(toText());
         sb.append(" ::= ");
         for (Node n : rightSide) {
-            sb.append(n.toText());
+            sb.append(n.toText()).append(" ");
         }
         return sb.toString();
     }
@@ -56,7 +56,7 @@ public abstract class Node {
         }
         System.out.print(sb.toString());
         //print symbol
-        System.out.println(toText());
+        System.out.println(getName());
         //then the children
         for (Node node : rightSide) {
             node.printTree(depth + 1);

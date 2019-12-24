@@ -8,6 +8,7 @@ public class Deklaracija extends Node {
             currentRightSideIndex++;
             return rightSide.get(0);
         } else if (currentRightSideIndex == 1) {
+            currentRightSideIndex++;
             rightSide.get(1).properties.setNtip(rightSide.get(0).properties.getTip());
             return rightSide.get(1);
         }
