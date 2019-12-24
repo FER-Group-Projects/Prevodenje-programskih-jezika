@@ -23,20 +23,18 @@ public class CastIzraz extends Node {
                 } else if (currentRightSideIndex == 1) {
                     currentRightSideIndex += 2;
 
-                    // rule number 2 --> START <--
-                    Type castType = rightSide.get(1).properties.getTip();
-                    Type fromType = rightSide.get(3).properties.getTip();
-                    //  document page 55: "Nadalje, vrijednost kojoj se tip pokusava promijeniti moze biti bilo kojeg tipa, pa se u tocki 2
-                    //  mora provjeriti da se radi o brojevnom tipu, u skladu s pravilima iz poglavlja 4.3.1."
-                    // see also: document page 56 at the top - "Ispis 4.22: Ispravne primjene cast-operatora."
-                    if (!(fromType == Type.INT || fromType == Type.CONST_INT || fromType == Type.CHAR || fromType == Type.CONST_CHAR))
-                        errorHappened();
-
+                    // rule number 2 (continues in "else") - provjeri(cast_izraz)
                     return rightSide.get(3);
-                    // rule number 2 --> END <--
                 } else {
                     Type expressionType = rightSide.get(3).properties.getTip();     // expression to be cast using (ime_tipa)
                     Type castType = rightSide.get(1).properties.getTip();   // <ime_tipa>.tip - <ime_tipa> is cast type in ()
+
+                    // rule number 2 - the other check
+                    //  document page 55: "Nadalje, vrijednost kojoj se tip pokusava promijeniti moze biti bilo kojeg tipa, pa se u tocki 2
+                    //  mora provjeriti da se radi o brojevnom tipu, u skladu s pravilima iz poglavlja 4.3.1."
+                    // see also: document page 56 at the top - "Ispis 4.22: Ispravne primjene cast-operatora."
+                    if (!(expressionType == Type.INT || expressionType == Type.CONST_INT || expressionType == Type.CHAR || expressionType == Type.CONST_CHAR))
+                        errorHappened();
 
                     // rule number 3
                     if (!Checkers.checkExplicitCast(expressionType, castType))
