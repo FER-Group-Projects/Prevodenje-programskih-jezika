@@ -28,17 +28,21 @@ public class PrimarniIzraz extends Node {
 
                     // didn't find variable with idnName, then try to find function with that name
                     if (!foundIdnAsVariableOrFunction) {
-                        Function function = FunctionTable.getFunctionFromFunctionTable(idnName);
+                        if (blockTable.containsFunctionByName(idnName)) {
 
-                        if (function != null)
-                            foundIdnAsVariableOrFunction = true;
+                            Function function = FunctionTable.getFunctionFromFunctionTable(idnName);
 
-                            // TODO check if this setting the type is OK
-                            properties.setTip(Type.FUNCTION);
-                            properties.setTipovi(function.getInputTypes());
-                            properties.setPov(function.getReturnType());
+                            if (function != null) {
+                                foundIdnAsVariableOrFunction = true;
 
-                            properties.setlIzraz(0);       // TODO check if this is OK - read from document page 51 the 1st paragraph: " Identifikator koji predstavlja funkciju ili niz nije l-izraz."
+                                // TODO check if this setting the type is OK
+                                properties.setTip(Type.FUNCTION);
+                                properties.setTipovi(function.getInputTypes());
+                                properties.setPov(function.getReturnType());
+
+                                properties.setlIzraz(0);       // TODO check if this is OK - read from document page 51 the 1st paragraph: " Identifikator koji predstavlja funkciju ili niz nije l-izraz."
+                            }
+                        }
                     }
 
 
