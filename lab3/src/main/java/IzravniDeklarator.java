@@ -47,16 +47,7 @@ public class IzravniDeklarator extends Node {
                 if (currentRightSideIndex == 0) {
                     currentRightSideIndex++;
                     List<Type> paramTypes = new ArrayList<>(); //empty -> void
-                    if (blockTable.containsFunctionByNameLocally(idnIme)) {
-                        if (!blockTable.containsFunctionLocally(idnIme, properties.getNtip(), paramTypes)) {
-                            errorHappened();
-                        }
-                    } else {
-                        blockTable.addFunctionToBlockTable(idnIme, properties.getNtip(), paramTypes);
-                    }
-                    properties.setTip(Type.FUNCTION);
-                    properties.setPov(properties.getNtip());
-                    properties.setTipovi(paramTypes);
+                    functionProperties(idnIme, paramTypes);
                 }
                 break;
             case 3:
@@ -67,21 +58,25 @@ public class IzravniDeklarator extends Node {
                     currentRightSideIndex++;
 
                     List<Type> paramTypes = new ArrayList<>(rightSide.get(2).properties.getTipovi());
-                    if (blockTable.containsFunctionByNameLocally(idnIme)) {
-                        if (!blockTable.containsFunctionLocally(idnIme, properties.getNtip(), paramTypes)) {
-                            errorHappened();
-                        }
-                    } else {
-                        blockTable.addFunctionToBlockTable(idnIme, properties.getNtip(), paramTypes);
-                    }
-                    properties.setTip(Type.FUNCTION);
-                    properties.setPov(properties.getNtip());
-                    properties.setTipovi(paramTypes);
+                    functionProperties(idnIme, paramTypes);
                 }
                 break;
         }
 
         return null;
+    }
+
+    private void functionProperties(String idnIme, List<Type> paramTypes) {
+        if (blockTable.containsFunctionByNameLocally(idnIme)) {
+            if (!blockTable.containsFunctionLocally(idnIme, properties.getNtip(), paramTypes)) {
+                errorHappened();
+            }
+        } else {
+            blockTable.addFunctionToBlockTable(idnIme, properties.getNtip(), paramTypes);
+        }
+        properties.setTip(Type.FUNCTION);
+        properties.setPov(properties.getNtip());
+        properties.setTipovi(paramTypes);
     }
 
     @Override
