@@ -35,7 +35,7 @@ public abstract class Node {
         for (Node n : rightSide) {
             sb.append(n.toText()).append(" ");
         }
-        return sb.toString();
+        return sb.toString().trim();
     }
 
     public void errorHappened() {

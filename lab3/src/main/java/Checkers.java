@@ -18,12 +18,10 @@ public class Checkers {
 
     // check that attribute "vrijednost" of uniform character "ZNAK" is allowed
     public static boolean checkCharacterConst(String charConstValueStr) {
-
         if (charConstValueStr.length() > 1)
             return allowedEscapeChars.contains(charConstValueStr);
 
-        // if ZNAK contains only 1 character (length = 1) - check if it is in allowed range for ppjC "char" type
-        return checkChar(charConstValueStr);
+        return true;
     }
 
     // check that attribute "vrijednost" of uniform character "NIZ_ZNAKOVA" is allowed
