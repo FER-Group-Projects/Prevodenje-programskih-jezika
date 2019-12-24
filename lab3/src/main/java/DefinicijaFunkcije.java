@@ -46,8 +46,7 @@ public class DefinicijaFunkcije extends Node {
         				f.setDefined(true);
         			} else {
         				Function newFun = new Function(returnType, Collections.emptyList());
-        				FunctionTable.addFunctionToFunctionTable(imeFje, newFun);
-        				blockTable.addFunctionToBlockTable(imeFje, returnType, Collections.emptyList());
+						parent.blockTable.addFunctionToBlockTable(imeFje, returnType, Collections.emptyList());
         			}
         			
         			return rightSide.get(5);
@@ -100,8 +99,7 @@ public class DefinicijaFunkcije extends Node {
         				f.setDefined(true);
         			} else {
         				Function newFun = new Function(returnType, inputTypes);
-        				FunctionTable.addFunctionToFunctionTable(imeFje, newFun);
-        				blockTable.addFunctionToBlockTable(imeFje, returnType, inputTypes);
+        				parent.blockTable.addFunctionToBlockTable(imeFje, returnType, inputTypes);
         			}
         			
         			// Ugradnja parametara f-je u lokalni djelokrug

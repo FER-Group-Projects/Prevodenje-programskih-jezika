@@ -21,6 +21,11 @@ public class SemantickiAnalizator {
         while (!nodeStack.isEmpty()) {
             Node current = nodeStack.peek();
             Node next = current.analyze();
+
+            if (current.blockTable.getNode() == null) {
+                current.blockTable.setNode(current);
+            }
+
             if (next != null) {
                 next.setBlockTable(current.getBlockTable());
                 nodeStack.push(next);
@@ -33,12 +38,12 @@ public class SemantickiAnalizator {
     public void functionTableCheck() {
         if (!containsMainFunction()) {
             System.out.println("main");
-            System.exit(1);
+            System.exit(0);
         }
 
         if (!allDeclaredFunctionsDefined()) {
             System.out.println("funkcija");
-            System.exit(1);
+            System.exit(0);
         }
 
     }
