@@ -41,8 +41,15 @@ public class InitDeklarator extends Node {
                         if (rightSide.get(2).properties.getBrElem() > rightSide.get(0).properties.getBrElem()) {
                             errorHappened();
                         }
+                        Type elementTip = null;
+
+                        if (deklaratorTip == Type.ARRAY_CHAR) elementTip = Type.CHAR;
+                        if (deklaratorTip == Type.CONST_ARRAY_CHAR) elementTip = Type.CHAR;
+                        if (deklaratorTip == Type.ARRAY_INT) elementTip = Type.INT;
+                        if (deklaratorTip == Type.CONST_ARRAY_INT) elementTip = Type.INT;
+
                         for (Type t : rightSide.get(2).properties.getTipovi()) {
-                            if (!Checkers.checkImplicitCast(t, deklaratorTip)) {
+                            if (!Checkers.checkImplicitCast(t, elementTip)) {
                                 errorHappened();
                             }
                         }
