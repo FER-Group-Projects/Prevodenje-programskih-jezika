@@ -40,7 +40,11 @@ public class Checkers {
                 isValidCharConst = checkCharacterConst(Character.toString(currentChar) + Character.toString(nextChar));
                 // two characters checked - escaping and escaped char
                 i += 2;
-            } else {
+            }
+            else if (currentChar == '"') {
+                return false;
+            }
+            else {
                 isValidCharConst = checkCharacterConst(Character.toString(currentChar));
                 i += 1;
             }
@@ -49,7 +53,7 @@ public class Checkers {
         }
 
         // check last character - it cannot be escape char (\) because there is nothing to be esacpe (no more characters after the last character)
-        if (chars[chars.length-1] == '\\')
+        if (chars[chars.length-1] == '\\' && i != chars.length || chars[chars.length - 1] == '"')
             return  false;
 
         return true;

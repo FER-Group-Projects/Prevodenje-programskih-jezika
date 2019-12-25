@@ -88,7 +88,9 @@ public class PrimarniIzraz extends Node {
                 break;
             case 3:
                 if (currentRightSideIndex == 0) {
-                    if (!Checkers.checkCharacterArray(((UniformCharacter) rightSide.get(0)).getText()))
+                    String string = ((UniformCharacter) rightSide.get(0)).getText();
+
+                    if (!Checkers.checkCharacterArray(string.substring(1, string.length() - 1)))
                         errorHappened();
 
                     properties.setTip(Type.CONST_ARRAY_CHAR);
