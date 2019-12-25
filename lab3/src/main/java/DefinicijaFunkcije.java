@@ -114,7 +114,7 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Ugradnja parametara f-je u lokalni djelokrug
         			for(int i=0; i<inputTypes.size(); i++) {
-        				blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null);
+						rightSide.get(5).blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null);
         			}
         			
         			return rightSide.get(5);
@@ -142,7 +142,6 @@ public class DefinicijaFunkcije extends Node {
         		break;
         	case LeftSideNames.LISTA_PARAMETARA:
         		rightSideType = 1;
-        		blockTable = new BlockTable();
         		break;
         	default:
         		errorHappened();

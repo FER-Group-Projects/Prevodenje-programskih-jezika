@@ -27,7 +27,10 @@ public class SemantickiAnalizator {
             }
 
             if (next != null) {
-                next.setBlockTable(current.getBlockTable());
+                if (next.getBlockTable() == null) {
+                    next.setBlockTable(current.getBlockTable());
+                }
+
                 nodeStack.push(next);
             } else {
                 nodeStack.pop();
