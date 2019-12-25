@@ -63,7 +63,7 @@ public class SemantickiAnalizator {
     //metoda provjerava jesu li sve deklarirane funkcije u cijelom programu i definirane
     private boolean allDeclaredFunctionsDefined() {
 
-        Collection<Function> functionsDeclared = FunctionTable.functionNameToInOutTypeMap.values();
+        Collection<Function> functionsDeclared = FunctionTable.declaredFunctions;
         for (Function function : functionsDeclared) {
             if (!function.isDefined())
                 return false;

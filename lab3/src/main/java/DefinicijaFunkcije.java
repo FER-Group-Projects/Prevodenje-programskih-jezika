@@ -24,7 +24,7 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 3) postoji li vec prije definirana f-ja istog imena
         			String imeFje = ((UniformCharacter) rightSide.get(1)).getText();
-        			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
+        			Function f = blockTable.getFunctionByName(imeFje);
         			if(f!=null && f.isDefined())
         				errorHappened();
         			
@@ -43,10 +43,15 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 5) zabiljezi definiciju i deklaraciju funkcije
         			if(f!=null) {
-        				f.setDefined(true);
+        				if (FunctionTable.isDefinedFunction(f)) {
+        					errorHappened();
+						}
+
+        				FunctionTable.setDefinedFunction(f);
         			} else {
-        				Function newFun = new Function(returnType, Collections.emptyList());
+        				Function newFun = new Function(imeFje, returnType, Collections.emptyList());
 						parent.blockTable.addFunctionToBlockTable(imeFje, returnType, Collections.emptyList());
+						FunctionTable.setDefinedFunction(newFun);
         			}
         			
         			return rightSide.get(5);
@@ -68,7 +73,7 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 3) postoji li vec prije definirana f-ja istog imena
         			String imeFje = ((UniformCharacter) rightSide.get(1)).getText();
-        			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
+        			Function f = blockTable.getFunctionByName(imeFje);
         			if(f!=null && f.isDefined())
         				errorHappened();
         			
@@ -81,7 +86,7 @@ public class DefinicijaFunkcije extends Node {
         			String imeFje = ((UniformCharacter) rightSide.get(1)).getText();
         			List<Type> inputTypes = rightSide.get(3).properties.getTipovi();
         			List<String> inputNames = rightSide.get(3).properties.getImena();
-        			Function f = FunctionTable.getFunctionFromFunctionTable(imeFje);
+        			Function f = blockTable.getFunctionByName(imeFje);
         			try {
         				blockTable.getVariableType(imeFje);
         				errorHappened();
@@ -96,11 +101,16 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Provjera 6) zabiljezi definiciju i deklaraciju funkcije
         			if(f!=null) {
-        				f.setDefined(true);
+						if (FunctionTable.isDefinedFunction(f)) {
+							errorHappened();
+						}
+
+						FunctionTable.setDefinedFunction(f);
         			} else {
-        				Function newFun = new Function(returnType, inputTypes);
+        				Function newFun = new Function(imeFje, returnType, inputTypes);
         				parent.blockTable.addFunctionToBlockTable(imeFje, returnType, inputTypes);
-        			}
+						FunctionTable.setDefinedFunction(newFun);
+					}
         			
         			// Ugradnja parametara f-je u lokalni djelokrug
         			for(int i=0; i<inputTypes.size(); i++) {

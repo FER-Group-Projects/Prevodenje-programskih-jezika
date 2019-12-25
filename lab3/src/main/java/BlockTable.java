@@ -8,7 +8,7 @@ public class BlockTable {
     private Node node;
 
     // set containing function names declared in the block
-    private Set<String> declaredFunctions = new HashSet<>();
+    private Map<String, Function> declaredFunctions = new HashMap<>();
 
 
     //////////////////// block VARIABLES ////////////////////
@@ -105,16 +105,15 @@ public class BlockTable {
 
     //////////////////// block FUNCTIONS ////////////////////
     public boolean containsFunctionByNameLocally(String funName) {
-        return declaredFunctions.contains(funName);
+        return declaredFunctions.containsKey(funName);
     }
 
-    // method returning if the block contains the function identified ONLY by name, but not in-out types
-    public boolean containsFunctionByName(String funName) {
+    public Function getFunctionByName(String funName) {
         BlockTable currentScope = this;
 
         while (currentScope != null) {
-            if (currentScope.declaredFunctions.contains(funName)) {
-                return true;
+            if (currentScope.declaredFunctions.containsKey(funName)) {
+                return currentScope.declaredFunctions.get(funName);
             }
 
             if (currentScope.node == null || currentScope.node.parent == null) {
@@ -124,43 +123,43 @@ public class BlockTable {
             currentScope = currentScope.node.parent.blockTable;
         }
 
-        return false;
+        return null;
+    }
+
+    // method returning if the block contains the function identified ONLY by name, but not in-out types
+    public boolean containsFunctionByName(String funName) {
+        return getFunctionByName(funName) != null;
     }
 
     public boolean containsFunctionLocally(String funName, Type funOutType, List<Type> funInType) {
-        if (!declaredFunctions.contains(funName)) return false;
-        Function function = FunctionTable.getFunctionFromFunctionTable(funName);
-        return function.getReturnType().equals(funOutType) && function.getInputTypes().equals(funInType);
+        if (!declaredFunctions.containsKey(funName)) return false;
+        return declaredFunctions.get(funName).equals(new Function(funName, funOutType, funInType));
     }
 
     // method returning if the block contains the function
     public boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {
-        // if the block does not have the function declaration, see the parent nodes recursively
-        if (!containsFunctionByName(funName)) {
+        Function function = getFunctionByName(funName);
+
+        if (function == null) {
             return false;
         }
 
         // if the block has the function declaration, check if the function in-out types are equal to those in FunctionTable
         // if yes, it is the function with the given declaration -> true
         // else the function with that name is recorded but with different in-out types -> false
-        Function function = FunctionTable.getFunctionFromFunctionTable(funName);
-        return function.getReturnType().equals(funOutType) && function.getInputTypes().equals(funInType);
+        return !function.equals(new Function(funName, funOutType, funInType));
     }
 
 
     //metoda za dodavanje
     public void addFunctionToBlockTable(String funName, Type funOutType, List<Type> funInType) {
-        // if the block or one of block's parents declared the function -> do not add it again
-        if (containsFunction(funName, funOutType, funInType))
-            return;
-
-        Function funInFunctionTable = FunctionTable.getFunctionFromFunctionTable(funName);
+        Function funInFunctionTable = declaredFunctions.get(funName);
 
         // check if function does not exist then add it to the table
         // else just check that in and out types are the same
         if (funInFunctionTable == null) {
-            declaredFunctions.add(funName);
-            FunctionTable.addFunctionToFunctionTable(funName, new Function(funOutType, funInType));
+            declaredFunctions.put(funName, new Function(funName, funOutType, funInType));
+            FunctionTable.addFunctionToFunctionTable(new Function(funName, funOutType, funInType));
         } else {
             if (!funInFunctionTable.getReturnType().equals(funOutType))
                 throw new IllegalArgumentException("Cannot change function return type!");

@@ -30,7 +30,7 @@ public class PrimarniIzraz extends Node {
                     if (!foundIdnAsVariableOrFunction) {
                         if (blockTable.containsFunctionByName(idnName)) {
 
-                            Function function = FunctionTable.getFunctionFromFunctionTable(idnName);
+                            Function function = blockTable.getFunctionByName(idnName);
 
                             if (function != null) {
                                 foundIdnAsVariableOrFunction = true;

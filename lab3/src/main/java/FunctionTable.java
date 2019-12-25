@@ -1,37 +1,38 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FunctionTable {
-    //map<imeFunkcije, Map<return tip, lista tipova argumenata>>
-    public static Map<String, Function> functionNameToInOutTypeMap = new HashMap<>();
+    public static Set<Function> declaredFunctions = new HashSet<>();
 
-
-    public static Function getFunctionFromFunctionTable(String funName) {
-        return functionNameToInOutTypeMap.get(funName);
+    public static boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {
+        return declaredFunctions.contains(new Function(funName, funOutType, funInType));
     }
 
-    //metoda contains
+    public static void addFunctionToFunctionTable(Function function) {
+        declaredFunctions.add(function);
+    }
 
-    /**
-     *
-     * @throws
-     */
-    public static boolean containsFunction(String funName, Type funOutType, List<Type> funInType) {
+    public static boolean isDefinedFunction(Function function) {
+        Optional<Function> declaredFunction = declaredFunctions
+                .stream()
+                .filter(function::equals)
+                .findFirst();
 
-        Function funInMap = functionNameToInOutTypeMap.get(funName);
-
-        if (funInMap == null) {
+        if (!declaredFunction.isPresent()) {
             return false;
         }
 
-        return funInMap.getInputTypes().equals(funInType) && funInMap.getReturnType().equals(funOutType);
+        return declaredFunction.get().isDefined();
     }
 
+    public static void setDefinedFunction(Function function) {
+        Optional<Function> declaredFunction = declaredFunctions
+                .stream()
+                .filter(function::equals)
+                .findFirst();
 
-    //metoda za dodavanje
-    public static void addFunctionToFunctionTable(String funName, Function function) {
-        functionNameToInOutTypeMap.put(funName, function);
+        if (declaredFunction.isPresent()) {
+            declaredFunction.get().setDefined(true);
+        }
     }
 
 }
