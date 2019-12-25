@@ -29,9 +29,10 @@ public class InitDeklarator extends Node {
                 } else if (currentRightSideIndex == 2) {
                     currentRightSideIndex++;
                     Type deklaratorTip = rightSide.get(0).properties.getTip();
+                    Type inicijalizatorTip = rightSide.get(2).properties.getTip();
                     if (deklaratorTip == Type.INT || deklaratorTip == Type.CHAR ||
                             deklaratorTip == Type.CONST_CHAR || deklaratorTip == Type.CONST_INT) {
-                        Type inicijalizatorTip = rightSide.get(2).properties.getTip();
+
                         if (!Checkers.checkImplicitCast(inicijalizatorTip, deklaratorTip)) {
                             errorHappened();
                         }
@@ -47,6 +48,10 @@ public class InitDeklarator extends Node {
                         if (deklaratorTip == Type.CONST_ARRAY_CHAR) elementTip = Type.CHAR;
                         if (deklaratorTip == Type.ARRAY_INT) elementTip = Type.INT;
                         if (deklaratorTip == Type.CONST_ARRAY_INT) elementTip = Type.INT;
+
+                        if(!(inicijalizatorTip==Type.CONST_ARRAY_CHAR || inicijalizatorTip==Type.CONST_ARRAY_INT)){
+                            errorHappened();
+                        }
 
                         for (Type t : rightSide.get(2).properties.getTipovi()) {
                             if (!Checkers.checkImplicitCast(t, elementTip)) {
