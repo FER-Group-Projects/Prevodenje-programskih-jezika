@@ -34,7 +34,11 @@ public class ListaParametara extends Node {
                     List<Type> tipList = new ArrayList<>(rightSide.get(0).properties.getTipovi());
                     List<String> imeList = new ArrayList<>(rightSide.get(0).properties.getImena());
                     tipList.add(rightSide.get(2).properties.getTip());
-                    imeList.add(rightSide.get(2).properties.getIme());
+                    String novoIme = rightSide.get(2).properties.getIme();
+                    if (imeList.contains(novoIme)) {
+                        errorHappened();
+                    }
+                    imeList.add(novoIme);
                     properties.setTipovi(tipList);
                     properties.setImena(imeList);
                 } else {
