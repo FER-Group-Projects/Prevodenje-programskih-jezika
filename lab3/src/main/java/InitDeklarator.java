@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class InitDeklarator extends Node {
 
     @Override
@@ -49,8 +51,31 @@ public class InitDeklarator extends Node {
                         if (deklaratorTip == Type.ARRAY_INT) elementTip = Type.INT;
                         if (deklaratorTip == Type.CONST_ARRAY_INT) elementTip = Type.INT;
 
-                        if(!(inicijalizatorTip==Type.CONST_ARRAY_CHAR || inicijalizatorTip==Type.CONST_ARRAY_INT)){
+                        if (!(inicijalizatorTip == Type.CONST_ARRAY_CHAR || inicijalizatorTip == Type.CONST_ARRAY_INT)) {
                             errorHappened();
+                        }
+                        Node next = rightSide.get(2);
+                        Stack<Node> stack = new Stack<>();
+                        stack.push(next);
+                        while (!stack.isEmpty()) {
+                            Node n = stack.pop();
+                            if (n instanceof UniformCharacter) {
+                                if (((UniformCharacter) n).getIdentifier().equals(Identifiers.IDN)) {
+                                    String idnIme = ((UniformCharacter) n).getText();
+                                    try {
+                                        if (blockTable.getVariableValue(idnIme) != null) {
+                                            Type varType = blockTable.getVariableType(idnIme);
+                                            if (varType == Type.ARRAY_CHAR || varType == Type.ARRAY_INT ||
+                                                    varType == Type.CONST_ARRAY_CHAR || varType == Type.CONST_ARRAY_INT) {
+                                                errorHappened();
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        //nothing
+                                    }
+                                }
+                            }
+                            stack.addAll(n.rightSide);
                         }
 
                         for (Type t : rightSide.get(2).properties.getTipovi()) {
