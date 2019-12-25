@@ -20,6 +20,7 @@ public class Inicijalizator extends Node {
                         for (int i = 0; i < brelem; i++) {
                             tipovi.add(Type.CHAR);
                         }
+                        properties.setTip(Type.CONST_ARRAY_CHAR);
                         properties.setBrElem(brelem);
                         properties.setTipovi(tipovi);
                     } else {
