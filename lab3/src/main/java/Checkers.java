@@ -21,7 +21,7 @@ public class Checkers {
         if (charConstValueStr.length() > 1)
             return allowedEscapeChars.contains(charConstValueStr);
 
-        return true;
+        return !charConstValueStr.equals("\\");
     }
 
     // check that attribute "vrijednost" of uniform character "NIZ_ZNAKOVA" is allowed
@@ -53,7 +53,7 @@ public class Checkers {
         }
 
         // check last character - it cannot be escape char (\) because there is nothing to be esacpe (no more characters after the last character)
-        if (chars[chars.length-1] == '\\' && i != chars.length || chars[chars.length - 1] == '"')
+        if ((chars[chars.length-1] == '\\' || chars[chars.length - 1] == '"') && i != chars.length)
             return  false;
 
         return true;
