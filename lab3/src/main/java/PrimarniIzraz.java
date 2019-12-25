@@ -16,14 +16,30 @@ public class PrimarniIzraz extends Node {
 
                     boolean foundIdnAsVariableOrFunction = false;
 
-                    try {
-                        VariableTypeValueLExpression variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+                    if (blockTable.containsFunctionByNameLocally(idnName)) {
+                        Function function = blockTable.getFunctionByName(idnName);
 
-                        properties.setTip(variableTypeValue.getTip());
-                        properties.setlIzraz(variableTypeValue.getlIzraz());
+                        if (function != null) {
+                            foundIdnAsVariableOrFunction = true;
 
-                        foundIdnAsVariableOrFunction = true;
-                    } catch (NullPointerException ex) {
+                            properties.setTip(Type.FUNCTION);
+                            properties.setTipovi(function.getInputTypes());
+                            properties.setPov(function.getReturnType());
+
+                            properties.setlIzraz(0);
+                        }
+                    }
+
+                    if (!foundIdnAsVariableOrFunction) {
+                        try {
+                            VariableTypeValueLExpression variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+
+                            properties.setTip(variableTypeValue.getTip());
+                            properties.setlIzraz(variableTypeValue.getlIzraz());
+
+                            foundIdnAsVariableOrFunction = true;
+                        } catch (NullPointerException ex) {
+                        }
                     }
 
                     // didn't find variable with idnName, then try to find function with that name
@@ -47,6 +63,7 @@ public class PrimarniIzraz extends Node {
 
                     if (!foundIdnAsVariableOrFunction)
                         errorHappened();
+
                 }
                 break;
             case 1:
