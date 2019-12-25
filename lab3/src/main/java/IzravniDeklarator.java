@@ -26,7 +26,11 @@ public class IzravniDeklarator extends Node {
                 if (blockTable.containsVariableInLocalBlock(idnIme)) {
                     errorHappened();
                 }
-                int broj = Integer.parseInt(((UniformCharacter) rightSide.get(2)).getText());
+                String brojString = ((UniformCharacter) rightSide.get(2)).getText();
+                if (!Checkers.checkInt(brojString)) {
+                    errorHappened();
+                }
+                int broj = Integer.parseInt(brojString);
                 if (broj < 1 || broj > 1024) {
                     errorHappened();
                 }
