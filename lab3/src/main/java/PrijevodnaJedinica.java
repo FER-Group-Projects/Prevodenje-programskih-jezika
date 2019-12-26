@@ -3,7 +3,7 @@ public class PrijevodnaJedinica extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-        
+
         switch (rightSideType) {
 	        case 0:
 	            if (currentRightSideIndex == 0) {

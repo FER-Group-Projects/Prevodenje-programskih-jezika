@@ -33,7 +33,7 @@ public class UnarniIzraz extends Node {
             case 3:
                 if (currentRightSideIndex == 0) {
                     currentRightSideIndex++;
-                    return rightSide.get(0);
+                    return rightSide.get(1);
                 } else {
                     if (!Checkers.checkImplicitCast(rightSide.get(1).properties.getTip(), Type.INT))
                         errorHappened();

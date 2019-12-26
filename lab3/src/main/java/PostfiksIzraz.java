@@ -16,6 +16,8 @@ public class PostfiksIzraz extends Node {
                     Properties rightSideCharProperties = rightSide.get(0).properties;
                     properties.setTip(rightSideCharProperties.getTip());
                     properties.setlIzraz(rightSideCharProperties.getlIzraz());
+                    properties.setTipovi(rightSideCharProperties.getTipovi());
+                    properties.setPov(rightSideCharProperties.getPov());
                 }
                 break;
             case 1:
@@ -67,7 +69,7 @@ public class PostfiksIzraz extends Node {
                     if (!(rightSideCharProperties.getTip() == Type.FUNCTION && rightSideCharProperties.getTipovi().isEmpty()))
                         errorHappened();
 
-                    properties.setTip(rightSideCharProperties.getTip());       // this is Type.FUNCTION
+                    properties.setTip(rightSideCharProperties.getPov());       // this is Type.FUNCTION
                     properties.setlIzraz(0);
                 }
 
@@ -103,7 +105,7 @@ public class PostfiksIzraz extends Node {
 
 
 
-                    properties.setTip(postfixExpressionProperties.getTip());    // this is Type.FUNCTION
+                    properties.setTip(postfixExpressionProperties.getPov());    // this is Type.FUNCTION
                     properties.setlIzraz(0);
                 }
                 break;

@@ -16,6 +16,9 @@ public class IzravniDeklarator extends Node {
                 if (blockTable.containsVariableInLocalBlock(idnIme)) {
                     errorHappened();
                 }
+                if (blockTable.containsFunctionByNameLocally(idnIme)) {
+                    errorHappened();
+                }
                 blockTable.addVariableToBlockTable(idnIme, properties.getNtip(), "");
                 properties.setTip(properties.getNtip());
                 break;
@@ -26,7 +29,15 @@ public class IzravniDeklarator extends Node {
                 if (blockTable.containsVariableInLocalBlock(idnIme)) {
                     errorHappened();
                 }
-                int broj = Integer.parseInt(((UniformCharacter) rightSide.get(2)).getText());
+                if (blockTable.containsFunctionByNameLocally(idnIme)) {
+                    errorHappened();
+                }
+
+                String brojString = ((UniformCharacter) rightSide.get(2)).getText();
+                if (!Checkers.checkInt(brojString)) {
+                    errorHappened();
+                }
+                int broj = Integer.parseInt(brojString);
                 if (broj < 1 || broj > 1024) {
                     errorHappened();
                 }
@@ -67,6 +78,9 @@ public class IzravniDeklarator extends Node {
     }
 
     private void functionProperties(String idnIme, List<Type> paramTypes) {
+        if(blockTable.containsVariableInLocalBlock(idnIme)){
+            errorHappened();
+        }
         if (blockTable.containsFunctionByNameLocally(idnIme)) {
             if (!blockTable.containsFunctionLocally(idnIme, properties.getNtip(), paramTypes)) {
                 errorHappened();

@@ -20,6 +20,7 @@ public class Inicijalizator extends Node {
                         for (int i = 0; i < brelem; i++) {
                             tipovi.add(Type.CHAR);
                         }
+                        properties.setTip(Type.CONST_ARRAY_CHAR);
                         properties.setBrElem(brelem);
                         properties.setTipovi(tipovi);
                     } else {
@@ -37,6 +38,9 @@ public class Inicijalizator extends Node {
                     Node lista = rightSide.get(1);
                     properties.setBrElem(lista.properties.getBrElem());
                     properties.setTipovi(lista.properties.getTipovi());
+                    Type listaTip = lista.properties.getTipovi().get(0);
+                    if (listaTip == Type.INT || listaTip == Type.CONST_INT) properties.setTip(Type.CONST_ARRAY_INT);
+                    if (listaTip == Type.CHAR || listaTip == Type.CONST_CHAR) properties.setTip(Type.CONST_ARRAY_CHAR);
                 }
                 break;
         }

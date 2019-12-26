@@ -16,21 +16,37 @@ public class PrimarniIzraz extends Node {
 
                     boolean foundIdnAsVariableOrFunction = false;
 
-                    try {
-                        VariableTypeValueLExpression variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+                    if (blockTable.containsFunctionByNameLocally(idnName)) {
+                        Function function = blockTable.getFunctionByName(idnName);
 
-                        properties.setTip(variableTypeValue.getTip());
-                        properties.setlIzraz(variableTypeValue.getlIzraz());
+                        if (function != null) {
+                            foundIdnAsVariableOrFunction = true;
 
-                        foundIdnAsVariableOrFunction = true;
-                    } catch (NullPointerException ex) {
+                            properties.setTip(Type.FUNCTION);
+                            properties.setTipovi(function.getInputTypes());
+                            properties.setPov(function.getReturnType());
+
+                            properties.setlIzraz(0);
+                        }
+                    }
+
+                    if (!foundIdnAsVariableOrFunction) {
+                        try {
+                            VariableTypeValueLExpression variableTypeValue = blockTable.getVariableTypeValueLExpression(((UniformCharacter) rightSide.get(0)).getText());
+
+                            properties.setTip(variableTypeValue.getTip());
+                            properties.setlIzraz(variableTypeValue.getlIzraz());
+
+                            foundIdnAsVariableOrFunction = true;
+                        } catch (NullPointerException ex) {
+                        }
                     }
 
                     // didn't find variable with idnName, then try to find function with that name
                     if (!foundIdnAsVariableOrFunction) {
                         if (blockTable.containsFunctionByName(idnName)) {
 
-                            Function function = FunctionTable.getFunctionFromFunctionTable(idnName);
+                            Function function = blockTable.getFunctionByName(idnName);
 
                             if (function != null) {
                                 foundIdnAsVariableOrFunction = true;
@@ -47,6 +63,7 @@ public class PrimarniIzraz extends Node {
 
                     if (!foundIdnAsVariableOrFunction)
                         errorHappened();
+
                 }
                 break;
             case 1:
@@ -60,7 +77,9 @@ public class PrimarniIzraz extends Node {
                 break;
             case 2:
                 if (currentRightSideIndex == 0) {
-                    if (!Checkers.checkCharacterConst(((UniformCharacter) rightSide.get(0)).getText()))
+                    String character = ((UniformCharacter) rightSide.get(0)).getText();
+
+                    if (!Checkers.checkCharacterConst(character.substring(1, character.length() - 1)))
                         errorHappened();
 
                     properties.setTip(Type.CHAR);
@@ -69,7 +88,9 @@ public class PrimarniIzraz extends Node {
                 break;
             case 3:
                 if (currentRightSideIndex == 0) {
-                    if (!Checkers.checkCharacterArray(((UniformCharacter) rightSide.get(0)).getText()))
+                    String string = ((UniformCharacter) rightSide.get(0)).getText();
+
+                    if (!Checkers.checkCharacterArray(string.substring(1, string.length() - 1)))
                         errorHappened();
 
                     properties.setTip(Type.CONST_ARRAY_CHAR);

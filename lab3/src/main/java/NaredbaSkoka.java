@@ -55,6 +55,8 @@ public class NaredbaSkoka extends Node {
             		
             		return null;
         		}
+				
+				return null;
         	default:
         		errorHappened();
         }

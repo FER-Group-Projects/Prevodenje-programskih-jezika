@@ -21,8 +21,16 @@ public class SemantickiAnalizator {
         while (!nodeStack.isEmpty()) {
             Node current = nodeStack.peek();
             Node next = current.analyze();
+
+            if (current.blockTable.getNode() == null) {
+                current.blockTable.setNode(current);
+            }
+
             if (next != null) {
-                next.setBlockTable(current.getBlockTable());
+                if (next.getBlockTable() == null) {
+                    next.setBlockTable(current.getBlockTable());
+                }
+
                 nodeStack.push(next);
             } else {
                 nodeStack.pop();
@@ -33,12 +41,12 @@ public class SemantickiAnalizator {
     public void functionTableCheck() {
         if (!containsMainFunction()) {
             System.out.println("main");
-            System.exit(1);
+            System.exit(0);
         }
 
         if (!allDeclaredFunctionsDefined()) {
             System.out.println("funkcija");
-            System.exit(1);
+            System.exit(0);
         }
 
     }
@@ -52,14 +60,13 @@ public class SemantickiAnalizator {
 
     //metoda containsMainFunction - specijalno za main
     private boolean containsMainFunction() {
-        List<String> mainInputTypes = Arrays.asList("void");
-        return FunctionTable.containsFunction("main", "int", mainInputTypes);
+        return FunctionTable.containsFunction("main", Type.INT, Collections.emptyList());
     }
 
     //metoda provjerava jesu li sve deklarirane funkcije u cijelom programu i definirane
     private boolean allDeclaredFunctionsDefined() {
 
-        Collection<Function> functionsDeclared = FunctionTable.functionNameToInOutTypeMap.values();
+        Collection<Function> functionsDeclared = FunctionTable.declaredFunctions;
         for (Function function : functionsDeclared) {
             if (!function.isDefined())
                 return false;

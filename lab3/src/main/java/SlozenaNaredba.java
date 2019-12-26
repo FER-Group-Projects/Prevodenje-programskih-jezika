@@ -1,13 +1,12 @@
 public class SlozenaNaredba extends Node {
 
+    public SlozenaNaredba() {
+        this.blockTable = new BlockTable();
+    }
+
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
-
-        // Start new block
-        if (currentRightSideIndex == 0) {
-            blockTable = new BlockTable();
-        }
 
         switch (rightSideType) {
             case 0:
