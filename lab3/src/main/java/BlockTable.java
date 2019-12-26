@@ -84,7 +84,7 @@ public class BlockTable {
     /**
      * metoda za dodavanje nove varijable / mijenjanje vrijednosti postojece varijable
      *
-     * @throws IllegalArgumentException ako se pokuša za varijablu istog imena promijeniti njezin tip
+     * @throws IllegalArgumentException ako se pokusa za varijablu istog imena promijeniti njezin tip
      */
 
     public void addVariableToBlockTable(String varName, Type varType, String varValue) {
