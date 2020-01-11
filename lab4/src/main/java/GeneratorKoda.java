@@ -1,12 +1,12 @@
 import java.util.*;
 
-public class SemantickiAnalizator {
+public class GeneratorKoda {
 
     private Node tree;
     private Stack<Node> nodeStack = new Stack<>();
     private BlockTable globalScope = new BlockTable();
 
-    public SemantickiAnalizator() {
+    public GeneratorKoda() {
         tree = TreeBuilder.buildTreeFromInput(System.in);
         tree.setBlockTable(globalScope);
         nodeStack.push(tree);
@@ -52,8 +52,9 @@ public class SemantickiAnalizator {
     }
 
     public static void main(String[] args) {
-        SemantickiAnalizator semantickiAnalizator = new SemantickiAnalizator();
-        semantickiAnalizator.execute();
+    	GeneratorKoda generatorKoda = new GeneratorKoda();
+    	generatorKoda.execute();
+    	FRISCDocumentWriter.getFRISCDocumentWriter().write("a.frisc");
     }
 
 
