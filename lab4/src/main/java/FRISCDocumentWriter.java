@@ -77,7 +77,7 @@ public class FRISCDocumentWriter {
 		try {
 			Path friscFilePath = Paths.get(GeneratorKoda.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 			friscFilePath = friscFilePath.resolve(fileName);
-			Files.writeString(friscFilePath, sb.toString(), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+			Files.write(friscFilePath, sb.toString().getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
 		} catch (IOException | URISyntaxException e) {
 			System.err.println(e.getClass().getCanonicalName() + " : " + e.getMessage());
 		}
