@@ -32,7 +32,9 @@ public class FRISCDocumentWriter {
 	}
 
 	private void initMul() {
-		sb.append("\nMUL\tPUSH R1\n" + 
+		sb.append("\n; f: (R0, R1) -> (R6=R0*R1)\n" + 
+				"MUL\tPUSH R0\n" + 
+				"\tPUSH R1\n" + 
 				"\tPUSH R2\n" + 
 				"\tPUSH R3\n" + 
 				"\tMOVE 0, R2\n" + 
@@ -40,15 +42,18 @@ public class FRISCDocumentWriter {
 				"L1\tADD R0, R2, R2\n" + 
 				"\tSUB R1, R3, R1\n" + 
 				"\tJP_NZ L1\n" + 
-				"\tMOVE R2, R0\n" + 
+				"\tMOVE R2, R6\n" + 
 				"\tPOP R3\n" + 
 				"\tPOP R2\n" + 
 				"\tPOP R1\n" + 
+				"\tPOP R0\n" + 
 				"\tRET\n");
 	}
 
 	private void initDiv() {
-		sb.append("\nDIV\tPUSH R1\n" + 
+		sb.append("\n; f: (R0, R1) -> (R6=R0/R1)\n" + 
+				"DIV\tPUSH R0\n" + 
+				"\tPUSH R1\n" + 
 				"\tPUSH R2\n" + 
 				"\tPUSH R3\n" + 
 				"\tMOVE 0, R2\n" + 
@@ -58,10 +63,11 @@ public class FRISCDocumentWriter {
 				"\tADD R2, R3, R2\n" + 
 				"\tJP_Z JR\n" + 
 				"\tJP L2\n" + 
-				"JR\tMOVE R2, R0\n" + 
+				"JR\tMOVE R2, R6\n" + 
 				"\tPOP R3\n" + 
 				"\tPOP R2\n" + 
 				"\tPOP R1\n" + 
+				"\tPOP R0\n" + 
 				"\tRET\n\n");
 	}
 	
