@@ -48,6 +48,7 @@ public class UnarniIzraz extends Node {
                     switch (((UniformCharacter) rightSide.get(0).rightSide.get(0)).getIdentifier()) {
                         case Identifiers.PLUS:
                             // do nothing
+                            writer.add("", "PUSH R0");
                             break;
                         case Identifiers.MINUS:
                             writer.add("", "MOVE 0, R1");

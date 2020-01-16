@@ -40,6 +40,9 @@ public class PrimarniIzraz extends Node {
                             properties.setlIzraz(variableTypeValue.getlIzraz());
 
                             foundIdnAsVariableOrFunction = true;
+
+                            writer.add("", "LOAD R0, (" + blockTable.getLocationOfVariable(idnName) + ")", idnName);
+                            writer.add("", "PUSH R0");
                         } catch (NullPointerException ex) {
                         }
                     }
@@ -65,9 +68,6 @@ public class PrimarniIzraz extends Node {
 
                     if (!foundIdnAsVariableOrFunction)
                         errorHappened();
-
-                    writer.add("", "LOAD R0, (" + blockTable.getLocationOfVariable(idnName) + ")", idnName);
-                    writer.add("", "PUSH R0");
                 }
                 break;
             case 1:

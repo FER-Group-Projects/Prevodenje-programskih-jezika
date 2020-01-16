@@ -61,7 +61,10 @@ public class NaredbaSkoka extends Node {
             			errorHappened();
             		}
 
+
             		writer.add("", "POP R6", "value return");
+
+					writer.add("", "ADD R7, %D " + (blockTable.getNumberOfDefinedVariablesToGlobal() * 4) + ", R7", "clear local and arguments");
 
 					for (int i = 4; i >= 0; i--) {
 						writer.add("", "POP R" + i);

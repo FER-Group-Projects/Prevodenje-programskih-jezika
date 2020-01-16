@@ -85,12 +85,16 @@ public class InitDeklarator extends Node {
                         }
                     }
 
-                    if (blockTable.isGlobal()) {
-                        String variableName = ((UniformCharacter) rightSide.get(0).rightSide.get(0)).getText();
-                        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+                    String variableName = ((UniformCharacter) rightSide.get(0).rightSide.get(0)).getText();
+                    FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
 
+                    if (blockTable.isGlobal()) {
                         writer.add("", "POP R0", variableName);
                         writer.add("", "STORE R0, (" + LabelMaker.getGlobalVariableLabel(variableName) + ")", variableName);
+                    }
+                    else {
+                        writer.add("", "POP R0", variableName);
+                        writer.add("", "STORE R0, (" + blockTable.getLocationOfVariable(variableName) + ")", variableName);
                     }
                 }
                 break;

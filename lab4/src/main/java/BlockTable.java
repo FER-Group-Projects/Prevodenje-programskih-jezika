@@ -190,10 +190,10 @@ public class BlockTable {
         VariableTypeValueLExpression variable = nameToTypeValueMap.get(variableName);
 
         if (variable != null) {
-            return size - variable.getOffset();
+            return size - variable.getOffset() - 4;
         }
         else {
-            int sum = 0;
+            int sum = -4;
             BlockTable currentScope = this;
 
             while (currentScope != null) {
@@ -229,7 +229,6 @@ public class BlockTable {
             return "R5";
         }
         else {
-            int sum = 0;
             BlockTable currentScope = this;
 
             while (currentScope != null) {
@@ -247,10 +246,6 @@ public class BlockTable {
                     break;
                 }
 
-                if (currentScope != currentScope.node.parent.blockTable) {
-                    sum += currentScope.size;
-                }
-
                 currentScope = currentScope.node.parent.blockTable;
             }
         }
@@ -265,10 +260,34 @@ public class BlockTable {
         String location = label;
 
         if (offset != 0) {
-            label += "-" + offset;
+            // Can't use %D here
+            location += "+" + Integer.toString(offset, 16);
         }
 
         return location;
+    }
+
+    public int getNumberOfDefinedVariables() {
+        return nameToTypeValueMap.size();
+    }
+
+    public int getNumberOfDefinedVariablesToGlobal() {
+        int size = 0;
+        BlockTable currentScope = this;
+
+        while (currentScope != null) {
+            if (currentScope.isGlobal) break;
+
+            size += currentScope.getNumberOfDefinedVariables();
+
+            if (currentScope.node == null || currentScope.node.parent == null) {
+                break;
+            }
+
+            currentScope = currentScope.node.parent.blockTable;
+        }
+
+        return size;
     }
 
     public boolean isGlobal() {

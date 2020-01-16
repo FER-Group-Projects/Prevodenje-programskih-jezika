@@ -25,6 +25,10 @@ public class IzravniDeklarator extends Node {
                 if (blockTable.isGlobal()) {
                     writer.addGlobalVariable(idnIme, 0);
                 }
+                else {
+                    writer.add("", "PUSH R0", idnIme);
+                    writer.add("", "MOVE R7, R5");
+                }
 
                 properties.setTip(properties.getNtip());
                 break;
