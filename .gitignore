@@ -203,3 +203,4 @@ lab*/src/main/java/analizator/*descriptor
 node_modules/
 package.json
 package-lock.json
+actual_output

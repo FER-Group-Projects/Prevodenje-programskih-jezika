@@ -66,6 +66,8 @@ public class PrimarniIzraz extends Node {
                     if (!foundIdnAsVariableOrFunction)
                         errorHappened();
 
+                    writer.add("", "LOAD R0, (" + blockTable.getLocationOfVariable(idnName) + ")", idnName);
+                    writer.add("", "PUSH R0");
                 }
                 break;
             case 1:

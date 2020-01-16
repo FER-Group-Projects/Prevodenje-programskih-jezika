@@ -33,11 +33,36 @@ public class MultiplikativniIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    afterLast();
                 }
                 break;
         }
 
         return null;
+    }
+
+    protected void afterLast() {
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+        String operation = "";
+
+        String idn = ((UniformCharacter) rightSide.get(1)).getIdentifier();
+        switch (idn) {
+            case Identifiers.OP_PUTA:
+                operation = "MUL";
+                break;
+            case Identifiers.OP_DIJELI:
+                operation = "DIV";
+                break;
+            case Identifiers.OP_MOD:
+                operation = "MOD";
+                break;
+        }
+
+        writer.add("", "POP R0", idn);
+        writer.add("", "POP R1");
+        writer.add("", "CALL " + operation);
+        writer.add("", "PUSH R6");
     }
 
     @Override

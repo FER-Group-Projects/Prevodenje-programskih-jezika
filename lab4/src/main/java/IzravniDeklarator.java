@@ -20,6 +20,12 @@ public class IzravniDeklarator extends Node {
                     errorHappened();
                 }
                 blockTable.addVariableToBlockTable(idnIme, properties.getNtip(), "", 4);
+                FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+                if (blockTable.isGlobal()) {
+                    writer.addGlobalVariable(idnIme, 0);
+                }
+
                 properties.setTip(properties.getNtip());
                 break;
             case 1:

@@ -258,6 +258,19 @@ public class BlockTable {
         return null;
     }
 
+    public String getLocationOfVariable(String variableName) {
+        int offset = getOffsetOfVariable(variableName);
+        String label = getLabelOfVariable(variableName);
+
+        String location = label;
+
+        if (offset != 0) {
+            label += "-" + offset;
+        }
+
+        return location;
+    }
+
     public boolean isGlobal() {
         return isGlobal;
     }

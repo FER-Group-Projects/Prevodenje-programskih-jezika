@@ -1,6 +1,16 @@
 public class BinIIzraz extends AbstractIzraz {
 
     @Override
+    protected void afterLast() {
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+        writer.add("", "POP R0");
+        writer.add("", "POP R1");
+        writer.add("", "AND R0, R1, R0");
+        writer.add("", "PUSH R0");
+    }
+
+    @Override
     public String toText() {
         return LeftSideNames.BIN_I_IZRAZ;
     }
