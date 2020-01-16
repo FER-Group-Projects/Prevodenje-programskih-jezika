@@ -7,8 +7,18 @@ public class DefinicijaFunkcije extends Node {
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
+		if (currentRightSideIndex == 0) {
+			FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+			String functionName = ((UniformCharacter) rightSide.get(1)).getText();
+
+			writer.add(LabelMaker.getFunctionLabel(functionName), "PUSH R0", functionName);
+
+			for (int i = 1; i < 5; i++) {
+				writer.add("", "PUSH R" + i);
+			}
+		}
+
         switch(rightSideType) {
-        
         	case 0:
         		if(currentRightSideIndex==0) {
         			currentRightSideIndex++;
@@ -56,7 +66,7 @@ public class DefinicijaFunkcije extends Node {
         			
         			return rightSide.get(5);
         		} else {
-        			return null;
+					return null;
         		}
         	case 1:
         		if(currentRightSideIndex==0) {
@@ -114,7 +124,7 @@ public class DefinicijaFunkcije extends Node {
         			
         			// Ugradnja parametara f-je u lokalni djelokrug
         			for(int i=0; i<inputTypes.size(); i++) {
-						rightSide.get(5).blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null);
+						rightSide.get(5).blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null, 4);
         			}
         			
         			return rightSide.get(5);

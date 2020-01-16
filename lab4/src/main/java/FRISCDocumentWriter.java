@@ -7,7 +7,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class FRISCDocumentWriter {
-	
+
+	private static final boolean DEBUG = true;
+
 	private static FRISCDocumentWriter fdw;
 	
 	public static FRISCDocumentWriter getFRISCDocumentWriter() {
@@ -16,9 +18,10 @@ public class FRISCDocumentWriter {
 		}
 		return fdw;
 	}
-	
+
 	StringBuilder sb = new StringBuilder();
-	
+	StringBuilder memory = new StringBuilder();
+
 	private FRISCDocumentWriter() {
 		init();
 	}
@@ -36,8 +39,46 @@ public class FRISCDocumentWriter {
 		}
 		sb.append(label + "\t" + instruction + "\n");
 	}
+
+	public void add(String label, String instruction, String comment) {
+		if (DEBUG) {
+			add(label, instruction + " ; " + comment);
+		}
+		else {
+			add(label, instruction);
+		}
+	}
+
+	public void addToMemory(String label, int... values) {
+		memory.append(label).append("\tDW");
+
+		for (int value : values) {
+			memory.append(" %D ").append(value).append(", ");
+		}
+
+		// Remove ", " and add "\n"
+		memory.setLength(memory.length() - 2);
+		memory.append('\n');
+	}
+
+	public void addGlobalVariable(String variableName, int... values) {
+		addToMemory(LabelMaker.getGlobalVariableLabel(variableName), values);
+	}
+
+	public String addConstant(int... values) {
+		String label = LabelMaker.getConstantLabel();
+
+		addToMemory(label, values);
+
+		return label;
+	}
 	
 	public void write(String fileName) {
+		if (memory.length() != 0) {
+			sb.append(memory);
+			memory.setLength(0);
+		}
+
 		try {
 			Path friscFilePath = Paths.get(GeneratorKoda.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 			friscFilePath = friscFilePath.resolve(fileName);

@@ -7,6 +7,7 @@ public class GeneratorKoda {
     private BlockTable globalScope = new BlockTable();
 
     public GeneratorKoda() {
+        globalScope.setGlobal(true);
         tree = TreeBuilder.buildTreeFromInput(System.in);
         tree.setBlockTable(globalScope);
         nodeStack.push(tree);

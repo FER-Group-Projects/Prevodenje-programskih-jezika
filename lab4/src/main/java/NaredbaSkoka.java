@@ -4,7 +4,9 @@ public class NaredbaSkoka extends Node {
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
-        switch(rightSideType) {
+		FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+		switch(rightSideType) {
         
         	case 0:
         		boolean foundLoop = false;
@@ -32,6 +34,12 @@ public class NaredbaSkoka extends Node {
         		if(!foundVoidFunction) {
         			errorHappened();
         		}
+
+				for (int i = 4; i >= 0; i--) {
+					writer.add("", "POP R" + i);
+				}
+
+				writer.add("", "RET", "void return");
         		
         		return null;
         	case 2:
@@ -52,7 +60,15 @@ public class NaredbaSkoka extends Node {
             		if(functionType == null || !Checkers.checkImplicitCast(rightSide.get(1).properties.getTip(), functionType)) {
             			errorHappened();
             		}
-            		
+
+            		writer.add("", "POP R6", "value return");
+
+					for (int i = 4; i >= 0; i--) {
+						writer.add("", "POP R" + i);
+					}
+
+					writer.add("", "RET");
+
             		return null;
         		}
 				

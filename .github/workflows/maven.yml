@@ -59,6 +59,12 @@ jobs:
     - name: Build with Maven
       run: mvn package --file pom.xml
       working-directory: ./lab4
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install FRISCjs
+      run: npm install friscjs
+      shell: bash
     - name: Run test examples
       run: cd lab4 && bash evaluate.sh
       shell: bash
