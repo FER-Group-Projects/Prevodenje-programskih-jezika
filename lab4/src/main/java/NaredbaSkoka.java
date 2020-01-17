@@ -9,9 +9,11 @@ public class NaredbaSkoka extends Node {
 		switch(rightSideType) {
         
         	case 0:
+        		String endLabel = null;
         		boolean foundLoop = false;
         		for(Node n=parent; n!=null; n=n.parent) {
         			if(n.getName().equals(LeftSideNames.NAREDBA_PETLJE)) {
+        				endLabel = ((NaredbaPetlje) n).endLabel;
         				foundLoop = true;
         				break;
         			}
@@ -20,6 +22,16 @@ public class NaredbaSkoka extends Node {
         		if(!foundLoop) {
         			errorHappened();
         		}
+
+				String rightFirst = rightSide.get(0).getName();
+
+				if (rightFirst.equals(Identifiers.KR_CONTINUE)) {
+					writer.add("", "JP " + endLabel + "_NEXT", "continue");
+				}
+				else if(rightFirst.equals(Identifiers.KR_BREAK)) {
+					writer.add("", "JP " + endLabel + "_END", "break");
+				}
+
         		
         		return null;
         	case 1:

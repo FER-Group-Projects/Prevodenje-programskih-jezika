@@ -65,12 +65,12 @@ public class OdnosniIzraz extends Node {
 
         writer.add("", "POP R0", idn);
         writer.add("", "POP R1");
-        writer.add("", "CMP R0, R1");
+        writer.add("", "CMP R1, R0");
 
-        writer.add("", "JP" + condition + " " + endLabel + "_NO");
-        writer.add(endLabel + "_NO", "MOVE 1, R0");
+        writer.add("", "JP" + condition + " " + endLabel + "_YES");
+        writer.add(endLabel + "_NO", "MOVE 0, R0");
         writer.add("", "JP " + endLabel);
-        writer.add(endLabel + "_YES", "MOVE 0, R0");
+        writer.add(endLabel + "_YES", "MOVE 1, R0");
         writer.add(endLabel, "PUSH R0");
     }
 

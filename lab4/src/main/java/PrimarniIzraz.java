@@ -41,7 +41,8 @@ public class PrimarniIzraz extends Node {
 
                             foundIdnAsVariableOrFunction = true;
 
-                            writer.add("", "LOAD R0, (" + blockTable.getLocationOfVariable(idnName) + ")", idnName);
+                            writer.add("", "MOVE " + blockTable.getLabelOfVariable(idnName) + ", R0", idnName);
+                            writer.add("", "ADD R0, %D " + blockTable.getOffsetOfVariable(idnName) +", R0", "offset");
                             writer.add("", "PUSH R0");
                         } catch (NullPointerException ex) {
                         }

@@ -3,6 +3,9 @@ public class UnarniIzraz extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
+
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
         switch (rightSideType) {
             case 0:
                 if (currentRightSideIndex == 0) {
@@ -27,6 +30,19 @@ public class UnarniIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    String idn = ((UniformCharacter) rightSide.get(0)).getIdentifier();
+
+                    writer.add("", "POP R1", idn);
+                    writer.add("", "LOAD R0, (R1)", "address to value");
+
+                    if (idn.equals(Identifiers.OP_INC))
+                        writer.add("", "ADD R0, 1, R0");
+                    else if (idn.equals(Identifiers.OP_DEC))
+                        writer.add("", "SUB R0, 1, R0");
+
+                    writer.add("", "STORE R0, (R1)");
+                    writer.add("", "PUSH R0", "push after change");
                 }
                 break;
 
@@ -40,8 +56,6 @@ public class UnarniIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
-
-                    FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
 
                     writer.add("", "POP R0", "unary expression");
 

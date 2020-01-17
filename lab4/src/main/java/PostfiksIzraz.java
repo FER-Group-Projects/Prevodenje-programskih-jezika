@@ -57,6 +57,11 @@ public class PostfiksIzraz extends Node {
                     properties.setTip(typeToSet);
                     boolean notConstPrefixedTypeToSet = typeToSet != Type.CONST_CHAR && typeToSet != Type.CONST_INT;
                     properties.setlIzraz(notConstPrefixedTypeToSet ? 1 : 0);
+
+                    writer.add("", "POP R0", "array");
+                    writer.add("", "POP R1", "index");
+                    writer.add("", "ADD R0, R1, R0");
+                    writer.add("", "POP R0");
                 }
                 break;
             case 2:
@@ -132,6 +137,19 @@ public class PostfiksIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    String idn = ((UniformCharacter) rightSide.get(1)).getIdentifier();
+
+                    writer.add("", "POP R1", idn);
+                    writer.add("", "LOAD R0, (R1)", "address to value");
+                    writer.add("", "PUSH R0", "push before change");
+
+                    if (idn.equals(Identifiers.OP_INC))
+                        writer.add("", "ADD R0, 1, R0");
+                    else if (idn.equals(Identifiers.OP_DEC))
+                        writer.add("", "SUB R0, 1, R0");
+
+                    writer.add("", "STORE R0, (R1)");
                 }
                 break;
         }

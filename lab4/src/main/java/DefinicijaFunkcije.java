@@ -17,6 +17,8 @@ public class DefinicijaFunkcije extends Node {
 			for (int i = 1; i < 5; i++) {
 				writer.add("", "PUSH R" + i);
 			}
+
+			writer.add("", "MOVE R7, R5");
 		}
 
         switch(rightSideType) {

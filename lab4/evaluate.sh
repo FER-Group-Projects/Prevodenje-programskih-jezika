@@ -19,5 +19,5 @@ do
 
     timeout 5 node $NODE_DIRECTORY/frisc-console.js $CLASSPATH/a.frisc > $line/actual_output
 
-    diff --side-by-side --ignore-blank-lines $line/actual_output $line/test.out || exit 0
+    diff --side-by-side --ignore-blank-lines $line/actual_output $line/test.out || echo "FAILED $line"
 done
