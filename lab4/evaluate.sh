@@ -6,7 +6,7 @@ NODE_DIRECTORY=../../../../node_modules/friscjs/consoleapp
 
 cd $WORKING_DIRECTORY
 
-find $TEST_EXAMPLES/rest -mindepth 1 -maxdepth 1 -type d | sort --numeric-sort | while read line
+find $TEST_EXAMPLES/{integration,rest} -mindepth 1 -maxdepth 1 -type d | sort --numeric-sort | while read line
 do
     echo "Evaluating $line"
     echo " - generating a.frisc"
