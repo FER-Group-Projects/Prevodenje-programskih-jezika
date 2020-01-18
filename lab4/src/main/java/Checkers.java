@@ -35,6 +35,43 @@ public class Checkers {
         return !charConstValueStr.equals("\\");
     }
 
+    public static int[] parseCharacterArray(String string) {
+        List<String> charList = new ArrayList<>();
+        if (string.length() == 1) {
+            charList.add(string);
+        } else {
+            char[] chars = string.toCharArray();
+
+            // check each char const in the array - all the way up to NOT including last character
+            int i = 0;
+            while (i < string.length() - 1) {
+                char currentChar = chars[i];
+                char nextChar = chars[i + 1];
+                Boolean isValidCharConst = null;
+                if (currentChar == '\\') {
+                    charList.add(""+currentChar+nextChar);
+                    // two characters checked - escaping and escaped char
+                    i += 2;
+                } else {
+                    charList.add(""+currentChar);
+                    i += 1;
+                }
+            }
+        }
+
+        if (charList.size() > 0) {
+            Object[] objArr = charList.toArray();
+            int[] intArr = new int[objArr.length];
+            for (int i=0; i < objArr.length; i++) {
+                intArr[i] = (int) objArr[i];
+            }
+            return intArr;
+        } else {
+            throw new RuntimeException("Unknown string: " + string + ", with length: " + string.length());
+        }
+    }
+
+
     // check that attribute "vrijednost" of uniform character "NIZ_ZNAKOVA" is allowed
     public static boolean checkCharacterArray(String charConstValuesStrArr) {
 
