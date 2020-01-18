@@ -19,7 +19,7 @@ public class ListaIzrazaPridruzivanja extends Node {
                     izrazTip.add(rightSide.get(0).properties.getTip());
                     properties.setTipovi(izrazTip);
 
-                    properties.setVrijednost(((UniformCharacter) rightSide.get(0)).getText());
+                    // TODO is something needed here to enable line 51 in Inicijalizator = String arrayElementsStr = lista.properties.getVrijednost();?
                 }
                 break;
             case 1:
@@ -36,7 +36,7 @@ public class ListaIzrazaPridruzivanja extends Node {
                     properties.setTipovi(tipovi);
                     properties.setBrElem(rightSide.get(0).properties.getBrElem() + 1);
 
-                    properties.setVrijednost(((UniformCharacter) rightSide.get(0)).getText() + ((UniformCharacter) rightSide.get(1)).getIdentifier() + ((UniformCharacter) rightSide.get(2)).getText());
+                    // TODO is something needed here to enable line 51 in Inicijalizator = String arrayElementsStr = lista.properties.getVrijednost();?
                 }
                 break;
         }

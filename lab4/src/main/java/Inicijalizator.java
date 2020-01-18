@@ -45,7 +45,7 @@ public class Inicijalizator extends Node {
                     if (listaTip == Type.INT || listaTip == Type.CONST_INT) properties.setTip(Type.CONST_ARRAY_INT);
                     if (listaTip == Type.CHAR || listaTip == Type.CONST_CHAR) properties.setTip(Type.CONST_ARRAY_CHAR);
 
-
+                    // TODO please check from here to the end of case 1: arrays initialization
                     FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
 
                     String arrayElementsStr = lista.properties.getVrijednost();
