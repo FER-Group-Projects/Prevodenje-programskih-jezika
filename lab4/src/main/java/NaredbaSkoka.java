@@ -47,7 +47,7 @@ public class NaredbaSkoka extends Node {
         			errorHappened();
         		}
 
-				for (int i = 4; i >= 0; i--) {
+				for (int i = 5; i >= 0; i--) {
 					writer.add("", "POP R" + i);
 				}
 
