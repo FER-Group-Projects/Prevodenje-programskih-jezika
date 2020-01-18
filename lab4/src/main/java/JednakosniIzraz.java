@@ -5,7 +5,7 @@ public class JednakosniIzraz extends AbstractIzraz {
         FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
         String endLabel = LabelMaker.getEndLabel();
 
-        if (((UniformCharacter) rightSide.get(1)).getIdentifier() == Identifiers.OP_EQ) {
+        if (((UniformCharacter) rightSide.get(1)).getIdentifier().equals(Identifiers.OP_EQ)) {
             writer.add("", "POP R0", "OP_EQ");
             writer.add("", "POP R1");
             writer.add("", "CMP R0, R1");

@@ -33,6 +33,8 @@ public class NaredbaGrananja extends Node {
 	
 	        case 1:
 	        	if (currentRightSideIndex == 0) {
+	        		endLabel = LabelMaker.getEndLabel();
+
 	                currentRightSideIndex+=3;
 	                return rightSide.get(2);
 	            } else if (currentRightSideIndex == 3) {
