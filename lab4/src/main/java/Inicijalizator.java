@@ -24,6 +24,7 @@ public class Inicijalizator extends Node {
                         properties.setBrElem(brelem);
                         properties.setTipovi(tipovi);
 
+                        /*
                         FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
 
                         String rightSideConstCharArr = getNizZnakova(rightSide.get(0)).getText();
@@ -38,7 +39,7 @@ public class Inicijalizator extends Node {
                             writer.add("", "PUSH R0", "array");
                             writer.add("", "ADD R1, 4, R1", "");
                         }
-
+*/
 
                     } else {
                         Type izrazTip = rightSide.get(0).properties.getTip();

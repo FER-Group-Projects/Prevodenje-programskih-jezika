@@ -47,7 +47,7 @@ public class Checkers {
             while (i < string.length() - 1) {
                 char currentChar = chars[i];
                 char nextChar = chars[i + 1];
-                Boolean isValidCharConst = null;
+
                 if (currentChar == '\\') {
                     charList.add(""+currentChar+nextChar);
                     // two characters checked - escaping and escaped char
@@ -60,11 +60,11 @@ public class Checkers {
         }
 
         if (charList.size() > 0) {
-            Object[] objArr = charList.toArray();
-            int[] intArr = new int[objArr.length];
-            for (int i=0; i < objArr.length; i++) {
-                intArr[i] = (int) objArr[i];
+            int[] intArr = new int[charList.size()+1];
+            for (int i=0; i < intArr.length; i++) {
+                intArr[i] = parseCharacter(charList.get(i));
             }
+            intArr[intArr.length-1] = parseCharacter("\\0");
             return intArr;
         } else {
             throw new RuntimeException("Unknown string: " + string + ", with length: " + string.length());
