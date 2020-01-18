@@ -24,23 +24,6 @@ public class Inicijalizator extends Node {
                         properties.setBrElem(brelem);
                         properties.setTipovi(tipovi);
 
-                        /*
-                        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
-
-                        String rightSideConstCharArr = getNizZnakova(rightSide.get(0)).getText();
-                        String stringLabel = writer.addConstant(Checkers.parseCharacterArray(rightSideConstCharArr));
-
-                        writer.add("", "MOVE " + stringLabel + ", R0", rightSideConstCharArr);
-                        writer.add("", "MOVE R0, R1", rightSideConstCharArr);
-
-                        // push for each element of NIZ_ZNAKOVA (niz(const(char))) - - lIzraz = 1
-                        for (int i=0; i < rightSideConstCharArr.length(); i++) {
-                            writer.add("", "PUSH R1", "index");
-                            writer.add("", "PUSH R0", "array");
-                            writer.add("", "ADD R1, 4, R1", "");
-                        }
-*/
-
                     } else {
                         Type izrazTip = rightSide.get(0).properties.getTip();
                         properties.setTip(izrazTip);
