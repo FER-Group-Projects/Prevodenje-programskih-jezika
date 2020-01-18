@@ -18,6 +18,8 @@ public class ListaIzrazaPridruzivanja extends Node {
                     List<Type> izrazTip = new ArrayList<>();
                     izrazTip.add(rightSide.get(0).properties.getTip());
                     properties.setTipovi(izrazTip);
+
+                    properties.setVrijednost(((UniformCharacter) rightSide.get(0)).getText());
                 }
                 break;
             case 1:
@@ -33,6 +35,8 @@ public class ListaIzrazaPridruzivanja extends Node {
                     tipovi.add(rightSide.get(2).properties.getTip());
                     properties.setTipovi(tipovi);
                     properties.setBrElem(rightSide.get(0).properties.getBrElem() + 1);
+
+                    properties.setVrijednost(((UniformCharacter) rightSide.get(0)).getText() + ((UniformCharacter) rightSide.get(1)).getIdentifier() + ((UniformCharacter) rightSide.get(2)).getText());
                 }
                 break;
         }

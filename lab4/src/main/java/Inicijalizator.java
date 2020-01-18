@@ -44,6 +44,63 @@ public class Inicijalizator extends Node {
                     Type listaTip = lista.properties.getTipovi().get(0);
                     if (listaTip == Type.INT || listaTip == Type.CONST_INT) properties.setTip(Type.CONST_ARRAY_INT);
                     if (listaTip == Type.CHAR || listaTip == Type.CONST_CHAR) properties.setTip(Type.CONST_ARRAY_CHAR);
+
+
+                    FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+                    String arrayElementsStr = lista.properties.getVrijednost();
+
+                    String arrLabel;
+                    int[] intElements;
+
+                    Type tip = properties.getTip();
+                    if (tip == Type.ARRAY_INT || tip == Type.CONST_ARRAY_INT) {
+                        String[] intStrElements = arrayElementsStr.split(Identifiers.ZAREZ);
+                        intElements = new int[intStrElements.length];
+
+                        for (int i=0; i < intElements.length; i++) {
+                            intElements[i] = Integer.parseInt(intStrElements[i]);
+                        }
+
+                    } else { // tip == Type.ARRAY_CHAR || tip == Type.CONST_ARRAY_CHAR
+                        int k = 0;
+                        List<Integer> intElementsList = new ArrayList<>();
+                        while (k < arrayElementsStr.length()) {
+
+                            int firstIndexOfQuotationmark = arrayElementsStr.substring(k).indexOf("'");
+                            int secondIndexOfQuotationmark = arrayElementsStr.substring(k+1).indexOf("'");
+
+                            intElementsList.add(Integer.parseInt(arrayElementsStr.substring(firstIndexOfQuotationmark+1, secondIndexOfQuotationmark)));
+
+                            k = secondIndexOfQuotationmark + 1;
+                        }
+
+                        intElements = new int[intElementsList.size()];
+                        for (int ind=0; ind < intElements.length; ind++) {
+                            intElements[ind] = intElementsList.get(ind);
+                        }
+                    }
+
+                    arrLabel = writer.addConstant(intElements);
+
+
+                    // R0 (address of array), R1 (address of current element in array)
+                    // R2 (current element in array)
+
+                    writer.add("", "MOVE " + arrLabel + ", R1" , arrayElementsStr);
+                    writer.add("", "LOAD R2, (R1)", arrayElementsStr);
+
+
+                    // push for each element of NIZ_ZNAKOVA (niz(const(char))) - lIzraz = 0
+                    int arrLen = intElements.length;
+                    for (int i=0; i < arrLen; i++) {
+                        writer.add("", "PUSH R2", "currentElement");
+
+                        if (i < arrLen-1) {
+                            writer.add("", "ADD R1, 4, R1", "");
+                            writer.add("", "LOAD R2, (R1)", arrayElementsStr);
+                        }
+                    }
                 }
                 break;
         }
