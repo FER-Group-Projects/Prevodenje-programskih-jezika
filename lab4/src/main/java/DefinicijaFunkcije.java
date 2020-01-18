@@ -135,7 +135,6 @@ public class DefinicijaFunkcije extends Node {
 						writer.add("", "LOAD R0, (R0)");
 						writer.add("", "PUSH R0");
 						writer.add("", "MOVE R7, R5");
-						offset -= 4;
         			}
         			
         			return rightSide.get(5);
