@@ -19,7 +19,17 @@ public class IzravniDeklarator extends Node {
                 if (blockTable.containsFunctionByNameLocally(idnIme)) {
                     errorHappened();
                 }
-                blockTable.addVariableToBlockTable(idnIme, properties.getNtip(), "");
+                blockTable.addVariableToBlockTable(idnIme, properties.getNtip(), "", 4);
+                FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+                if (blockTable.isGlobal()) {
+                    writer.addGlobalVariable(idnIme, 0);
+                }
+                else {
+                    writer.add("", "PUSH R0", idnIme);
+                    writer.add("", "MOVE R7, R5");
+                }
+
                 properties.setTip(properties.getNtip());
                 break;
             case 1:
@@ -52,7 +62,7 @@ public class IzravniDeklarator extends Node {
                 } else if (ntip == Type.CONST_CHAR) {
                     properties.setTip(Type.CONST_ARRAY_CHAR);
                 }
-                blockTable.addVariableToBlockTable(idnIme, properties.getTip(), "");
+                blockTable.addVariableToBlockTable(idnIme, properties.getTip(), "", 4 * properties.getBrElem());
                 break;
             case 2:
                 if (currentRightSideIndex == 0) {

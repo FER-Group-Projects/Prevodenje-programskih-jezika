@@ -30,6 +30,11 @@ public class SlozenaNaredba extends Node {
                     return rightSide.get(2);
                 }
                 else {
+                    FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+                    writer.add("", "ADD R7, %D " + (blockTable.getNumberOfDefinedVariables() * 4) + ", R7", "clear local and arguments");
+                    writer.add("", "MOVE R7, R5");
+
                     return null;
                 }
             default:

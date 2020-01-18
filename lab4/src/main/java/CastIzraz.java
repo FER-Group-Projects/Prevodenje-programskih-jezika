@@ -12,6 +12,13 @@ public class CastIzraz extends Node {
                     Properties rightSideCharProperties = rightSide.get(0).properties;
                     properties.setTip(rightSideCharProperties.getTip());
                     properties.setlIzraz(rightSideCharProperties.getlIzraz());
+
+                    FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+                    if (properties.getlIzraz() == 1) {
+                        writer.add("", "POP R0", "convert address into value");
+                        writer.add("", "LOAD R0, (R0)");
+                        writer.add("", "PUSH R0");
+                    }
                 }
                 break;
             case 1:

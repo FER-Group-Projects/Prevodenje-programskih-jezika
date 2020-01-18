@@ -6,6 +6,8 @@ public class PrimarniIzraz extends Node {
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
         switch (rightSideType) {
             case 0:
                 if (currentRightSideIndex == 0) {
@@ -38,6 +40,10 @@ public class PrimarniIzraz extends Node {
                             properties.setlIzraz(variableTypeValue.getlIzraz());
 
                             foundIdnAsVariableOrFunction = true;
+
+                            writer.add("", "MOVE " + blockTable.getLabelOfVariable(idnName) + ", R0", idnName);
+                            writer.add("", "ADD R0, %D " + blockTable.getOffsetOfVariable(idnName) +", R0", "offset");
+                            writer.add("", "PUSH R0");
                         } catch (NullPointerException ex) {
                         }
                     }
@@ -63,27 +69,38 @@ public class PrimarniIzraz extends Node {
 
                     if (!foundIdnAsVariableOrFunction)
                         errorHappened();
-
                 }
                 break;
             case 1:
+                String value = ((UniformCharacter) rightSide.get(0)).getText();
+
                 if (currentRightSideIndex == 0) {
-                    if (!Checkers.checkInt(((UniformCharacter) rightSide.get(0)).getText()))
+                    if (!Checkers.checkInt(value))
                         errorHappened();
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
                 }
+
+                String label = writer.addConstant(Checkers.parseInt(value));
+                writer.add("", "LOAD R0, (" + label + ")", value);
+                writer.add("", "PUSH R0");
+
                 break;
             case 2:
                 if (currentRightSideIndex == 0) {
                     String character = ((UniformCharacter) rightSide.get(0)).getText();
+                    character = character.substring(1, character.length() - 1);
 
-                    if (!Checkers.checkCharacterConst(character.substring(1, character.length() - 1)))
+                    if (!Checkers.checkCharacterConst(character))
                         errorHappened();
 
                     properties.setTip(Type.CHAR);
                     properties.setlIzraz(0);
+
+                    String characterLabel = writer.addConstant(Checkers.parseCharacter(character));
+                    writer.add("", "LOAD R0, (" + characterLabel + ")", character);
+                    writer.add("", "PUSH R0");
                 }
                 break;
             case 3:

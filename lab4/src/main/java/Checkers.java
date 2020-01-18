@@ -16,6 +16,17 @@ public class Checkers {
         allowedEscapeChars.add("\\\\");  // char = \\
     }
 
+    public static int parseCharacter(String character) {
+        if (character.length() == 1) return character.charAt(0);
+        else if (character.equals("\\t")) return '\t';
+        else if (character.equals("\\n")) return '\n';
+        else if (character.equals("\\0")) return '\0';
+        else if (character.equals("\\'")) return '\'';
+        else if (character.equals("\\\"")) return '\"';
+        else if (character.equals("\\\\")) return '\\';
+        else throw new RuntimeException("Unknown character: " + character + ", with length: " + character.length());
+    }
+
     // check that attribute "vrijednost" of uniform character "ZNAK" is allowed
     public static boolean checkCharacterConst(String charConstValueStr) {
         if (charConstValueStr.length() > 1)
@@ -57,30 +68,24 @@ public class Checkers {
         return true;
     }
 
-    public static boolean checkInt(String varValueStr) {
-        if (varValueStr.startsWith("0x")) {
-            try {
-                Integer.parseInt(varValueStr.substring(2), 16);
-                return true;
-            } catch (NumberFormatException ex) {
-                return false;
-            }
-        } else if (varValueStr.startsWith("0")) {
-            try {
-                Integer.parseInt(varValueStr, 8);
-                return true;
-            } catch (NumberFormatException ex) {
-                return false;
-            }
+    public static int parseInt(String intString) {
+        if (intString.startsWith("0x")) {
+            return Integer.parseInt(intString.substring(2), 16);
+        } else if (intString.startsWith("0")) {
+            return Integer.parseInt(intString, 8);
         } else {
-            try {
-                // Integer range in Java is same as for ppjC (checked javadoc at https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#parseInt(java.lang.String))
-                // -2147483648 <= v <= 2147483647
-                Integer.parseInt(varValueStr);
-                return true;
-            } catch (NumberFormatException ex) {
-                return false;
-            }
+            // Integer range in Java is same as for ppjC (checked javadoc at https://docs.oracle.com/javase/7/docs/api/java/lang/Integer.html#parseInt(java.lang.String))
+            // -2147483648 <= v <= 2147483647
+            return Integer.parseInt(intString);
+        }
+    }
+
+    public static boolean checkInt(String varValueStr) {
+        try {
+            return true;
+        }
+        catch (NumberFormatException e) {
+            return false;
         }
     }
 

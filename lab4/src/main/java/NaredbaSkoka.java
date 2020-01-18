@@ -4,12 +4,16 @@ public class NaredbaSkoka extends Node {
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
-        switch(rightSideType) {
+		FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+		switch(rightSideType) {
         
         	case 0:
+        		String endLabel = null;
         		boolean foundLoop = false;
         		for(Node n=parent; n!=null; n=n.parent) {
         			if(n.getName().equals(LeftSideNames.NAREDBA_PETLJE)) {
+        				endLabel = ((NaredbaPetlje) n).endLabel;
         				foundLoop = true;
         				break;
         			}
@@ -18,6 +22,16 @@ public class NaredbaSkoka extends Node {
         		if(!foundLoop) {
         			errorHappened();
         		}
+
+				String rightFirst = rightSide.get(0).getName();
+
+				if (rightFirst.equals(Identifiers.KR_CONTINUE)) {
+					writer.add("", "JP " + endLabel + "_NEXT", "continue");
+				}
+				else if(rightFirst.equals(Identifiers.KR_BREAK)) {
+					writer.add("", "JP " + endLabel + "_END", "break");
+				}
+
         		
         		return null;
         	case 1:
@@ -32,6 +46,12 @@ public class NaredbaSkoka extends Node {
         		if(!foundVoidFunction) {
         			errorHappened();
         		}
+
+				for (int i = 4; i >= 0; i--) {
+					writer.add("", "POP R" + i);
+				}
+
+				writer.add("", "RET", "void return");
         		
         		return null;
         	case 2:
@@ -52,7 +72,18 @@ public class NaredbaSkoka extends Node {
             		if(functionType == null || !Checkers.checkImplicitCast(rightSide.get(1).properties.getTip(), functionType)) {
             			errorHappened();
             		}
-            		
+
+
+            		writer.add("", "POP R6", "value return");
+
+					writer.add("", "ADD R7, %D " + (blockTable.getNumberOfDefinedVariablesToGlobal() * 4) + ", R7", "clear local and arguments");
+
+					for (int i = 4; i >= 0; i--) {
+						writer.add("", "POP R" + i);
+					}
+
+					writer.add("", "RET");
+
             		return null;
         		}
 				

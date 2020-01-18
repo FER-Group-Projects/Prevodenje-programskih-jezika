@@ -34,6 +34,12 @@ public class Izraz extends Node {
                     properties.setTip(rightSide.get(2).properties.getTip());
                     properties.setlIzraz(0);
 
+                    FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+                    writer.add("", "POP R0", "<izraz> ZAREZ <izraz_pridruzivanja>");
+                    writer.add("", "POP R0");
+                    writer.add("", "PUSH R0");
+
                     return null;
                 }
 

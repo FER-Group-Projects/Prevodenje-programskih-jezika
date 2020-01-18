@@ -10,6 +10,10 @@ public class Naredba extends Node {
             return rightSide.get(0);
         }
 
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+        writer.add("", "MOVE R5, R7", "remove expression leftovers");
+
         return null;
     }
 

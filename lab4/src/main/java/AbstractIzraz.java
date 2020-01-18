@@ -32,6 +32,8 @@ public abstract class AbstractIzraz extends Node {
                         errorHappened();
                     }
 
+                    afterFirst();
+
                     return rightSide.get(currentRightSideIndex - 1);
                 }
                 else {
@@ -42,6 +44,8 @@ public abstract class AbstractIzraz extends Node {
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
 
+                    afterLast();
+
                     return null;
                 }
 
@@ -51,5 +55,8 @@ public abstract class AbstractIzraz extends Node {
 
         return null;
     }
+
+    protected void afterFirst() {}
+    protected void afterLast() {}
 
 }

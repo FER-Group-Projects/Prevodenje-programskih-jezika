@@ -33,11 +33,45 @@ public class OdnosniIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    afterLast();
                 }
                 break;
         }
 
         return null;
+    }
+
+    protected void afterLast() {
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+        String endLabel = LabelMaker.getEndLabel();
+        String condition = "";
+
+        String idn = ((UniformCharacter) rightSide.get(1)).getIdentifier();
+        switch (idn) {
+            case Identifiers.OP_LT:
+                condition = "_SLT";
+                break;
+            case Identifiers.OP_GT:
+                condition = "_SGT";
+                break;
+            case Identifiers.OP_LTE:
+                condition = "_SLE";
+                break;
+            case Identifiers.OP_GTE:
+                condition = "_SGE";
+                break;
+        }
+
+        writer.add("", "POP R0", idn);
+        writer.add("", "POP R1");
+        writer.add("", "CMP R1, R0");
+
+        writer.add("", "JP" + condition + " " + endLabel + "_YES");
+        writer.add(endLabel + "_NO", "MOVE 0, R0");
+        writer.add("", "JP " + endLabel);
+        writer.add(endLabel + "_YES", "MOVE 1, R0");
+        writer.add(endLabel, "PUSH R0");
     }
 
     @Override

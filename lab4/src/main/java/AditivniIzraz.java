@@ -33,11 +33,33 @@ public class AditivniIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    afterLast();
                 }
                 break;
         }
 
         return null;
+    }
+
+    protected void afterLast() {
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+        String operation = "";
+
+        String idn = ((UniformCharacter) rightSide.get(1)).getIdentifier();
+        switch (idn) {
+            case Identifiers.PLUS:
+                operation = "ADD";
+                break;
+            case Identifiers.MINUS:
+                operation = "SUB";
+                break;
+        }
+
+        writer.add("", "POP R0", idn);
+        writer.add("", "POP R1");
+        writer.add("", operation + " R1, R0, R0");
+        writer.add("", "PUSH R0");
     }
 
     @Override

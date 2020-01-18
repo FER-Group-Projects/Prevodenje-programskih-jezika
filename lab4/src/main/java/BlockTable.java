@@ -10,6 +10,9 @@ public class BlockTable {
     // set containing function names declared in the block
     private Map<String, Function> declaredFunctions = new HashMap<>();
 
+    private int size;
+    private boolean isGlobal;
+
 
     //////////////////// block VARIABLES ////////////////////
 
@@ -87,11 +90,12 @@ public class BlockTable {
      * @throws IllegalArgumentException ako se pokusa za varijablu istog imena promijeniti njezin tip
      */
 
-    public void addVariableToBlockTable(String varName, Type varType, String varValue) {
+    public void addVariableToBlockTable(String varName, Type varType, String varValue, int size) {
         VariableTypeValueLExpression varTypeValueLExpression = nameToTypeValueMap.get(varName);
 
         if (varTypeValueLExpression == null) {
-            nameToTypeValueMap.put(varName, new VariableTypeValueLExpression(varType, varValue));
+            nameToTypeValueMap.put(varName, new VariableTypeValueLExpression(varType, varValue, this.size, size));
+            this.size += size;
         } else {
             // if the variable is already recorded in the block table
             if (!varTypeValueLExpression.getTip().equals(varType)) {
@@ -182,4 +186,115 @@ public class BlockTable {
         this.node = node;
     }
 
+    public int getOffsetOfVariable(String variableName) {
+        VariableTypeValueLExpression variable = nameToTypeValueMap.get(variableName);
+
+        if (variable != null) {
+            return size - variable.getOffset() - 4;
+        }
+        else {
+            int sum = -4;
+            BlockTable currentScope = this;
+
+            while (currentScope != null) {
+                variable = currentScope.nameToTypeValueMap.get(variableName);
+
+                if (variable != null) {
+                    if (currentScope.isGlobal) {
+                        return 0;
+                    }
+
+                    return sum + currentScope.size - variable.getOffset();
+                }
+
+                if (currentScope.node == null || currentScope.node.parent == null) {
+                    break;
+                }
+
+                if (currentScope != currentScope.node.parent.blockTable) {
+                    sum += currentScope.size;
+                }
+
+                currentScope = currentScope.node.parent.blockTable;
+            }
+        }
+
+        return -1;
+    }
+
+    public String getLabelOfVariable(String variableName) {
+        VariableTypeValueLExpression variable = nameToTypeValueMap.get(variableName);
+
+        if (variable != null) {
+            return "R5";
+        }
+        else {
+            BlockTable currentScope = this;
+
+            while (currentScope != null) {
+                variable = currentScope.nameToTypeValueMap.get(variableName);
+
+                if (variable != null) {
+                    if (currentScope.isGlobal) {
+                        return LabelMaker.getGlobalVariableLabel(variableName);
+                    }
+
+                    return "R5";
+                }
+
+                if (currentScope.node == null || currentScope.node.parent == null) {
+                    break;
+                }
+
+                currentScope = currentScope.node.parent.blockTable;
+            }
+        }
+
+        return null;
+    }
+
+    public String getLocationOfVariable(String variableName) {
+        int offset = getOffsetOfVariable(variableName);
+        String label = getLabelOfVariable(variableName);
+
+        String location = label;
+
+        if (offset != 0) {
+            // Can't use %D here
+            location += "+" + Integer.toString(offset, 16);
+        }
+
+        return location;
+    }
+
+    public int getNumberOfDefinedVariables() {
+        return nameToTypeValueMap.size();
+    }
+
+    public int getNumberOfDefinedVariablesToGlobal() {
+        int size = 0;
+        BlockTable currentScope = this;
+
+        while (currentScope != null) {
+            if (currentScope.isGlobal) break;
+
+            size += currentScope.getNumberOfDefinedVariables();
+
+            if (currentScope.node == null || currentScope.node.parent == null) {
+                break;
+            }
+
+            currentScope = currentScope.node.parent.blockTable;
+        }
+
+        return size;
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
+    }
+
+    public void setGlobal(boolean global) {
+        isGlobal = global;
+    }
 }

@@ -6,6 +6,7 @@ public class PostfiksIzraz extends Node {
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
 
         switch (rightSideType) {
             case 0:
@@ -56,6 +57,11 @@ public class PostfiksIzraz extends Node {
                     properties.setTip(typeToSet);
                     boolean notConstPrefixedTypeToSet = typeToSet != Type.CONST_CHAR && typeToSet != Type.CONST_INT;
                     properties.setlIzraz(notConstPrefixedTypeToSet ? 1 : 0);
+
+                    writer.add("", "POP R0", "array");
+                    writer.add("", "POP R1", "index");
+                    writer.add("", "ADD R0, R1, R0");
+                    writer.add("", "POP R0");
                 }
                 break;
             case 2:
@@ -73,6 +79,10 @@ public class PostfiksIzraz extends Node {
                     properties.setlIzraz(0);
                 }
 
+                String functionName = ((UniformCharacter) rightSide.get(0).rightSide.get(0).rightSide.get(0)).getText();
+
+                writer.add("", "CALL " + LabelMaker.getFunctionLabel(functionName));
+                writer.add("", "PUSH R6");
                 break;
             case 3:
                 if (currentRightSideIndex == 0) {
@@ -107,6 +117,13 @@ public class PostfiksIzraz extends Node {
 
                     properties.setTip(postfixExpressionProperties.getPov());    // this is Type.FUNCTION
                     properties.setlIzraz(0);
+
+                    String functionName2 = ((UniformCharacter) rightSide.get(0).rightSide.get(0).rightSide.get(0)).getText();
+
+                    writer.add("", "CALL " + LabelMaker.getFunctionLabel(functionName2));
+                    writer.add("", "ADD R7, %D " + (params.size() * 4) + ", R7", "remove args");
+                    writer.add("", "PUSH R6");
+
                 }
                 break;
             case 4: case 5:
@@ -120,6 +137,19 @@ public class PostfiksIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    String idn = ((UniformCharacter) rightSide.get(1)).getIdentifier();
+
+                    writer.add("", "POP R1", idn);
+                    writer.add("", "LOAD R0, (R1)", "address to value");
+                    writer.add("", "PUSH R0", "push before change");
+
+                    if (idn.equals(Identifiers.OP_INC))
+                        writer.add("", "ADD R0, 1, R0");
+                    else if (idn.equals(Identifiers.OP_DEC))
+                        writer.add("", "SUB R0, 1, R0");
+
+                    writer.add("", "STORE R0, (R1)");
                 }
                 break;
         }

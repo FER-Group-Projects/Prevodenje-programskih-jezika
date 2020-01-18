@@ -3,10 +3,18 @@
 public  class VariableTypeValueLExpression {
     private Type tip;
     private String vrijednost;
+    private int offset;
+    private int size;
 
     public VariableTypeValueLExpression(Type tip, String vrijednost) {
+        this(tip, vrijednost, 0, 4);
+    }
+
+    public VariableTypeValueLExpression(Type tip, String vrijednost, int offset, int size) {
         this.tip = tip;
         this.vrijednost = vrijednost;
+        this.offset = offset;
+        this.size = size;
     }
 
     public Type getTip() {
@@ -30,4 +38,19 @@ public  class VariableTypeValueLExpression {
     }
 
 
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

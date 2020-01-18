@@ -42,6 +42,12 @@ public class IzrazPridruzivanja extends Node {
                     properties.setTip(rightSide.get(0).properties.getTip());
                     properties.setlIzraz(0);
 
+                    FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+                    writer.add("", "POP R0", "<postfiks_izraz> OP_PRIDRUZI <izraz_pridruzivanja>");
+                    writer.add("", "POP R1", "<postfiks_izraz> OP_PRIDRUZI <izraz_pridruzivanja>");
+                    writer.add("", "STORE R0, (R1)");
+
                     return null;
                 }
 

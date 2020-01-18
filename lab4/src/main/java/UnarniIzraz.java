@@ -3,6 +3,9 @@ public class UnarniIzraz extends Node {
     @Override
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
+
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
         switch (rightSideType) {
             case 0:
                 if (currentRightSideIndex == 0) {
@@ -27,6 +30,19 @@ public class UnarniIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    String idn = ((UniformCharacter) rightSide.get(0)).getIdentifier();
+
+                    writer.add("", "POP R1", idn);
+                    writer.add("", "LOAD R0, (R1)", "address to value");
+
+                    if (idn.equals(Identifiers.OP_INC))
+                        writer.add("", "ADD R0, 1, R0");
+                    else if (idn.equals(Identifiers.OP_DEC))
+                        writer.add("", "SUB R0, 1, R0");
+
+                    writer.add("", "STORE R0, (R1)");
+                    writer.add("", "PUSH R0", "push after change");
                 }
                 break;
 
@@ -40,6 +56,39 @@ public class UnarniIzraz extends Node {
 
                     properties.setTip(Type.INT);
                     properties.setlIzraz(0);
+
+                    writer.add("", "POP R0", "unary expression");
+
+                    switch (((UniformCharacter) rightSide.get(0).rightSide.get(0)).getIdentifier()) {
+                        case Identifiers.PLUS:
+                            // do nothing
+                            writer.add("", "PUSH R0");
+                            break;
+                        case Identifiers.MINUS:
+                            writer.add("", "MOVE 0, R1");
+                            writer.add("", "SUB R1, R0, R0");
+                            writer.add("", "PUSH R0");
+                            break;
+                        case Identifiers.OP_TILDA:
+                            String tildaMask = writer.addConstant(0xFFFFFFFF);
+
+                            writer.add("", "LOAD R1, (" + tildaMask + ")");
+                            writer.add("", "XOR R1, R0, R0");
+                            writer.add("", "PUSH R0");
+
+                            break;
+                        case Identifiers.OP_NEG:
+                            String endLabel = LabelMaker.getEndLabel();
+
+                            writer.add("", "CMP R0, 0");
+                            writer.add("", "JP_Z " + endLabel + "_ZERO");
+                            writer.add("", "MOVE 0, R0");
+                            writer.add("", "JP " + endLabel);
+                            writer.add("JP_Z " + endLabel + "_ZERO", "MOVE 1, R0");
+                            writer.add(endLabel, "PUSH R0");
+
+                            break;
+                    }
                 }
                 break;
         }

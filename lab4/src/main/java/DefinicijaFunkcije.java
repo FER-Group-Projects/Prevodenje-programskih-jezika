@@ -7,8 +7,21 @@ public class DefinicijaFunkcije extends Node {
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
+		FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
+
+		if (currentRightSideIndex == 0) {
+			String functionName = ((UniformCharacter) rightSide.get(1)).getText();
+
+			writer.add(LabelMaker.getFunctionLabel(functionName), "PUSH R0", functionName);
+
+			for (int i = 1; i < 5; i++) {
+				writer.add("", "PUSH R" + i);
+			}
+
+			writer.add("", "MOVE R7, R5");
+		}
+
         switch(rightSideType) {
-        
         	case 0:
         		if(currentRightSideIndex==0) {
         			currentRightSideIndex++;
@@ -56,7 +69,7 @@ public class DefinicijaFunkcije extends Node {
         			
         			return rightSide.get(5);
         		} else {
-        			return null;
+					return null;
         		}
         	case 1:
         		if(currentRightSideIndex==0) {
@@ -111,10 +124,18 @@ public class DefinicijaFunkcije extends Node {
         				parent.blockTable.addFunctionToBlockTable(imeFje, returnType, inputTypes);
 						FunctionTable.setDefinedFunction(newFun);
 					}
-        			
+
+        			// 5 registers for context, 1 address for returning
+        			int offset = 4 * 5 + 4 * inputTypes.size();
         			// Ugradnja parametara f-je u lokalni djelokrug
         			for(int i=0; i<inputTypes.size(); i++) {
-						rightSide.get(5).blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null);
+						rightSide.get(5).blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null, 4);
+						writer.add("", "MOVE R7, R0", inputNames.get(0));
+						writer.add("", "ADD R0, %D " + offset + ", R0");
+						writer.add("", "LOAD R0, (R0)");
+						writer.add("", "PUSH R0");
+						writer.add("", "MOVE R7, R5");
+						offset -= 4;
         			}
         			
         			return rightSide.get(5);
