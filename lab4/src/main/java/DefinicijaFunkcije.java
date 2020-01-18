@@ -130,7 +130,7 @@ public class DefinicijaFunkcije extends Node {
         			// Ugradnja parametara f-je u lokalni djelokrug
         			for(int i=0; i<inputTypes.size(); i++) {
 						rightSide.get(5).blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null, 4);
-						writer.add("", "MOVE R7, R0", inputNames.get(0));
+						writer.add("", "MOVE R7, R0", inputNames.get(i));
 						writer.add("", "ADD R0, %D " + offset + ", R0");
 						writer.add("", "LOAD R0, (R0)");
 						writer.add("", "PUSH R0");
