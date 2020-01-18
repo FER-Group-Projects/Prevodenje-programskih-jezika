@@ -20,6 +20,9 @@ public class ListaIzrazaPridruzivanja extends Node {
                     properties.setTipovi(izrazTip);
 
                     // TODO is something needed here to enable line 51 in Inicijalizator = String arrayElementsStr = lista.properties.getVrijednost();?
+                    List<String> vrijednostiList = new ArrayList<>();
+                    vrijednostiList.add(rightSide.get(0).properties.getVrijednost());
+                    properties.setVrijednosti(vrijednostiList);
                 }
                 break;
             case 1:
@@ -37,6 +40,9 @@ public class ListaIzrazaPridruzivanja extends Node {
                     properties.setBrElem(rightSide.get(0).properties.getBrElem() + 1);
 
                     // TODO is something needed here to enable line 51 in Inicijalizator = String arrayElementsStr = lista.properties.getVrijednost();?
+                    List<String> vrijednostiList = rightSide.get(0).properties.getVrijednosti();
+                    vrijednostiList.add(rightSide.get(0).properties.getVrijednost());
+                    properties.setVrijednosti(vrijednostiList);
                 }
                 break;
         }
