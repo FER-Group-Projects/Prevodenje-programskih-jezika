@@ -114,8 +114,23 @@ public class PrimarniIzraz extends Node {
                     properties.setlIzraz(0);
 
                     String stringLabel = writer.addConstant(Checkers.parseCharacterArray(string));
-                    writer.add("", "LOAD R0, (" + stringLabel + ")", string);
-                    writer.add("", "PUSH R0");
+                    // R0 (address of array), R1 (address of current element in array)
+                    // R2 (current element in array)
+
+                    writer.add("", "MOVE " + stringLabel + ", R1" , string);
+                    writer.add("", "LOAD R2, (R1)", string);
+
+
+                    // push for each element of NIZ_ZNAKOVA (niz(const(char))) - lIzraz = 0
+                    int strLen = string.length();
+                    for (int i=0; i < strLen; i++) {
+                        writer.add("", "PUSH R2", "currentElement");
+
+                        if (i < strLen-1) {
+                            writer.add("", "ADD R1, 4, R1", "");
+                            writer.add("", "LOAD R2, (R1)", string);
+                        }
+                    }
                 }
                 break;
             case 4:
