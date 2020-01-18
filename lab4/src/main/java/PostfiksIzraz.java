@@ -1,3 +1,5 @@
+import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage_1_0;
+
 import java.util.List;
 
 public class PostfiksIzraz extends Node {
@@ -62,6 +64,9 @@ public class PostfiksIzraz extends Node {
                     writer.add("", "POP R1", "index");
                     writer.add("", "ADD R0, R1, R0");
                     writer.add("", "POP R0");
+
+                    writer.add("", "LOAD R0, (R0)");
+                    writer.add("", "PUSH R0");
                 }
                 break;
             case 2:

@@ -116,7 +116,6 @@ public class PrimarniIzraz extends Node {
                     String stringLabel = writer.addConstant(Checkers.parseCharacterArray(string));
                     writer.add("", "LOAD R0, (" + stringLabel + ")", string);
                     writer.add("", "PUSH R0");
-
                 }
                 break;
             case 4:
