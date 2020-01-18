@@ -14,7 +14,7 @@ public class DefinicijaFunkcije extends Node {
 
 			writer.add(LabelMaker.getFunctionLabel(functionName), "PUSH R0", functionName);
 
-			for (int i = 1; i < 5; i++) {
+			for (int i = 1; i < 6; i++) {
 				writer.add("", "PUSH R" + i);
 			}
 
@@ -125,8 +125,8 @@ public class DefinicijaFunkcije extends Node {
 						FunctionTable.setDefinedFunction(newFun);
 					}
 
-        			// 5 registers for context, 1 address for returning
-        			int offset = 4 * 5 + 4 * inputTypes.size();
+        			// 6 registers for context, 1 address for returning
+        			int offset = 4 * 6 + 4 * inputTypes.size();
         			// Ugradnja parametara f-je u lokalni djelokrug
         			for(int i=0; i<inputTypes.size(); i++) {
 						rightSide.get(5).blockTable.addVariableToBlockTable(inputNames.get(i), inputTypes.get(i), null, 4);
