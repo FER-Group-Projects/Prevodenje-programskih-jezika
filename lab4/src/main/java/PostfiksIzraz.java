@@ -58,10 +58,13 @@ public class PostfiksIzraz extends Node {
                     boolean notConstPrefixedTypeToSet = typeToSet != Type.CONST_CHAR && typeToSet != Type.CONST_INT;
                     properties.setlIzraz(notConstPrefixedTypeToSet ? 1 : 0);
 
-                    writer.add("", "POP R0", "array");
-                    writer.add("", "POP R1", "index");
+                    writer.add("", "POP R0", "index");
+                    writer.add("", "POP R1", "array");
+                    writer.add("", "LOAD R1, (R1)");
+                    writer.add("", "SHL R0, %D 2, R0");
                     writer.add("", "ADD R0, R1, R0");
-                    writer.add("", "POP R0");
+                    writer.add("", "ADD R0, 4, R0");
+                    writer.add("", "PUSH R0");
                 }
                 break;
             case 2:

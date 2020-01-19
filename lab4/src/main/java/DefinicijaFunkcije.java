@@ -69,6 +69,12 @@ public class DefinicijaFunkcije extends Node {
         			
         			return rightSide.get(5);
         		} else {
+					for (int i = 5; i >= 0; i--) {
+						writer.add("", "POP R" + i);
+					}
+
+					writer.add("", "RET");
+
 					return null;
         		}
         	case 1:
@@ -139,6 +145,14 @@ public class DefinicijaFunkcije extends Node {
         			
         			return rightSide.get(5);
         		} else {
+					writer.add("", "ADD R7, %D " + (rightSide.get(5).blockTable.getNumberOfDefinedVariablesToGlobal() * 4) + ", R7", "clear local and arguments");
+
+					for (int i = 5; i >= 0; i--) {
+						writer.add("", "POP R" + i);
+					}
+
+					writer.add("", "RET");
+
         			return null;
         		}
         	default:
