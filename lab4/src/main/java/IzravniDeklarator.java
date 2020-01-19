@@ -7,6 +7,7 @@ public class IzravniDeklarator extends Node {
     public Node analyze() {
         if (rightSideType == -1) determineRightSideType();
 
+        FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
         String idnIme = ((UniformCharacter) rightSide.get(0)).getText();
         switch (rightSideType) {
             case 0:
@@ -20,7 +21,6 @@ public class IzravniDeklarator extends Node {
                     errorHappened();
                 }
                 blockTable.addVariableToBlockTable(idnIme, properties.getNtip(), "", 4);
-                FRISCDocumentWriter writer = FRISCDocumentWriter.getFRISCDocumentWriter();
 
                 if (blockTable.isGlobal()) {
                     writer.addGlobalVariable(idnIme, 0);
@@ -62,7 +62,22 @@ public class IzravniDeklarator extends Node {
                 } else if (ntip == Type.CONST_CHAR) {
                     properties.setTip(Type.CONST_ARRAY_CHAR);
                 }
-                blockTable.addVariableToBlockTable(idnIme, properties.getTip(), "", 4 * properties.getBrElem());
+                blockTable.addVariableToBlockTable(idnIme, properties.getTip(), "", 4);
+
+                for (int i = 0; i < properties.getBrElem(); i++) {
+                    blockTable.addVariableToBlockTable(idnIme + "__" + i, properties.getTip(), "", 4);
+                }
+
+                if (blockTable.isGlobal()) {
+                    writer.addGlobalVariable(idnIme, new int[broj + 1]);
+                    writer.add("", "MOVE " + LabelMaker.getGlobalVariableLabel(idnIme) + ", R0");
+                    writer.add("", "STORE R0, (R0)", "store address of first");
+                }
+                else {
+                    writer.add("", "PUSH R7");
+                    writer.add("", "SUB R7, %D " + (4 * properties.getBrElem()) + ", R7");
+                    writer.add("", "MOVE R7, R5");
+                }
                 break;
             case 2:
                 if (currentRightSideIndex == 0) {

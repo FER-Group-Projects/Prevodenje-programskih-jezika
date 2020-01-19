@@ -13,6 +13,17 @@ public class Properties {
     private Type ntip;
     private int brElem;
 
+    private List<String> vrijednosti;
+
+
+    public List<String> getVrijednosti() {
+        return vrijednosti;
+    }
+
+    public void setVrijednosti(List<String> vrijednosti) {
+        this.vrijednosti = vrijednosti;
+    }
+
     public Type getTip() {
         return tip;
     }

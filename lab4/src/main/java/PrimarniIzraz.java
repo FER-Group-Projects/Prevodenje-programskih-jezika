@@ -1,4 +1,5 @@
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrimarniIzraz extends Node {
 
@@ -112,6 +113,28 @@ public class PrimarniIzraz extends Node {
 
                     properties.setTip(Type.CONST_ARRAY_CHAR);
                     properties.setlIzraz(0);
+
+
+                    int[] parsedIntArr = Checkers.parseCharacterArray(string.substring(1, string.length() - 1));
+                    String stringLabel = writer.addConstant(parsedIntArr);
+                    // R0 (address of array), R1 (address of current element in array)
+                    // R2 (current element in array)
+
+                    writer.add("", "MOVE " + stringLabel + ", R1" , string);
+                    writer.add("", "LOAD R2, (R1)", string);
+
+
+                    // push for each element of NIZ_ZNAKOVA (niz(const(char))) - lIzraz = 0
+                    int arrLen = parsedIntArr.length;
+                    for (int i=0; i < arrLen; i++) {
+                        writer.add("", "PUSH R2", "currentElement");
+
+                        if (i < arrLen-1) {
+                            writer.add("", "ADD R1, 4, R1", "");
+                            writer.add("", "LOAD R2, (R1)", string);
+                        }
+                    }
+
                 }
                 break;
             case 4:

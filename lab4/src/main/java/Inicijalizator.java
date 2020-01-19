@@ -23,6 +23,7 @@ public class Inicijalizator extends Node {
                         properties.setTip(Type.CONST_ARRAY_CHAR);
                         properties.setBrElem(brelem);
                         properties.setTipovi(tipovi);
+
                     } else {
                         Type izrazTip = rightSide.get(0).properties.getTip();
                         properties.setTip(izrazTip);
@@ -41,6 +42,7 @@ public class Inicijalizator extends Node {
                     Type listaTip = lista.properties.getTipovi().get(0);
                     if (listaTip == Type.INT || listaTip == Type.CONST_INT) properties.setTip(Type.CONST_ARRAY_INT);
                     if (listaTip == Type.CHAR || listaTip == Type.CONST_CHAR) properties.setTip(Type.CONST_ARRAY_CHAR);
+
                 }
                 break;
         }
