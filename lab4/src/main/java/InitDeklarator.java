@@ -111,7 +111,7 @@ public class InitDeklarator extends Node {
                         } else {
                             writer.add("", "MOVE " + blockTable.getLabelOfVariable(variableName) + ", R0");
                             writer.add("", "ADD R0, " + blockTable.getOffsetOfVariable(variableName) + ", R0");
-                            writer.add("", "ADD R0, %D " + ((rightSide.get(0).properties.getBrElem() + 1) * 4) + ", R0");
+                            writer.add("", "ADD R0, %D " + ((rightSide.get(0).properties.getBrElem()) * 4) + ", R0");
 
                             for (int i = 0; i < rightSide.get(2).properties.getBrElem(); i++) {
                                 writer.add("", "SUB R0, 4, R0");
